@@ -861,7 +861,7 @@
                                         <option value="paid-cash" ${order.paymentStatus === 'paid-cash' ? 'selected' : ''}>Cash</option>
                                         <option value="paid-zelle" ${order.paymentStatus === 'paid-zelle' ? 'selected' : ''}>Zelle</option>
                                     </select>
-                                    <button class="btn btn-small ${order.isShiny ? 'btn-success' : ''}" onclick="toggleShiny('${order.id}')" ${order.design.isMystery ? 'disabled style='opacity: 0.5;'' : ''}>
+                                    <button class="btn btn-small ${order.isShiny ? 'btn-success' : ''}" onclick="toggleShiny('${order.id}')" ${order.design.isMystery ? "disabled style='opacity: 0.5;'" : ''}>
                                         ${order.isShiny ? '✨ Shiny' : '✨ Make Shiny'}
                                     </button>
                                     ${!order.isResell ? `
