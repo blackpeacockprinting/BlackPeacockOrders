@@ -321,11 +321,18 @@
                     <h4>Selected Design</h4>
                     <div id="recipeDetails"></div>
                 </div>
-                <div class="form-group" style="margin-top: 1rem;">
-                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                        <input type="checkbox" id="isShiny" style="width: auto;">
-                        <span>✨ Shiny Version (golden color)</span>
-                    </label>
+
+                <!-- Shiny Option -->
+                <div class="form-group" id="shinyOption" style="margin-top: 1rem; display: none;">
+                    <div style="background: rgba(255, 215, 0, 0.1); border: 2px solid #ffd700; border-radius: 8px; padding: 0.75rem;">
+                        <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer; margin: 0;">
+                            <input type="checkbox" id="isShiny" style="width: 20px; height: 20px; cursor: pointer;">
+                            <span style="font-weight: 600; color: #ffd700;">✨ Make it SHINY (Golden)</span>
+                        </label>
+                        <small style="color: var(--text-muted); display: block; margin-top: 0.25rem; margin-left: 2rem;">
+                            Check this to print a gold-colored version
+                        </small>
+                    </div>
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                     <div class="form-group">
@@ -493,6 +500,15 @@
 
             document.getElementById('selectedRecipe').classList.remove('hidden');
 
+            // Show shiny option for all designs except Mystery Ball
+            const shinyOption = document.getElementById('shinyOption');
+            if (selectedDesign.isMystery) {
+                shinyOption.style.display = 'none';
+                document.getElementById('isShiny').checked = false;
+            } else {
+                shinyOption.style.display = 'block';
+            }
+
             if (selectedDesign.isMystery) {
                 document.getElementById('recipeDetails').innerHTML = `
                     <strong>${selectedDesign.name}</strong> (${selectedDesign.category})<br>
@@ -560,6 +576,7 @@
             document.getElementById('designSearch').value = '';
             document.getElementById('orderNotes').value = '';
             document.getElementById('isShiny').checked = false;
+            document.getElementById('shinyOption').style.display = 'none';
             document.getElementById('selectedRecipe').classList.add('hidden');
             selectedDesign = null;
         }
@@ -598,23 +615,46 @@
                     const match = line.match(/(.+?)\s*\(x([\d]+)\)\s*[-—]\s*\$?([\d.]+)/);
 
                     if (match) {
-                        const designName = match[1].trim();
+                        let designName = match[1].trim();
                         const qty = parseInt(match[2]) || 1;
                         const totalPrice = parseFloat(match[3]);
                         const unitPrice = totalPrice / qty;
 
                         console.log('Processing:', designName, 'Qty:', qty, 'Price:', totalPrice);
 
-                        // Find matching recipe - try exact match first, then partial
-                        let recipe = RECIPES.find(r => 
-                            r.name.toLowerCase() === designName.toLowerCase()
-                        );
+                        let recipe = null;
 
-                        if (!recipe) {
+                        // Special case: Mystery Ball
+                        if (designName.toLowerCase().includes('mystery')) {
+                            recipe = MYSTERY_BALL;
+                        } else {
+                            // Try exact match first
                             recipe = RECIPES.find(r => 
-                                r.originalName.toLowerCase().includes(designName.toLowerCase()) ||
-                                r.name.toLowerCase().includes(designName.toLowerCase())
+                                r.name.toLowerCase() === designName.toLowerCase()
                             );
+
+                            // Try partial match
+                            if (!recipe) {
+                                recipe = RECIPES.find(r => 
+                                    r.name.toLowerCase().includes(designName.toLowerCase()) ||
+                                    designName.toLowerCase().includes(r.name.toLowerCase())
+                                );
+                            }
+
+                            // Try originalName match
+                            if (!recipe) {
+                                recipe = RECIPES.find(r => 
+                                    r.originalName && r.originalName.toLowerCase().includes(designName.toLowerCase())
+                                );
+                            }
+
+                            // Try without special characters
+                            if (!recipe) {
+                                const cleanName = designName.replace(/[^a-zA-Z]/g, '').toLowerCase();
+                                recipe = RECIPES.find(r => 
+                                    r.name.replace(/[^a-zA-Z]/g, '').toLowerCase() === cleanName
+                                );
+                            }
                         }
 
                         if (recipe) {
@@ -635,7 +675,7 @@
                                 orders.unshift(order);
                                 imported++;
                             }
-                            console.log('Successfully imported:', designName);
+                            console.log('Successfully imported:', designName, '->', recipe.name);
                         } else {
                             errors.push(`Line ${index + 1}: "${designName}" not found in database`);
                             console.error('Recipe not found:', designName);
@@ -719,8 +759,8 @@
 
                 return `
                     <div class="customer-group">
-                        <div class="customer-header" onclick="toggleCustomer('${safeId}')" id="header-${safeId}">
-                            <div class="customer-info-main">
+                        <div class="customer-header" id="header-${safeId}">
+                            <div class="customer-info-main" onclick="toggleCustomer('${safeId}')" style="flex: 1; cursor: pointer;">
                                 <div class="customer-avatar">${initials}</div>
                                 <div class="customer-name-section">
                                     <h3>${customerName}</h3>
@@ -732,7 +772,8 @@
                                     <div class="customer-stat-value">${formatCurrency(totalValue)}</div>
                                     <div class="customer-stat-label">Total</div>
                                 </div>
-                                <div class="expand-icon" id="icon-${safeId}">▼</div>
+                                <div class="expand-icon" id="icon-${safeId}" onclick="toggleCustomer('${safeId}')" style="cursor: pointer;">▼</div>
+                                <button class="btn btn-small" style="color: var(--danger); margin-left: 0.5rem;" onclick="deleteCustomerOrders('${safeId}', '${customerName.replace(/'/g, "\'")}')">🗑️ Delete All</button>
                             </div>
                         </div>
                         <div class="customer-orders" id="orders-${safeId}">
@@ -815,6 +856,9 @@
                                         <option value="paid-cash" ${order.paymentStatus === 'paid-cash' ? 'selected' : ''}>Cash</option>
                                         <option value="paid-zelle" ${order.paymentStatus === 'paid-zelle' ? 'selected' : ''}>Zelle</option>
                                     </select>
+                                    <button class="btn btn-small ${order.isShiny ? 'btn-success' : ''}" onclick="toggleShiny('${order.id}')" ${order.design.isMystery ? 'disabled style='opacity: 0.5;'' : ''}>
+                                        ${order.isShiny ? '✨ Shiny' : '✨ Make Shiny'}
+                                    </button>
                                     ${!order.isResell ? `
                                     <button class="btn btn-small btn-warning" onclick="moveToResell('${order.id}')">📦 Resell</button>
                                     ` : `
@@ -909,6 +953,49 @@
             event.stopPropagation();
             if (!confirm('Delete this order permanently?')) return;
             orders = orders.filter(o => o.id !== id);
+            localStorage.setItem('pokeprint_orders', JSON.stringify(orders));
+            renderOrders();
+            updateStats();
+        }
+
+        // Delete all orders for a customer
+        function deleteCustomerOrders(safeId, customerName) {
+            event.stopPropagation();
+            const customerOrders = orders.filter(o => o.customerName === customerName);
+            if (customerOrders.length === 0) return;
+
+            if (!confirm(`Delete ALL ${customerOrders.length} orders for "${customerName}"?\n\nThis cannot be undone!`)) return;
+
+            orders = orders.filter(o => o.customerName !== customerName);
+            localStorage.setItem('pokeprint_orders', JSON.stringify(orders));
+            renderOrders();
+            updateStats();
+        }
+
+        // Toggle shiny status for an order
+        function toggleShiny(id) {
+            event.stopPropagation();
+            const order = orders.find(o => o.id === id);
+            if (!order) return;
+
+            if (order.isShiny) {
+                // Remove shiny
+                order.isShiny = false;
+                if (order.design.name.startsWith('✨ Shiny ')) {
+                    order.design.name = order.design.name.replace('✨ Shiny ', '');
+                }
+                // Restore original colors if we stored them
+                if (order.originalColors) {
+                    order.design.colors = order.originalColors;
+                }
+            } else {
+                // Add shiny
+                order.isShiny = true;
+                order.originalColors = JSON.parse(JSON.stringify(order.design.colors));
+                order.design.name = '✨ Shiny ' + order.design.name;
+                order.design.colors = [{"color": "🌟 Gold (Shiny)", "grams": order.design.totalGrams}];
+            }
+
             localStorage.setItem('pokeprint_orders', JSON.stringify(orders));
             renderOrders();
             updateStats();
