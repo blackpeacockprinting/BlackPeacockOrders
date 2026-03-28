@@ -583,13 +583,16 @@
 
         // Process import from Google Sheets with customer grouping
         function processImport() {
+            console.log('Import started');
             const data = document.getElementById('importData').value.trim();
+            console.log('Data length:', data.length);
             if (!data) {
                 alert('Please paste some data first');
                 return;
             }
 
             const lines = data.split(/\r?\n/);
+            console.log('Lines found:', lines.length);
             let currentCustomer = null;
             let imported = 0;
             let errors = [];
@@ -708,15 +711,17 @@
                     msg += 'Issues found:\n' + errors.slice(0, 10).join('\n');
                 } else {
                     msg += 'Make sure your format is correct:\n';
-                    msg += 'Customer Name\n';
-                    msg += 'Pikachu (x1) - $8.00\n';
+                    msg += 'Customer Name
+';
+                    msg += 'Pikachu (x1) - $8.00
+';
                     msg += 'Charizard (x1) - $10.00';
                 }
                 alert(msg);
             }
         }
 
-        // Render orders grouped by customer// Render orders grouped by customer
+        // Render orders grouped by customer
         function renderOrders() {
             const search = document.getElementById('searchInput').value.toLowerCase();
             const statusFilter = document.getElementById('filterStatus').value;
