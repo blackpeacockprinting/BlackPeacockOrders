@@ -13,21 +13,81 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
       - name: Fetch designs from N3D API
-        id: fetch
         env:
           N3D_API_KEY: ${{ secrets.N3D_API_KEY }}
         run: |
-          node scripts/sync-designs.js
+          # Create data directory
+          mkdir -p data
+
+          # Fetch all designs using curl
+          echo "Fetching designs from N3D API..."
+
+          # Page 1
+          curl -s "https://www.n3dmelbourne.com/api/v1/designs?limit=200&page=1&include=details&locale=US"             -H "Authorization: Bearer $N3D_API_KEY"             -H "Content-Type: application/json" > /tmp/page1.json
+
+          # Check if successful
+          if [ ! -s /tmp/page1.json ]; then
+            echo "Error: Failed to fetch from API"
+            exit 1
+          fi
+
+          # Extract just the data array and save
+          cat /tmp/page1.json | jq '.data' > data/n3d-raw.json
+
+          echo "Fetched designs successfully"
+
+      - name: Transform and save designs
+        run: |
+          # Use jq to transform the data to your format
+          cat data/n3d-raw.json | jq '
+            map({
+              name: (.pokemon.name // .title | sub("\s*V\d+$"; "")),
+              originalName: .title,
+              category: (
+                if (.title | test("mega"; "i")) then "Mega"
+                elif (.title | test("articuno|zapdos|moltres|mew|mewtwo|celebi|lugia|ho-oh|entei|raikou|suicune|kyogre|groudon|rayquaza|deoxys|jirachi|darkrai|arceus|dialga|palkia|giratina|zekrom"; "i")) then "Event"
+                elif (.title | test("christmas|halloween|love|galarian"; "i")) then "Special"
+                else "Standard"
+                end
+              ),
+              price: 8.0,
+              colors: [.filaments[] | {color: .color, grams: (.weight_grams | round(.) * 100 / 100)}],
+              totalGrams: .total_weight_grams,
+              filamentCost: (.total_weight_grams * 0.012 | round(.) * 100 / 100),
+              profit: (8.0 - (.total_weight_grams * 0.012) | round(.) * 100 / 100),
+              url: ("https://www.n3dmelbourne.com/design/" + .slug),
+              slug: .slug,
+              lastUpdated: now | todate
+            })
+          ' > data/n3d-designs.json
+
+          # Check if we got new designs compared to previous
+          if [ -f data/n3d-designs-prev.json ]; then
+            NEW_DESIGNS=$(jq -s '[.[0][] | select(.slug as $s | .[1] | map(.slug) | contains([$s]) | not)] | length' data/n3d-designs.json data/n3d-designs-prev.json)
+            if [ "$NEW_DESIGNS" -gt 0 ]; then
+              echo "Found $NEW_DESIGNS new designs!"
+              echo "has_new=true" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+          # Save current as previous for next run
+          cp data/n3d-designs.json data/n3d-designs-prev.json
+
+          # Clean up
+          rm -f data/n3d-raw.json
+
+          echo "Saved $(jq length data/n3d-designs.json) designs"
 
       - name: Commit and push changes
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
           git add data/
-          git diff --staged --quiet || (git commit -m "Sync N3D designs: $(date -u '+%Y-%m-%d %H:%M UTC')" && git push)
+          if ! git diff --cached --quiet; then
+            git commit -m "Sync N3D designs: $(date -u '+%Y-%m-%d %H:%M UTC')"
+            git push
+            echo "Changes committed and pushed"
+          else
+            echo "No changes to commit"
+          fi
