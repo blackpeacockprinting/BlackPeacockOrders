@@ -1083,6 +1083,20 @@
             },
 
             async syncDesigns(force = false) {
+                // Check if running from file:// protocol (CORS blocked)
+                const isLocalFile = window.location.protocol === 'file:';
+
+                if (isLocalFile) {
+                    console.log('Running from local file - using cached/built-in data');
+                    const cached = this.getCachedDesigns();
+                    if (cached) {
+                        console.log('Using cached designs');
+                        return cached;
+                    }
+                    console.log('No cache, using built-in recipes');
+                    return RECIPES;
+                }
+
                 if (!force && !this.shouldSync()) {
                     console.log('Using cached designs (synced within 24h)');
                     return this.getCachedDesigns();
@@ -1104,7 +1118,11 @@
                             }
                         });
 
-                        if (!response.ok) throw new Error(`API Error: ${response.status}`);
+                        if (!response.ok) {
+                            if (response.status === 401) throw new Error('Invalid API key');
+                            if (response.status === 429) throw new Error('Rate limit exceeded');
+                            throw new Error(`API Error: ${response.status}`);
+                        }
 
                         const data = await response.json();
                         const transformed = data.data.map(d => this.transformDesign(d));
@@ -1123,11 +1141,12 @@
                     console.error('API sync failed:', error);
                     const cached = this.getCachedDesigns();
                     if (cached) {
-                        alert('⚠️ API sync failed. Using cached data from ' + 
-                              new Date(localStorage.getItem(this.lastSyncKey)).toLocaleDateString());
+                        // Silent fallback to cache, no alert
+                        console.log('Falling back to cached data');
                         return cached;
                     }
-                    alert('⚠️ API unavailable and no cache found. Using built-in recipes.');
+                    // Silent fallback to built-in recipes
+                    console.log('Falling back to built-in recipes');
                     return RECIPES;
                 }
             },
@@ -1271,22 +1290,35 @@
             btn.textContent = '🔄 Syncing...';
             btn.disabled = true;
 
-            try {
-                const designs = await N3D_API.syncDesigns(true);
-                // Update RECIPES with new data
-                RECIPES = designs;
-                btn.textContent = `✅ Synced ${designs.length} designs!`;
-            } catch (e) {
-                btn.textContent = '❌ Sync failed';
+            // Check if running locally
+            if (window.location.protocol === 'file:') {
+                btn.textContent = '❌ Open via web server';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                }, 3000);
+                return;
             }
 
-            setTimeout(() => {
-                btn.textContent = originalText;
-                btn.disabled = false;
-            }, 2000);
+            try {
+                const designs = await N3D_API.syncDesigns(true);
+                RECIPES = designs;
+                btn.textContent = `✅ Synced ${designs.length} designs!`;
 
-            renderOrders();
-            updateStats();
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                }, 2000);
+
+                renderOrders();
+                updateStats();
+            } catch (e) {
+                btn.textContent = '❌ Sync failed';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                }, 2000);
+            }
         }
 
         // Initialize API on load (merge with existing DOMContentLoaded)
