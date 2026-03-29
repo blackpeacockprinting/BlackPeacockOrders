@@ -292,8 +292,8 @@
         </div>
 
         <div class="tabs">
-            <button class="tab active" onclick="showTab('active')">Active Orders</button>
-            <button class="tab" onclick="showTab('resell')">Resell Inventory</button>
+            <button class="tab active" onclick="showTab('active', this)">Active Orders</button>
+            <button class="tab" onclick="showTab('resell', this)">Resell Inventory</button>
         </div>
 
         <div id="activeOrders" class="orders-container"></div>
@@ -384,9 +384,9 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label>Paste Order Details (from Google Sheets)</label>
-                    <textarea id="importData" rows="10" style="width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); padding: 0.75rem; font-family: monospace;" placeholder="Customer Name&#10;Pikachu (x1) - $8.00&#10;Charizard (x1) - $10.00&#10;&#10;Another Customer&#10;Bulbasaur (x2) - $16.00"></textarea>
+                    <textarea id="importData" rows="10" style="width: 100%; min-height: 200px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); padding: 0.75rem; font-family: monospace; resize: vertical;" placeholder="Customer Name&#10;Pikachu (x1) - $8.00&#10;Charizard (x1) - $10.00&#10;&#10;Another Customer&#10;Bulbasaur (x2) - $16.00"></textarea>
                 </div>
-                <div style="background: var(--bg); padding: 1rem; border-radius: 6px; font-size: 0.85rem; color: var(--text-muted);">
+                <div style="background: var(--bg); padding: 1rem; border-radius: 6px; font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem;">
                     <strong>Format:</strong><br>
                     • Customer name on its own line<br>
                     • Items listed under customer (Design Name (xQty) - $Price)<br>
@@ -878,6 +878,7 @@
 
         // Toggle customer collapse
         function toggleCustomer(safeId) {
+            if (event) event.stopPropagation();
             const ordersDiv = document.getElementById(`orders-${safeId}`);
             const iconDiv = document.getElementById(`icon-${safeId}`);
             const headerDiv = document.getElementById(`header-${safeId}`);
@@ -910,7 +911,7 @@
 
         // Toggle order details
         function toggleDetails(id) {
-            event.stopPropagation();
+            if (event) event.stopPropagation();
             const details = document.getElementById(`details-${id}`);
             details.classList.toggle('expanded');
         }
@@ -928,7 +929,7 @@
 
         // Move to resell
         function moveToResell(id) {
-            event.stopPropagation();
+            if (event) event.stopPropagation();
             if (!confirm('Move this order to resell inventory?')) return;
             const order = orders.find(o => o.id === id);
             order.isResell = true;
@@ -940,20 +941,20 @@
 
         // Mark resold
         function markResold(id) {
-            event.stopPropagation();
+            if (event) event.stopPropagation();
             const order = orders.find(o => o.id === id);
             order.isResell = false;
             order.status = 'delivered';
             order.paymentStatus = 'paid-cash';
             localStorage.setItem('pokeprint_orders', JSON.stringify(orders));
-            showTab('active');
+            showTab('active', document.querySelector('.tab'));
             renderOrders();
             updateStats();
         }
 
         // Delete order
         function deleteOrder(id) {
-            event.stopPropagation();
+            if (event) event.stopPropagation();
             if (!confirm('Delete this order permanently?')) return;
             orders = orders.filter(o => o.id !== id);
             localStorage.setItem('pokeprint_orders', JSON.stringify(orders));
@@ -963,7 +964,7 @@
 
         // Delete all orders for a customer
         function deleteCustomerOrders(safeId, customerName) {
-            event.stopPropagation();
+            if (event) event.stopPropagation();
             const customerOrders = orders.filter(o => o.customerName === customerName);
             if (customerOrders.length === 0) return;
 
@@ -977,7 +978,7 @@
 
         // Toggle shiny status for an order
         function toggleShiny(id) {
-            event.stopPropagation();
+            if (event) event.stopPropagation();
             const order = orders.find(o => o.id === id);
             if (!order) return;
 
@@ -1010,10 +1011,10 @@
         }
 
         // Show tab
-        function showTab(tab) {
+        function showTab(tab, element) {
             currentTab = tab;
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
+            if (element) element.classList.add('active');
             document.getElementById('activeOrders').classList.toggle('hidden', tab !== 'active');
             document.getElementById('resellOrders').classList.toggle('hidden', tab !== 'resell');
             renderOrders();
@@ -1022,14 +1023,30 @@
         // Modal functions
         function openOrderModal() {
             document.getElementById('orderModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
 
         function openImportModal() {
-            document.getElementById('importModal').classList.add('active');
+            console.log('Opening import modal...');
+            const modal = document.getElementById('importModal');
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                setTimeout(() => {
+                    const textarea = document.getElementById('importData');
+                    if (textarea) textarea.focus();
+                }, 100);
+            } else {
+                console.error('Import modal not found!');
+            }
         }
 
         function closeModal(id) {
-            document.getElementById(id).classList.remove('active');
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
         }
 
         // Export data
@@ -1045,9 +1062,22 @@
 
         // Close modals on outside click
         document.querySelectorAll('.modal-overlay').forEach(overlay => {
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) overlay.classList.remove('active');
+            overlay.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
             });
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay.active').forEach(modal => {
+                    modal.classList.remove('active');
+                });
+                document.body.style.overflow = '';
+            }
         });
     </script>
 </body>
