@@ -1,0 +1,159 @@
+name: Sync N3D Designs - Order Tracker
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  sync-designs:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Fetch designs from N3D API
+        env:
+          N3D_API_KEY: ${{ secrets.N3D_API_KEY }}
+        run: |
+          node << 'EOF'
+          const fs = require('fs');
+          
+          async function fetchDesigns() {
+            const allDesigns = [];
+            let page = 1;
+            let hasMore = true;
+            
+            while (hasMore && page <= 5) {
+              console.log(`Fetching page ${page}...`);
+              
+              const response = await fetch(
+                `https://www.n3dmelbourne.com/api/v1/designs?limit=200&page=${page}&include=details&locale=US`, {
+                headers: {
+                  'Authorization': `Bearer ${process.env.N3D_API_KEY}`,
+                  'Content-Type': 'application/json'
+                }
+              });
+              
+              if (!response.ok) throw new Error(`API Error: ${response.status}`);
+              
+              const data = await response.json();
+              
+              const transformed = data.data.map(d => {
+                let category = 'Standard';
+                const titleLower = d.title.toLowerCase();
+                if (titleLower.includes('mega')) category = 'Mega';
+                else if (['articuno', 'zapdos', 'moltres', 'mew', 'mewtwo', 'celebi', 
+                          'lugia', 'ho-oh', 'entei', 'raikou', 'suicune', 'kyogre', 
+                          'groudon', 'rayquaza', 'deoxys', 'jirachi', 'darkrai', 
+                          'arceus', 'dialga', 'palkia', 'giratina', 'zekrom'].some(
+                    legendary => titleLower.includes(legendary))) category = 'Event';
+                else if (titleLower.includes('christmas') || titleLower.includes('halloween') ||
+                         titleLower.includes('love') || titleLower.includes('galarian')) category = 'Special';
+                
+                const colors = d.filaments.map(f => ({
+                  color: f.color,
+                  grams: Math.round(f.weight_grams * 100) / 100
+                }));
+                
+                const totalGrams = d.total_weight_grams;
+                const filamentCost = Math.round(totalGrams * 0.012 * 100) / 100;
+                const price = 8.0;
+                const profit = Math.round((price - filamentCost) * 100) / 100;
+                
+                let cleanName = d.pokemon?.name || d.title;
+                cleanName = cleanName.replace(/\s*V\d+$/, '').trim();
+                
+                return {
+                  name: cleanName,
+                  originalName: d.title,
+                  category: category,
+                  price: price,
+                  colors: colors,
+                  totalGrams: totalGrams,
+                  filamentCost: filamentCost,
+                  profit: profit,
+                  url: `https://www.n3dmelbourne.com/design/${d.slug}`,
+                  slug: d.slug,
+                  lastUpdated: new Date().toISOString()
+                };
+              });
+              
+              allDesigns.push(...transformed);
+              hasMore = data.pagination.has_next;
+              page++;
+              if (hasMore) await new Promise(r => setTimeout(r, 2000));
+            }
+            
+            return allDesigns;
+          }
+          
+          fetchDesigns()
+            .then(designs => {
+              let existingDesigns = [];
+              try {
+                const existing = fs.readFileSync('data/n3d-designs.json', 'utf8');
+                existingDesigns = JSON.parse(existing);
+              } catch (e) {
+                console.log('No existing designs file found');
+              }
+              
+              const existingSlugs = new Set(existingDesigns.map(d => d.slug));
+              const newDesigns = designs.filter(d => !existingSlugs.has(d.slug));
+              
+              fs.mkdirSync('data', { recursive: true });
+              fs.writeFileSync('data/n3d-designs.json', JSON.stringify(designs, null, 2));
+              
+              if (newDesigns.length > 0) {
+                fs.writeFileSync('data/new-designs.json', JSON.stringify(newDesigns, null, 2));
+                console.log(`::set-output name=new_count::${newDesigns.length}`);
+                console.log(`::set-output name=new_designs::${newDesigns.map(d => d.name).join(', ')}`);
+              }
+              
+              console.log(`Synced ${designs.length} total designs`);
+              console.log(`Found ${newDesigns.length} new designs`);
+            })
+            .catch(err => {
+              console.error('Sync failed:', err);
+              process.exit(1);
+            });
+          EOF
+          
+      - name: Check for new designs
+        id: check_new
+        run: |
+          if [ -f "data/new-designs.json" ]; then
+            echo "new_found=true" >> $GITHUB_OUTPUT
+            echo "count=$(jq length data/new-designs.json)" >> $GITHUB_OUTPUT
+            echo "names=$(jq -r '.[].name' data/new-designs.json | tr '\n' ', ' | sed 's/, $//')" >> $GITHUB_OUTPUT
+          else
+            echo "new_found=false" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Commit and push changes
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add data/n3d-designs.json
+          if [ -f "data/new-designs.json" ]; then
+            git add data/new-designs.json
+          fi
+          git commit -m "Sync N3D designs: $(date -u '+%Y-%m-%d %H:%M UTC')" || exit 0
+          git push
+          
+      - name: Create issue for new designs
+        if: steps.check_new.outputs.new_found == 'true'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const newCount = '${{ steps.check_new.outputs.count }}';
+            const newNames = '${{ steps.check_new.outputs.names }}';
+            
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🎉 ${newCount} New Design(s) Available: ${newNames}`,
+              body: `New designs have been synced from N3D API:\n\n- ${newNames.split(', ').join('\n- ')}\n\nThese are now available in your order tracker.`,
+              labels: ['new-design', 'automated']
+            });
