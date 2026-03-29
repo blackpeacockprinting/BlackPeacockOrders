@@ -290,6 +290,7 @@
             </select>
             <button class="btn btn-warning" onclick="openImportModal()">📥 Import</button>
             <button class="btn" onclick="exportData()">📤 Export</button>
+            <button class="btn btn-primary" onclick="manualSync()" title="Sync with N3D API">🔄 Sync Designs</button>
         </div>
 
         <div class="tabs">
@@ -667,15 +668,14 @@
                                 const order = {
                                     id: generateId(),
                                     customerName: currentCustomer,
-                                    design: JSON.parse(JSON.stringify(recipe)), // Deep copy to prevent shared reference
+                                    design: recipe,
                                     price: unitPrice,
                                     filamentCost: recipe.filamentCost,
                                     status: 'pending',
                                     paymentStatus: 'unpaid',
                                     notes: `Imported from Google Sheets (Qty: ${qty})`,
                                     date: new Date().toISOString(),
-                                    isResell: false,
-                                    isShiny: false
+                                    isResell: false
                                 };
                                 orders.unshift(order);
                                 imported++;
@@ -1051,6 +1051,261 @@
                 if (e.target === overlay) overlay.classList.remove('active');
             });
         });
-    </script>
+    
+
+        // ============================================
+        // N3D API INTEGRATION
+        // ============================================
+
+        const N3D_API = {
+            baseUrl: 'https://www.n3dmelbourne.com/api/v1',
+            key: 'n3d_sk_N49oAN4-H4bniv08z3-Y7D5UZl_W0DcR',
+            lastSyncKey: 'pokeprint_last_sync',
+            cacheKey: 'pokeprint_n3d_cache',
+
+            shouldSync() {
+                const lastSync = localStorage.getItem(this.lastSyncKey);
+                if (!lastSync) return true;
+                const lastSyncDate = new Date(lastSync);
+                const now = new Date();
+                const hoursSinceSync = (now - lastSyncDate) / (1000 * 60 * 60);
+                return hoursSinceSync >= 24;
+            },
+
+            getCachedDesigns() {
+                const cached = localStorage.getItem(this.cacheKey);
+                return cached ? JSON.parse(cached) : null;
+            },
+
+            saveCache(designs) {
+                localStorage.setItem(this.cacheKey, JSON.stringify(designs));
+                localStorage.setItem(this.lastSyncKey, new Date().toISOString());
+            },
+
+            async syncDesigns(force = false) {
+                if (!force && !this.shouldSync()) {
+                    console.log('Using cached designs (synced within 24h)');
+                    return this.getCachedDesigns();
+                }
+
+                console.log('Syncing with N3D API...');
+
+                try {
+                    const allDesigns = [];
+                    let page = 1;
+                    let hasMore = true;
+
+                    while (hasMore && page <= 5) {
+                        const response = await fetch(
+                            `${this.baseUrl}/designs?limit=200&page=${page}&include=details&locale=US`, {
+                            headers: {
+                                'Authorization': `Bearer ${this.key}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        if (!response.ok) throw new Error(`API Error: ${response.status}`);
+
+                        const data = await response.json();
+                        const transformed = data.data.map(d => this.transformDesign(d));
+                        allDesigns.push(...transformed);
+
+                        hasMore = data.pagination.has_next;
+                        page++;
+                        if (hasMore) await new Promise(r => setTimeout(r, 2000));
+                    }
+
+                    this.saveCache(allDesigns);
+                    console.log(`Synced ${allDesigns.length} designs from N3D API`);
+                    return allDesigns;
+
+                } catch (error) {
+                    console.error('API sync failed:', error);
+                    const cached = this.getCachedDesigns();
+                    if (cached) {
+                        alert('⚠️ API sync failed. Using cached data from ' + 
+                              new Date(localStorage.getItem(this.lastSyncKey)).toLocaleDateString());
+                        return cached;
+                    }
+                    alert('⚠️ API unavailable and no cache found. Using built-in recipes.');
+                    return RECIPES;
+                }
+            },
+
+            transformDesign(apiDesign) {
+                let category = 'Standard';
+                const titleLower = apiDesign.title.toLowerCase();
+                if (titleLower.includes('mega')) category = 'Mega';
+                else if (['articuno', 'zapdos', 'moltres', 'mew', 'mewtwo', 'celebi', 
+                          'lugia', 'ho-oh', 'entei', 'raikou', 'suicune', 'kyogre', 
+                          'groudon', 'rayquaza', 'deoxys', 'jirachi', 'darkrai', 
+                          'arceus', 'dialga', 'palkia', 'giratina', 'zekrom'].some(
+                    legendary => titleLower.includes(legendary))) category = 'Event';
+                else if (titleLower.includes('christmas') || titleLower.includes('halloween') ||
+                         titleLower.includes('love') || titleLower.includes('galarian')) category = 'Special';
+
+                const colors = apiDesign.filaments.map(f => ({
+                    color: f.color,
+                    grams: Math.round(f.weight_grams * 100) / 100
+                }));
+
+                const totalGrams = apiDesign.total_weight_grams;
+                const filamentCost = Math.round(totalGrams * 0.012 * 100) / 100;
+                const price = 8.0;
+                const profit = Math.round((price - filamentCost) * 100) / 100;
+
+                // Clean up name - remove V3, V2, etc.
+                let cleanName = apiDesign.pokemon?.name || apiDesign.title;
+                cleanName = cleanName.replace(/\s*V\d+$/, '').trim();
+
+                return {
+                    name: cleanName,
+                    originalName: apiDesign.title,
+                    category: category,
+                    price: price,
+                    colors: colors,
+                    totalGrams: totalGrams,
+                    filamentCost: filamentCost,
+                    profit: profit,
+                    url: `https://www.n3dmelbourne.com/design/${apiDesign.slug}`,
+                    slug: apiDesign.slug,
+                    lastUpdated: new Date().toISOString()
+                };
+            },
+
+            async search(query) {
+                const designs = await this.syncDesigns();
+                if (!query || query.length < 2) return designs.slice(0, 10);
+                const lowerQuery = query.toLowerCase();
+                return designs.filter(d => 
+                    d.name.toLowerCase().includes(lowerQuery) ||
+                    d.originalName.toLowerCase().includes(lowerQuery)
+                ).slice(0, 10);
+            }
+        };
+
+        // Store original functions
+        const _originalSelectDesign = selectDesign;
+        const _originalSearchDesigns = searchDesigns;
+
+        // Override searchDesigns to use API
+        searchDesigns = async function(query) {
+            const selector = document.getElementById('designSelector');
+            if (!query || query.length < 2) {
+                selector.innerHTML = '';
+                return;
+            }
+
+            try {
+                const matches = await N3D_API.search(query);
+
+                if ('mystery'.includes(query.toLowerCase()) || query.toLowerCase().includes('mystery')) {
+                    matches.unshift(MYSTERY_BALL);
+                }
+
+                selector.innerHTML = matches.map(r => `
+                    <div class="design-option" onclick="selectDesign('${r.name.replace(/'/g, "\'")}')">
+                        <strong>${r.name}</strong> (${r.category}) - $${r.price}
+                        ${r.isMystery ? '❓' : ''}
+                    </div>
+                `).join('');
+            } catch (e) {
+                console.error('Search failed:', e);
+                // Fallback to original search
+                _originalSearchDesigns(query);
+            }
+        };
+
+        // Override selectDesign to handle API data
+        selectDesign = async function(name) {
+            if (name === "Mystery Ball") {
+                selectedDesign = MYSTERY_BALL;
+            } else {
+                // Try to find in API data first
+                const designs = await N3D_API.syncDesigns();
+                selectedDesign = designs.find(r => r.name === name);
+
+                // Fallback to original RECIPES if not found
+                if (!selectedDesign) {
+                    selectedDesign = RECIPES.find(r => r.name === name);
+                }
+            }
+
+            if (!selectedDesign) return;
+
+            document.getElementById('designSearch').value = selectedDesign.name;
+            document.getElementById('designSelector').innerHTML = '';
+            document.getElementById('orderPrice').value = selectedDesign.price;
+            document.getElementById('filamentCost').value = selectedDesign.filamentCost;
+            document.getElementById('selectedRecipe').classList.remove('hidden');
+
+            const shinyOption = document.getElementById('shinyOption');
+            if (selectedDesign.isMystery) {
+                shinyOption.style.display = 'none';
+                document.getElementById('isShiny').checked = false;
+            } else {
+                shinyOption.style.display = 'block';
+            }
+
+            if (selectedDesign.isMystery) {
+                document.getElementById('recipeDetails').innerHTML = `
+                    <strong>${selectedDesign.name}</strong> (${selectedDesign.category})<br>
+                    <small>❓ You will choose which Pokemon to print later<br>
+                    Price: ${formatCurrency(selectedDesign.price)} | 
+                    Est. Cost: ${formatCurrency(selectedDesign.filamentCost)}</small>
+                `;
+            } else {
+                document.getElementById('recipeDetails').innerHTML = `
+                    <strong>${selectedDesign.name}</strong> (${selectedDesign.category})<br>
+                    <small>Total: ${selectedDesign.totalGrams}g | Colors: ${selectedDesign.colors.length} | 
+                    Cost: ${formatCurrency(selectedDesign.filamentCost)} | 
+                    Profit: ${formatCurrency(selectedDesign.profit)}</small>
+                `;
+            }
+        };
+
+        // Manual sync function
+        async function manualSync() {
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = '🔄 Syncing...';
+            btn.disabled = true;
+
+            try {
+                const designs = await N3D_API.syncDesigns(true);
+                // Update RECIPES with new data
+                RECIPES = designs;
+                btn.textContent = `✅ Synced ${designs.length} designs!`;
+            } catch (e) {
+                btn.textContent = '❌ Sync failed';
+            }
+
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }, 2000);
+
+            renderOrders();
+            updateStats();
+        }
+
+        // Initialize API on load (merge with existing DOMContentLoaded)
+        const _existingDOMReady = () => {
+            renderOrders();
+            updateStats();
+        };
+
+        // Replace the existing DOMContentLoaded
+        document.removeEventListener('DOMContentLoaded', _existingDOMReady);
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Initialize API first
+            RECIPES = await N3D_API.syncDesigns();
+            console.log('API initialized with', RECIPES.length, 'designs');
+
+            // Then run original init
+            renderOrders();
+            updateStats();
+        });
+</script>
 </body>
 </html>
