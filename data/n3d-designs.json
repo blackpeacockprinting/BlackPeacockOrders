@@ -1,0 +1,6666 @@
+[
+  {
+    "name": "porygon",
+    "originalName": "0137 - Porygon",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.89
+      },
+      {
+        "color": "Turquoise",
+        "grams": 33.58
+      },
+      {
+        "color": "Hot Pink",
+        "grams": 47.75
+      }
+    ],
+    "totalGrams": 97.4,
+    "filamentCost": 1.1688,
+    "profit": 6.8312,
+    "url": "https://www.n3dmelbourne.com/design/0137-porygon",
+    "slug": "0137-porygon",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "aerodactyl",
+    "originalName": "0142 - Aerodactyl",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ash Gray",
+        "grams": 95.1
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.9
+      },
+      {
+        "color": "Ivory White",
+        "grams": 2.51
+      },
+      {
+        "color": "Lilac Purple",
+        "grams": 10.43
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 1.91
+      },
+      {
+        "color": "Dark Red",
+        "grams": 2.15
+      }
+    ],
+    "totalGrams": 127,
+    "filamentCost": 1.524,
+    "profit": 6.476,
+    "url": "https://www.n3dmelbourne.com/design/0142-aerodactyl",
+    "slug": "0142-aerodactyl",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "tentacool",
+    "originalName": "0072 - Tentacool",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Sky Blue",
+        "grams": 70.99
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.76
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 21.64
+      },
+      {
+        "color": "Red",
+        "grams": 5.72
+      },
+      {
+        "color": "Ash Gray",
+        "grams": 3.99
+      }
+    ],
+    "totalGrams": 104.1,
+    "filamentCost": 1.2491999999999999,
+    "profit": 6.7508,
+    "url": "https://www.n3dmelbourne.com/design/0072-tentacool",
+    "slug": "0072-tentacool",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "sprigatito",
+    "originalName": "0906 Sprigatito",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Apple Green",
+        "grams": 61.44
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 15
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Grass Green",
+        "grams": 26.12
+      }
+    ],
+    "totalGrams": 103.74,
+    "filamentCost": 1.24488,
+    "profit": 6.75512,
+    "url": "https://www.n3dmelbourne.com/design/0906-sprigatito",
+    "slug": "0906-sprigatito",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "deoxys-normal",
+    "originalName": "0386 - Deoxys",
+    "category": "Event",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 14.81
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Turquoise",
+        "grams": 15.08
+      },
+      {
+        "color": "Orange",
+        "grams": 66.95
+      },
+      {
+        "color": "Lilac Purple",
+        "grams": 1.83
+      }
+    ],
+    "totalGrams": 99.85,
+    "filamentCost": 1.1982,
+    "profit": 6.8018,
+    "url": "https://www.n3dmelbourne.com/design/0386-deoxys",
+    "slug": "0386-deoxys",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "rayquaza",
+    "originalName": "0384 - Mega Rayquaza",
+    "category": "Mega",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 39.23
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 1.1
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.2
+      },
+      {
+        "color": "Sunflower Yellow",
+        "grams": 28.87
+      },
+      {
+        "color": "Bambu Green",
+        "grams": 41.63
+      }
+    ],
+    "totalGrams": 112.03,
+    "filamentCost": 1.34436,
+    "profit": 6.65564,
+    "url": "https://www.n3dmelbourne.com/design/0384-mega-rayquaza",
+    "slug": "0384-mega-rayquaza",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "seadra",
+    "originalName": "0117 - Seadra",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 23.18
+      },
+      {
+        "color": "Ivory White",
+        "grams": 15.9
+      },
+      {
+        "color": "Sky Blue",
+        "grams": 78.29
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 1.17
+      }
+    ],
+    "totalGrams": 118.54,
+    "filamentCost": 1.4224800000000002,
+    "profit": 6.57752,
+    "url": "https://www.n3dmelbourne.com/design/0117-seadra",
+    "slug": "0117-seadra",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "horsea",
+    "originalName": "0116 - Horsea",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ivory White",
+        "grams": 1.17
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 21.12
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 4.1
+      },
+      {
+        "color": "Sky Blue",
+        "grams": 70.61
+      }
+    ],
+    "totalGrams": 97,
+    "filamentCost": 1.164,
+    "profit": 6.836,
+    "url": "https://www.n3dmelbourne.com/design/0116-horsea",
+    "slug": "0116-horsea",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "ponyta",
+    "originalName": "0077 - Galarian Ponyta",
+    "category": "Special",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 14.95
+      },
+      {
+        "color": "Ivory White",
+        "grams": 56.48
+      },
+      {
+        "color": "Indigo Purple",
+        "grams": 6.59
+      },
+      {
+        "color": "Ice Blue",
+        "grams": 19.24
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 43.13
+      }
+    ],
+    "totalGrams": 140.39,
+    "filamentCost": 1.68468,
+    "profit": 6.31532,
+    "url": "https://www.n3dmelbourne.com/design/0077-galarian-ponyta",
+    "slug": "0077-galarian-ponyta",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "charizard",
+    "originalName": "0006 - Charizard",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Mandarin Orange",
+        "grams": 77.56
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.94
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 14.43
+      },
+      {
+        "color": "Ivory White",
+        "grams": 2.39
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 6.55
+      },
+      {
+        "color": "Turquoise",
+        "grams": 5.01
+      },
+      {
+        "color": "Sunflower Yellow",
+        "grams": 4.99
+      }
+    ],
+    "totalGrams": 125.87,
+    "filamentCost": 1.51044,
+    "profit": 6.48956,
+    "url": "https://www.n3dmelbourne.com/design/0006-charizard",
+    "slug": "0006-charizard",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "muk",
+    "originalName": "0089 - Muk",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Lilac Purple",
+        "grams": 100.66
+      },
+      {
+        "color": "Indigo Purple",
+        "grams": 8.12
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 42.3
+      }
+    ],
+    "totalGrams": 152.26,
+    "filamentCost": 1.8271199999999999,
+    "profit": 6.17288,
+    "url": "https://www.n3dmelbourne.com/design/0089-muk",
+    "slug": "0089-muk",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "bidoof",
+    "originalName": "0399 - Bidoof",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Desert Tan",
+        "grams": 19.2
+      },
+      {
+        "color": "Dark Red",
+        "grams": 0.29
+      },
+      {
+        "color": "Ivory White",
+        "grams": 2.26
+      },
+      {
+        "color": "Dark Brown",
+        "grams": 5.23
+      },
+      {
+        "color": "Caramel",
+        "grams": 69.95
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.79
+      }
+    ],
+    "totalGrams": 111.72,
+    "filamentCost": 1.34064,
+    "profit": 6.6593599999999995,
+    "url": "https://www.n3dmelbourne.com/design/0399-bidoof",
+    "slug": "0399-bidoof",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "bulbasaur",
+    "originalName": "0001 - Bulbasaur - Rose",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Sakura Pink",
+        "grams": 49.93
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 24.88
+      },
+      {
+        "color": "Mistletoe Green",
+        "grams": 1.37
+      },
+      {
+        "color": "Hot Pink",
+        "grams": 1.26
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.81
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.16
+      }
+    ],
+    "totalGrams": 93.41,
+    "filamentCost": 1.12092,
+    "profit": 6.87908,
+    "url": "https://www.n3dmelbourne.com/design/0001-bulbasaur-love",
+    "slug": "0001-bulbasaur-love",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "chandelure",
+    "originalName": "0609 - Chandelure",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 52.89
+      },
+      {
+        "color": "Purple",
+        "grams": 5.79
+      },
+      {
+        "color": "Ice Blue",
+        "grams": 47.68
+      },
+      {
+        "color": "Ivory White",
+        "grams": 3.57
+      },
+      {
+        "color": "Sky Blue",
+        "grams": 5.55
+      }
+    ],
+    "totalGrams": 115.48,
+    "filamentCost": 1.38576,
+    "profit": 6.61424,
+    "url": "https://www.n3dmelbourne.com/design/0609-chandelure",
+    "slug": "0609-chandelure",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "grimer",
+    "originalName": "0088 - Grimer",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Indigo Purple",
+        "grams": 45.04
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.04
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.8
+      },
+      {
+        "color": "Lilac Purple",
+        "grams": 91.49
+      }
+    ],
+    "totalGrams": 152.37,
+    "filamentCost": 1.82844,
+    "profit": 6.1715599999999995,
+    "url": "https://www.n3dmelbourne.com/design/0088-grimer",
+    "slug": "0088-grimer",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "zoroark",
+    "originalName": "0571 - Zoroark",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Turquoise",
+        "grams": 3.95
+      },
+      {
+        "color": "Dark Gray",
+        "grams": 55.68
+      },
+      {
+        "color": "Dark Red",
+        "grams": 53.92
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 57
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      }
+    ],
+    "totalGrams": 171.73,
+    "filamentCost": 2.0607599999999997,
+    "profit": 5.93924,
+    "url": "https://www.n3dmelbourne.com/design/0571-zoroark",
+    "slug": "0571-zoroark",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "zorua",
+    "originalName": "0570 - Zorua",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 49.62
+      },
+      {
+        "color": "Dark Gray",
+        "grams": 54.72
+      },
+      {
+        "color": "Dark Red",
+        "grams": 9.4
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.04
+      }
+    ],
+    "totalGrams": 114.78,
+    "filamentCost": 1.3773600000000001,
+    "profit": 6.62264,
+    "url": "https://www.n3dmelbourne.com/design/0570-zorua",
+    "slug": "0570-zorua",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "kangaskhan",
+    "originalName": "0115 - Kangaskhan",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 14.3
+      },
+      {
+        "color": "Lilac Purple",
+        "grams": 1.23
+      },
+      {
+        "color": "Caramel",
+        "grams": 46.6
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.97
+      },
+      {
+        "color": "Dark Gray",
+        "grams": 17.23
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 16.04
+      }
+    ],
+    "totalGrams": 97.37,
+    "filamentCost": 1.1684400000000001,
+    "profit": 6.83156,
+    "url": "https://www.n3dmelbourne.com/design/0115-kangaskhan",
+    "slug": "0115-kangaskhan",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "trubbish",
+    "originalName": "0568 - Trubbish",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Dark Green",
+        "grams": 54.52
+      },
+      {
+        "color": "Latte Brown",
+        "grams": 6.34
+      },
+      {
+        "color": "Pink",
+        "grams": 0.53
+      },
+      {
+        "color": "Turquoise",
+        "grams": 0.47
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.81
+      },
+      {
+        "color": "Ivory White",
+        "grams": 2.83
+      }
+    ],
+    "totalGrams": 79.5,
+    "filamentCost": 0.9540000000000001,
+    "profit": 7.046,
+    "url": "https://www.n3dmelbourne.com/design/0568-trubbish",
+    "slug": "0568-trubbish",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "starmie",
+    "originalName": "0121 - Starmie",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Lilac Purple",
+        "grams": 59.29
+      },
+      {
+        "color": "Sunflower Yellow",
+        "grams": 9.74
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 2.02
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.81
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.4
+      }
+    ],
+    "totalGrams": 87.26,
+    "filamentCost": 1.04712,
+    "profit": 6.95288,
+    "url": "https://www.n3dmelbourne.com/design/0121-starmie",
+    "slug": "0121-starmie",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "tinkaton",
+    "originalName": "0959 - Tinkaton",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Lilac Purple",
+        "grams": 111.94
+      },
+      {
+        "color": "Indigo Purple",
+        "grams": 54.22
+      },
+      {
+        "color": "Beige",
+        "grams": 71.33
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 26.19
+      },
+      {
+        "color": "Bone White",
+        "grams": 1.55
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.92
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Pink",
+        "grams": 27.83
+      }
+    ],
+    "totalGrams": 309.16,
+    "filamentCost": 3.7099200000000003,
+    "profit": 4.29008,
+    "url": "https://www.n3dmelbourne.com/design/0959-tinkaton",
+    "slug": "0959-tinkaton",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Team Flare Ball",
+    "originalName": "Team Flare Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ivory White",
+        "grams": 27
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 16.25
+      },
+      {
+        "color": "Orange",
+        "grams": 1.1
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 25.91
+      },
+      {
+        "color": "Nardo Gray",
+        "grams": 1.15
+      }
+    ],
+    "totalGrams": 71.41,
+    "filamentCost": 0.85692,
+    "profit": 7.14308,
+    "url": "https://www.n3dmelbourne.com/design/team-flare-ball",
+    "slug": "team-flare-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "staryu",
+    "originalName": "0120 - Staryu",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Caramel",
+        "grams": 58.58
+      },
+      {
+        "color": "Lemon Yellow",
+        "grams": 15.45
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.83
+      },
+      {
+        "color": "Hot Pink",
+        "grams": 2.28
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.04
+      }
+    ],
+    "totalGrams": 92.18,
+    "filamentCost": 1.10616,
+    "profit": 6.89384,
+    "url": "https://www.n3dmelbourne.com/design/0120-staryu",
+    "slug": "0120-staryu",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "blastoise-mega",
+    "originalName": "0009 - Mega Blastoise",
+    "category": "Mega",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Dark Brown",
+        "grams": 26
+      },
+      {
+        "color": "Ivory White",
+        "grams": 30.72
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 19.87
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 27.44
+      },
+      {
+        "color": "Light Gray",
+        "grams": 10.76
+      },
+      {
+        "color": "Dark Gray",
+        "grams": 1.8
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 15.89
+      }
+    ],
+    "totalGrams": 132.48,
+    "filamentCost": 1.5897599999999998,
+    "profit": 6.41024,
+    "url": "https://www.n3dmelbourne.com/design/0009-mega-blastoise",
+    "slug": "0009-mega-blastoise",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "pichu",
+    "originalName": "0172 - Pichu",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 33.34
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.77
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 1.59
+      },
+      {
+        "color": "Lemon Yellow",
+        "grams": 57.44
+      }
+    ],
+    "totalGrams": 94.14,
+    "filamentCost": 1.12968,
+    "profit": 6.8703199999999995,
+    "url": "https://www.n3dmelbourne.com/design/0172-pichu",
+    "slug": "0172-pichu",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "kingler",
+    "originalName": "0099 - Kingler",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Mandarin Orange",
+        "grams": 56.06
+      },
+      {
+        "color": "Beige",
+        "grams": 45.75
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.81
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      }
+    ],
+    "totalGrams": 117.8,
+    "filamentCost": 1.4136,
+    "profit": 6.5864,
+    "url": "https://www.n3dmelbourne.com/design/0099-kingler",
+    "slug": "0099-kingler",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "krabby",
+    "originalName": "0098 - Krabby",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Mandarin Orange",
+        "grams": 53.51
+      },
+      {
+        "color": "Beige",
+        "grams": 29.98
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.85
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      }
+    ],
+    "totalGrams": 99.52,
+    "filamentCost": 1.19424,
+    "profit": 6.80576,
+    "url": "https://www.n3dmelbourne.com/design/0098-krabby",
+    "slug": "0098-krabby",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "blaziken",
+    "originalName": "0257 - Blaziken",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Scarlet Red",
+        "grams": 20.69
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 80.46
+      },
+      {
+        "color": "Lemon Yellow",
+        "grams": 1
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.87
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      }
+    ],
+    "totalGrams": 118.2,
+    "filamentCost": 1.4184,
+    "profit": 6.5816,
+    "url": "https://www.n3dmelbourne.com/design/0257-blaziken",
+    "slug": "0257-blaziken",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "electabuzz",
+    "originalName": "0125 - Electabuzz",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 28.38
+      },
+      {
+        "color": "Lemon Yellow",
+        "grams": 63.52
+      },
+      {
+        "color": "Ivory White",
+        "grams": 2.21
+      }
+    ],
+    "totalGrams": 94.11,
+    "filamentCost": 1.12932,
+    "profit": 6.87068,
+    "url": "https://www.n3dmelbourne.com/design/0125-electabuzz",
+    "slug": "0125-electabuzz",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Unite Ball",
+    "originalName": "Unite Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Lemon Yellow",
+        "grams": 14.63
+      },
+      {
+        "color": "Ivory White",
+        "grams": 26.12
+      },
+      {
+        "color": "Lilac Purple",
+        "grams": 18.79
+      },
+      {
+        "color": "Mandarin Orange",
+        "grams": 29.65
+      }
+    ],
+    "totalGrams": 89.19,
+    "filamentCost": 1.07028,
+    "profit": 6.92972,
+    "url": "https://www.n3dmelbourne.com/design/unite-ball",
+    "slug": "unite-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "magnemite",
+    "originalName": "0081 - Magnemite",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Light Gray",
+        "grams": 51.28
+      },
+      {
+        "color": "Silver",
+        "grams": 13.76
+      },
+      {
+        "color": "Dark Gray",
+        "grams": 11.55
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 15.13
+      },
+      {
+        "color": "Ivory White",
+        "grams": 5.53
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 2.69
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 2.6
+      }
+    ],
+    "totalGrams": 102.54,
+    "filamentCost": 1.23048,
+    "profit": 6.76952,
+    "url": "https://www.n3dmelbourne.com/design/0081-magnemite",
+    "slug": "0081-magnemite",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "bulbasaur",
+    "originalName": "0001 - Bulbasaur - Halloween",
+    "category": "Special",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 19.31
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Dark Green",
+        "grams": 2.32
+      },
+      {
+        "color": "Dark Blue",
+        "grams": 1.56
+      },
+      {
+        "color": "Dark Gray",
+        "grams": 47.98
+      },
+      {
+        "color": "Mandarin Orange",
+        "grams": 39.21
+      }
+    ],
+    "totalGrams": 111.56,
+    "filamentCost": 1.3387200000000001,
+    "profit": 6.66128,
+    "url": "https://www.n3dmelbourne.com/design/0001-bulbasaur-halloween",
+    "slug": "0001-bulbasaur-halloween",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "wartortle",
+    "originalName": "0008 - Wartortle",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ivory White",
+        "grams": 35.77
+      },
+      {
+        "color": "Dark Brown",
+        "grams": 24.85
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 7.17
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.95
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 27.22
+      }
+    ],
+    "totalGrams": 109.96,
+    "filamentCost": 1.31952,
+    "profit": 6.68048,
+    "url": "https://www.n3dmelbourne.com/design/0008-wartortle",
+    "slug": "0008-wartortle",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "ivysaur",
+    "originalName": "0002 - Ivysaur",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Grass Green",
+        "grams": 26.13
+      },
+      {
+        "color": "Ice Blue",
+        "grams": 54.75
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 2.64
+      },
+      {
+        "color": "Magenta",
+        "grams": 15.04
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 15.33
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.76
+      },
+      {
+        "color": "Caramel",
+        "grams": 2.01
+      }
+    ],
+    "totalGrams": 117.66,
+    "filamentCost": 1.41192,
+    "profit": 6.58808,
+    "url": "https://www.n3dmelbourne.com/design/0002-ivysaur",
+    "slug": "0002-ivysaur",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "greninja",
+    "originalName": "0658 - Ash-Greninja",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 14.97
+      },
+      {
+        "color": "Ice Blue",
+        "grams": 6.86
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 6.29
+      },
+      {
+        "color": "Sky Blue",
+        "grams": 6.61
+      },
+      {
+        "color": "Ivory White",
+        "grams": 5.24
+      },
+      {
+        "color": "Dark Gray",
+        "grams": 5.86
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 5.53
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 28.18
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 51.17
+      }
+    ],
+    "totalGrams": 130.71,
+    "filamentCost": 1.5685200000000001,
+    "profit": 6.43148,
+    "url": "https://www.n3dmelbourne.com/design/0658-ash-greninja",
+    "slug": "0658-ash-greninja",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "kyogre",
+    "originalName": "0382 - Kyogre",
+    "category": "Event",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ivory White",
+        "grams": 21.93
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 92.65
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 15.61
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.87
+      }
+    ],
+    "totalGrams": 145.06,
+    "filamentCost": 1.74072,
+    "profit": 6.25928,
+    "url": "https://www.n3dmelbourne.com/design/0382-kyogre",
+    "slug": "0382-kyogre",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Pokeball - Functional",
+    "originalName": "Pokeball - Functional",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 55.62
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 25.96
+      },
+      {
+        "color": "Ivory White",
+        "grams": 37.28
+      }
+    ],
+    "totalGrams": 118.86,
+    "filamentCost": 1.42632,
+    "profit": 6.5736799999999995,
+    "url": "https://www.n3dmelbourne.com/design/pokeball-open",
+    "slug": "pokeball-open",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "cloyster",
+    "originalName": "0091 - Cloyster",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Lilac Purple",
+        "grams": 45.98
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.96
+      },
+      {
+        "color": "Indigo Purple",
+        "grams": 6.9
+      },
+      {
+        "color": "Ash Gray",
+        "grams": 41.91
+      }
+    ],
+    "totalGrams": 110.93,
+    "filamentCost": 1.3311600000000001,
+    "profit": 6.668839999999999,
+    "url": "https://www.n3dmelbourne.com/design/0091-cloyster",
+    "slug": "0091-cloyster",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "bulbasaur",
+    "originalName": "0001 - Bulbasaur - Christmas",
+    "category": "Special",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ice Blue",
+        "grams": 50.29
+      },
+      {
+        "color": "Lemon Yellow",
+        "grams": 5.26
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 16.72
+      },
+      {
+        "color": "Ivory White",
+        "grams": 33.54
+      },
+      {
+        "color": "Grass Green",
+        "grams": 21.01
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.81
+      },
+      {
+        "color": "Dark Green",
+        "grams": 6.53
+      },
+      {
+        "color": "Bambu Green",
+        "grams": 2.73
+      }
+    ],
+    "totalGrams": 150.89,
+    "filamentCost": 1.8106799999999998,
+    "profit": 6.18932,
+    "url": "https://www.n3dmelbourne.com/design/0001-bulbasaur-christmas",
+    "slug": "0001-bulbasaur-christmas",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "shellder",
+    "originalName": "0090 - Shellder",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Lilac Purple",
+        "grams": 62.62
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 2.96
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 51.25
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      }
+    ],
+    "totalGrams": 118.01,
+    "filamentCost": 1.41612,
+    "profit": 6.58388,
+    "url": "https://www.n3dmelbourne.com/design/0090-shelder",
+    "slug": "0090-shelder",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "charmander",
+    "originalName": "0004 - Charmander",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 14.85
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.75
+      },
+      {
+        "color": "Mandarin Orange",
+        "grams": 61.56
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 2.9
+      },
+      {
+        "color": "Sunflower Yellow",
+        "grams": 2.09
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 10.5
+      }
+    ],
+    "totalGrams": 93.65,
+    "filamentCost": 1.1238000000000001,
+    "profit": 6.8762,
+    "url": "https://www.n3dmelbourne.com/design/0004-charmander",
+    "slug": "0004-charmander",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "psyduck",
+    "originalName": "0054 - Psyduck",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Sunflower Yellow",
+        "grams": 55.34
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 15.74
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 16.91
+      }
+    ],
+    "totalGrams": 89.17,
+    "filamentCost": 1.07004,
+    "profit": 6.9299599999999995,
+    "url": "https://www.n3dmelbourne.com/design/0054-psyduck",
+    "slug": "0054-psyduck",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "furret",
+    "originalName": "0162 - Furret",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Desert Tan",
+        "grams": 48.34
+      },
+      {
+        "color": "Dark Brown",
+        "grams": 31.72
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.82
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      }
+    ],
+    "totalGrams": 96.06,
+    "filamentCost": 1.15272,
+    "profit": 6.84728,
+    "url": "https://www.n3dmelbourne.com/design/0162-furret",
+    "slug": "0162-furret",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "arcanine",
+    "originalName": "0059 - Arcanine",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Desert Tan",
+        "grams": 70.77
+      },
+      {
+        "color": "Ivory White",
+        "grams": 2.1
+      },
+      {
+        "color": "Mandarin Orange",
+        "grams": 55.43
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 20.56
+      }
+    ],
+    "totalGrams": 148.86,
+    "filamentCost": 1.7863200000000001,
+    "profit": 6.21368,
+    "url": "https://www.n3dmelbourne.com/design/0059-arcanine",
+    "slug": "0059-arcanine",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "salamence",
+    "originalName": "0373 - Salamence",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Turquoise",
+        "grams": 69.42
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 18.76
+      },
+      {
+        "color": "Bone White",
+        "grams": 3.6
+      },
+      {
+        "color": "Ivory White",
+        "grams": 2.03
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.83
+      }
+    ],
+    "totalGrams": 108.64,
+    "filamentCost": 1.30368,
+    "profit": 6.69632,
+    "url": "https://www.n3dmelbourne.com/design/0373-salamence",
+    "slug": "0373-salamence",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "ceruledge",
+    "originalName": "0937 - Ceruledge",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ice Blue",
+        "grams": 12.97
+      },
+      {
+        "color": "Ivory White",
+        "grams": 2.68
+      },
+      {
+        "color": "Sky Blue",
+        "grams": 48.97
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 1.91
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 40.3
+      },
+      {
+        "color": "Indigo Purple",
+        "grams": 24.71
+      }
+    ],
+    "totalGrams": 131.54,
+    "filamentCost": 1.5784799999999999,
+    "profit": 6.42152,
+    "url": "https://www.n3dmelbourne.com/design/0937-ceruledge",
+    "slug": "0937-ceruledge",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "exeggutor",
+    "originalName": "0103 - Exeggutor",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Latte Brown",
+        "grams": 51.96
+      },
+      {
+        "color": "Lemon Yellow",
+        "grams": 18.65
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.54
+      },
+      {
+        "color": "Grass Green",
+        "grams": 11.82
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.83
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 5.53
+      }
+    ],
+    "totalGrams": 104.33,
+    "filamentCost": 1.25196,
+    "profit": 6.74804,
+    "url": "https://www.n3dmelbourne.com/design/0103-exeggutor",
+    "slug": "0103-exeggutor",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "sylveon",
+    "originalName": "0700 - Sylveon",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ice Blue",
+        "grams": 3.05
+      },
+      {
+        "color": "Ivory White",
+        "grams": 51.57
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 2.28
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 40.52
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.91
+      }
+    ],
+    "totalGrams": 112.33,
+    "filamentCost": 1.34796,
+    "profit": 6.6520399999999995,
+    "url": "https://www.n3dmelbourne.com/design/0700-sylveon",
+    "slug": "0700-sylveon",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "exeggcute",
+    "originalName": "0102 - Exeggcute",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ivory White",
+        "grams": 4.44
+      },
+      {
+        "color": "Beige",
+        "grams": 67.25
+      },
+      {
+        "color": "Sunflower Yellow",
+        "grams": 13.96
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.83
+      }
+    ],
+    "totalGrams": 100.48,
+    "filamentCost": 1.2057600000000002,
+    "profit": 6.79424,
+    "url": "https://www.n3dmelbourne.com/design/0102-exeggcute",
+    "slug": "0102-exeggcute",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "victreebel",
+    "originalName": "0071 - Victreebel",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Lemon Yellow",
+        "grams": 47.62
+      },
+      {
+        "color": "Grass Green",
+        "grams": 17.53
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 14.62
+      },
+      {
+        "color": "Dark Green",
+        "grams": 4.68
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 31.94
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.73
+      },
+      {
+        "color": "Dark Brown",
+        "grams": 1.31
+      }
+    ],
+    "totalGrams": 119.43,
+    "filamentCost": 1.4331600000000002,
+    "profit": 6.56684,
+    "url": "https://www.n3dmelbourne.com/design/0071-victreebel",
+    "slug": "0071-victreebel",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "abra",
+    "originalName": "0063 - Abra",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Lemon Yellow",
+        "grams": 68.42
+      },
+      {
+        "color": "Dark Brown",
+        "grams": 12.07
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 15.41
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.21
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 0.84
+      }
+    ],
+    "totalGrams": 97.95,
+    "filamentCost": 1.1754,
+    "profit": 6.8246,
+    "url": "https://www.n3dmelbourne.com/design/0063-abra",
+    "slug": "0063-abra",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "chikorita",
+    "originalName": "0152 - Chikorita",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Apple Green",
+        "grams": 50.81
+      },
+      {
+        "color": "Grass Green",
+        "grams": 11.21
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.96
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      }
+    ],
+    "totalGrams": 78.16,
+    "filamentCost": 0.93792,
+    "profit": 7.06208,
+    "url": "https://www.n3dmelbourne.com/design/0152-chikorita",
+    "slug": "0152-chikorita",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "weepinbell",
+    "originalName": "0070 - Weepinbell",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Lemon Yellow",
+        "grams": 53.56
+      },
+      {
+        "color": "Grass Green",
+        "grams": 16.83
+      },
+      {
+        "color": "Dark Brown",
+        "grams": 2.47
+      },
+      {
+        "color": "Dark Green",
+        "grams": 0.65
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 7.65
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 20.68
+      }
+    ],
+    "totalGrams": 103.02,
+    "filamentCost": 1.23624,
+    "profit": 6.7637599999999996,
+    "url": "https://www.n3dmelbourne.com/design/0070-weepinbell",
+    "slug": "0070-weepinbell",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "bellsprout",
+    "originalName": "0069 - Bellsprout",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 19.1
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Lemon Yellow",
+        "grams": 52.08
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 4.79
+      },
+      {
+        "color": "Dark Brown",
+        "grams": 2.65
+      },
+      {
+        "color": "Grass Green",
+        "grams": 5.7
+      }
+    ],
+    "totalGrams": 85.5,
+    "filamentCost": 1.026,
+    "profit": 6.974,
+    "url": "https://www.n3dmelbourne.com/design/0069-bellsprout",
+    "slug": "0069-bellsprout",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "tauros",
+    "originalName": "0128 - Tauros",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Caramel",
+        "grams": 36.93
+      },
+      {
+        "color": "Dark Brown",
+        "grams": 23.59
+      },
+      {
+        "color": "Ash Gray",
+        "grams": 11.52
+      },
+      {
+        "color": "Dark Blue",
+        "grams": 2.16
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.87
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      }
+    ],
+    "totalGrams": 90.25,
+    "filamentCost": 1.083,
+    "profit": 6.917,
+    "url": "https://www.n3dmelbourne.com/design/0128-tauros",
+    "slug": "0128-tauros",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "charmeleon",
+    "originalName": "0005 - Charmeleon",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Dark Red",
+        "grams": 56.32
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 9.77
+      },
+      {
+        "color": "Mandarin Orange",
+        "grams": 2.39
+      },
+      {
+        "color": "Sunflower Yellow",
+        "grams": 5.32
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.86
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      }
+    ],
+    "totalGrams": 89.84,
+    "filamentCost": 1.0780800000000001,
+    "profit": 6.92192,
+    "url": "https://www.n3dmelbourne.com/design/0005-charmeleon",
+    "slug": "0005-charmeleon",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "wooper",
+    "originalName": "0194 - Wooper",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Lilac Purple",
+        "grams": 3.2
+      },
+      {
+        "color": "Dark Blue",
+        "grams": 1.54
+      },
+      {
+        "color": "Sky Blue",
+        "grams": 58.73
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.86
+      }
+    ],
+    "totalGrams": 79.51,
+    "filamentCost": 0.9541200000000001,
+    "profit": 7.04588,
+    "url": "https://www.n3dmelbourne.com/design/0194-wooper",
+    "slug": "0194-wooper",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "lucario-mega",
+    "originalName": "0448 - Mega Lucario",
+    "category": "Mega",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Desert Tan",
+        "grams": 28.94
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 49.84
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 59.08
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 5.94
+      },
+      {
+        "color": "Ivory White",
+        "grams": 2.53
+      }
+    ],
+    "totalGrams": 146.33,
+    "filamentCost": 1.7559600000000002,
+    "profit": 6.24404,
+    "url": "https://www.n3dmelbourne.com/design/0448-mega-lucario",
+    "slug": "0448-mega-lucario",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "latios",
+    "originalName": "0381 - Latios",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Marine Blue",
+        "grams": 61.23
+      },
+      {
+        "color": "Ivory White",
+        "grams": 25.86
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 0.83
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 15
+      }
+    ],
+    "totalGrams": 102.92,
+    "filamentCost": 1.2350400000000001,
+    "profit": 6.76496,
+    "url": "https://www.n3dmelbourne.com/design/0381-latios",
+    "slug": "0381-latios",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "latias",
+    "originalName": "0380 - Latias",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ivory White",
+        "grams": 27.47
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 60.33
+      },
+      {
+        "color": "Ice Blue",
+        "grams": 0.69
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.99
+      }
+    ],
+    "totalGrams": 103.48,
+    "filamentCost": 1.24176,
+    "profit": 6.75824,
+    "url": "https://www.n3dmelbourne.com/design/0380-latias",
+    "slug": "0380-latias",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "poliwrath",
+    "originalName": "0062 - Poliwrath",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ivory White",
+        "grams": 20.64
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 21.31
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 51.87
+      }
+    ],
+    "totalGrams": 93.82,
+    "filamentCost": 1.12584,
+    "profit": 6.87416,
+    "url": "https://www.n3dmelbourne.com/design/0062-poliwrath",
+    "slug": "0062-poliwrath",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "poliwhirl",
+    "originalName": "0061 - Poliwhirl",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Marine Blue",
+        "grams": 52.5
+      },
+      {
+        "color": "Ivory White",
+        "grams": 15.08
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 23.13
+      }
+    ],
+    "totalGrams": 90.71,
+    "filamentCost": 1.08852,
+    "profit": 6.91148,
+    "url": "https://www.n3dmelbourne.com/design/0061-poliwhirl",
+    "slug": "0061-poliwhirl",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Team Rocket - Great Ball",
+    "originalName": "Team Rocket - Great Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ivory White",
+        "grams": 3.85
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 26.8
+      },
+      {
+        "color": "Nardo Gray",
+        "grams": 9.8
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 41.68
+      }
+    ],
+    "totalGrams": 82.13,
+    "filamentCost": 0.98556,
+    "profit": 7.0144400000000005,
+    "url": "https://www.n3dmelbourne.com/design/team-rocket-great-ball",
+    "slug": "team-rocket-great-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "dragapult",
+    "originalName": "0887 - Dragapult",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Dark Blue",
+        "grams": 34.28
+      },
+      {
+        "color": "Pink",
+        "grams": 8.72
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 17.64
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 24.67
+      },
+      {
+        "color": "Dark Green",
+        "grams": 0.71
+      },
+      {
+        "color": "Apple Green",
+        "grams": 0.51
+      },
+      {
+        "color": "Turquoise",
+        "grams": 14.14
+      },
+      {
+        "color": "Ice Blue",
+        "grams": 9.41
+      }
+    ],
+    "totalGrams": 111.26,
+    "filamentCost": 1.33512,
+    "profit": 6.66488,
+    "url": "https://www.n3dmelbourne.com/design/0887-dragapult",
+    "slug": "0887-dragapult",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Wing Ball",
+    "originalName": "Wing Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ivory White",
+        "grams": 9
+      },
+      {
+        "color": "Latte Brown",
+        "grams": 26
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 28
+      },
+      {
+        "color": "Ash Gray",
+        "grams": 20
+      }
+    ],
+    "totalGrams": 83,
+    "filamentCost": 0.996,
+    "profit": 7.004,
+    "url": "https://www.n3dmelbourne.com/design/wing-ball",
+    "slug": "wing-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "raichu",
+    "originalName": "0026 - Mega Raichu X",
+    "category": "Mega",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Yellow",
+        "grams": 9.55
+      },
+      {
+        "color": "Mandarin Orange",
+        "grams": 3.12
+      },
+      {
+        "color": "Ivory White",
+        "grams": 27.39
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 0.53
+      }
+    ],
+    "totalGrams": 40.59,
+    "filamentCost": 0.48708000000000007,
+    "profit": 7.51292,
+    "url": "https://www.n3dmelbourne.com/design/0026-mega-raichu-x",
+    "slug": "0026-mega-raichu-x",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "primeape",
+    "originalName": "0057 - Primeape",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Desert Tan",
+        "grams": 67.61
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 2.11
+      },
+      {
+        "color": "Caramel",
+        "grams": 16.24
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 18.19
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.04
+      }
+    ],
+    "totalGrams": 105.19,
+    "filamentCost": 1.26228,
+    "profit": 6.7377199999999995,
+    "url": "https://www.n3dmelbourne.com/design/0057-primeape",
+    "slug": "0057-primeape",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "mankey",
+    "originalName": "0056 - Mankey",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 15.02
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.04
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 62.01
+      },
+      {
+        "color": "Caramel",
+        "grams": 5.61
+      },
+      {
+        "color": "Beige",
+        "grams": 0.96
+      }
+    ],
+    "totalGrams": 84.64,
+    "filamentCost": 1.0156800000000001,
+    "profit": 6.98432,
+    "url": "https://www.n3dmelbourne.com/design/0056-mankey",
+    "slug": "0056-mankey",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "raichu",
+    "originalName": "0026 - Mega Raichu Y",
+    "category": "Mega",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 19.42
+      },
+      {
+        "color": "Ivory White",
+        "grams": 6.3
+      },
+      {
+        "color": "Dark Brown",
+        "grams": 1.06
+      },
+      {
+        "color": "Sunflower Yellow",
+        "grams": 13.22
+      },
+      {
+        "color": "Mandarin Orange",
+        "grams": 56
+      }
+    ],
+    "totalGrams": 96,
+    "filamentCost": 1.1520000000000001,
+    "profit": 6.848,
+    "url": "https://www.n3dmelbourne.com/design/0026-mega-raichu-y",
+    "slug": "0026-mega-raichu-y",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "palkia",
+    "originalName": "0484 - Palkia",
+    "category": "Event",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Lilac Purple",
+        "grams": 14.84
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 39.35
+      },
+      {
+        "color": "Ivory White",
+        "grams": 45.99
+      },
+      {
+        "color": "Light Gray",
+        "grams": 16.54
+      },
+      {
+        "color": "Dark Gray",
+        "grams": 0.92
+      }
+    ],
+    "totalGrams": 117.64,
+    "filamentCost": 1.41168,
+    "profit": 6.5883199999999995,
+    "url": "https://www.n3dmelbourne.com/design/0484-palkia",
+    "slug": "0484-palkia",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Tera Orb",
+    "originalName": "Tera Orb",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Purple",
+        "grams": 59.02
+      },
+      {
+        "color": "Ash Gray",
+        "grams": 34.66
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 1.68
+      }
+    ],
+    "totalGrams": 95.36,
+    "filamentCost": 1.14432,
+    "profit": 6.8556799999999996,
+    "url": "https://www.n3dmelbourne.com/design/tera-orb",
+    "slug": "tera-orb",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "machamp",
+    "originalName": "0068 - Machamp",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Desert Tan",
+        "grams": 6.28
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 29.09
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Ice Blue",
+        "grams": 42.86
+      },
+      {
+        "color": "Lemon Yellow",
+        "grams": 6.15
+      },
+      {
+        "color": "Dark Red",
+        "grams": 0.16
+      },
+      {
+        "color": "Dark Blue",
+        "grams": 11.95
+      },
+      {
+        "color": "Ash Gray",
+        "grams": 16.52
+      }
+    ],
+    "totalGrams": 114.19,
+    "filamentCost": 1.37028,
+    "profit": 6.62972,
+    "url": "https://www.n3dmelbourne.com/design/0068-machamp",
+    "slug": "0068-machamp",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "machoke",
+    "originalName": "0067 - Machoke",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 29.09
+      },
+      {
+        "color": "Ivory White",
+        "grams": 2.3
+      },
+      {
+        "color": "Blue Grey",
+        "grams": 42.8
+      },
+      {
+        "color": "Lemon Yellow",
+        "grams": 6.15
+      },
+      {
+        "color": "Dark Red",
+        "grams": 2.21
+      },
+      {
+        "color": "Dark Blue",
+        "grams": 11.95
+      },
+      {
+        "color": "Ash Gray",
+        "grams": 12.28
+      }
+    ],
+    "totalGrams": 106.78,
+    "filamentCost": 1.28136,
+    "profit": 6.71864,
+    "url": "https://www.n3dmelbourne.com/design/0067-machoke",
+    "slug": "0067-machoke",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "machop",
+    "originalName": "0066 - Machop",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ice Blue",
+        "grams": 53.18
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.9
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Ash Gray",
+        "grams": 14.35
+      }
+    ],
+    "totalGrams": 83.61,
+    "filamentCost": 1.00332,
+    "profit": 6.99668,
+    "url": "https://www.n3dmelbourne.com/design/0066-machop",
+    "slug": "0066-machop",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "celebi",
+    "originalName": "0251 - Celebi",
+    "category": "Event",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Grass Green",
+        "grams": 34.96
+      },
+      {
+        "color": "Apple Green",
+        "grams": 46.7
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 0.27
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.8
+      },
+      {
+        "color": "Ivory White",
+        "grams": 2.68
+      }
+    ],
+    "totalGrams": 99.41,
+    "filamentCost": 1.19292,
+    "profit": 6.80708,
+    "url": "https://www.n3dmelbourne.com/design/0251-celebi",
+    "slug": "0251-celebi",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "totodile",
+    "originalName": "0158 - Totodile",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Turquoise",
+        "grams": 61.31
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 3.97
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 2.98
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.32
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.85
+      }
+    ],
+    "totalGrams": 84.43,
+    "filamentCost": 1.01316,
+    "profit": 6.98684,
+    "url": "https://www.n3dmelbourne.com/design/0158-totodile",
+    "slug": "0158-totodile",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Origin Ball",
+    "originalName": "Origin Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ash Gray",
+        "grams": 19.26
+      },
+      {
+        "color": "Red",
+        "grams": 50.21
+      }
+    ],
+    "totalGrams": 69.47,
+    "filamentCost": 0.83364,
+    "profit": 7.16636,
+    "url": "https://www.n3dmelbourne.com/design/origin-ball",
+    "slug": "origin-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "dugtrio",
+    "originalName": "0051 - Dugtrio",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Caramel",
+        "grams": 26.45
+      },
+      {
+        "color": "Dark Gray",
+        "grams": 32.64
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.82
+      },
+      {
+        "color": "Light Gray",
+        "grams": 8.17
+      },
+      {
+        "color": "Ash Gray",
+        "grams": 7.55
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 1.11
+      },
+      {
+        "color": "Nardo Gray",
+        "grams": 2.75
+      }
+    ],
+    "totalGrams": 94.67,
+    "filamentCost": 1.13604,
+    "profit": 6.8639600000000005,
+    "url": "https://www.n3dmelbourne.com/design/0051-dugtrio",
+    "slug": "0051-dugtrio",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "scyther",
+    "originalName": "0123 - Scyther",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Apple Green",
+        "grams": 6.61
+      },
+      {
+        "color": "Grass Green",
+        "grams": 69.88
+      },
+      {
+        "color": "Ivory White",
+        "grams": 4.75
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.88
+      }
+    ],
+    "totalGrams": 96.12,
+    "filamentCost": 1.15344,
+    "profit": 6.84656,
+    "url": "https://www.n3dmelbourne.com/design/0123-scyther",
+    "slug": "0123-scyther",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "metagross",
+    "originalName": "0376 - Metagross",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 17.97
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Blue Grey",
+        "grams": 76.96
+      },
+      {
+        "color": "Light Gray",
+        "grams": 5.15
+      }
+    ],
+    "totalGrams": 101.26,
+    "filamentCost": 1.21512,
+    "profit": 6.78488,
+    "url": "https://www.n3dmelbourne.com/design/0376-metagross",
+    "slug": "0376-metagross",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "diglett",
+    "originalName": "0050 - Diglett",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 14.92
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Caramel",
+        "grams": 27.53
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 1.49
+      },
+      {
+        "color": "Dark Gray",
+        "grams": 40.46
+      },
+      {
+        "color": "Light Gray",
+        "grams": 7.63
+      },
+      {
+        "color": "Nardo Gray",
+        "grams": 6.75
+      }
+    ],
+    "totalGrams": 99.96,
+    "filamentCost": 1.19952,
+    "profit": 6.80048,
+    "url": "https://www.n3dmelbourne.com/design/0050-diglett",
+    "slug": "0050-diglett",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "gengar-mega",
+    "originalName": "0094 - Mega Gengar",
+    "category": "Mega",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 16.04
+      },
+      {
+        "color": "Ivory White",
+        "grams": 3.69
+      },
+      {
+        "color": "Plum",
+        "grams": 11.96
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 0.36
+      },
+      {
+        "color": "Indigo Purple",
+        "grams": 84.03
+      },
+      {
+        "color": "Lemon Yellow",
+        "grams": 1.73
+      }
+    ],
+    "totalGrams": 117.81,
+    "filamentCost": 1.41372,
+    "profit": 6.58628,
+    "url": "https://www.n3dmelbourne.com/design/0094-mega-gengar",
+    "slug": "0094-mega-gengar",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "zekrom",
+    "originalName": "0644 - Zekrom",
+    "category": "Event",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 42.18
+      },
+      {
+        "color": "Dark Gray",
+        "grams": 73.13
+      },
+      {
+        "color": "Turquoise",
+        "grams": 8.26
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      }
+    ],
+    "totalGrams": 124.75,
+    "filamentCost": 1.497,
+    "profit": 6.503,
+    "url": "https://www.n3dmelbourne.com/design/0644-zekrom",
+    "slug": "0644-zekrom",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "garchomp",
+    "originalName": "0445 - Garchomp",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 14.93
+      },
+      {
+        "color": "Ivory White",
+        "grams": 3.54
+      },
+      {
+        "color": "Dark Blue",
+        "grams": 86.93
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 3.72
+      },
+      {
+        "color": "Sunflower Yellow",
+        "grams": 6.5
+      }
+    ],
+    "totalGrams": 115.62,
+    "filamentCost": 1.38744,
+    "profit": 6.61256,
+    "url": "https://www.n3dmelbourne.com/design/0445-garchomp",
+    "slug": "0445-garchomp",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Dark Ball",
+    "originalName": "Dark Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 64
+      },
+      {
+        "color": "Light Gray",
+        "grams": 3
+      },
+      {
+        "color": "Indigo Purple",
+        "grams": 37
+      }
+    ],
+    "totalGrams": 104,
+    "filamentCost": 1.248,
+    "profit": 6.752,
+    "url": "https://www.n3dmelbourne.com/design/dark-ball",
+    "slug": "dark-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "dialga",
+    "originalName": "0483 - Dialga",
+    "category": "Event",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Dark Blue",
+        "grams": 22.72
+      },
+      {
+        "color": "Ice Blue",
+        "grams": 75.93
+      },
+      {
+        "color": "Ivory White",
+        "grams": 23.79
+      }
+    ],
+    "totalGrams": 122.44,
+    "filamentCost": 1.46928,
+    "profit": 6.5307200000000005,
+    "url": "https://www.n3dmelbourne.com/design/0483-dialga",
+    "slug": "0483-dialga",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "tyranitar",
+    "originalName": "0248 - Tyranitar",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 17.54
+      },
+      {
+        "color": "Dark Gray",
+        "grams": 7.51
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.72
+      },
+      {
+        "color": "Apple Green",
+        "grams": 61.64
+      }
+    ],
+    "totalGrams": 88.41,
+    "filamentCost": 1.06092,
+    "profit": 6.93908,
+    "url": "https://www.n3dmelbourne.com/design/0248-tyranitar",
+    "slug": "0248-tyranitar",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "raikou",
+    "originalName": "0243 - Raikou",
+    "category": "Event",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Lemon Yellow",
+        "grams": 48.66
+      },
+      {
+        "color": "Ivory White",
+        "grams": 25.84
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 19.12
+      },
+      {
+        "color": "Ice Blue",
+        "grams": 2.72
+      },
+      {
+        "color": "Lilac Purple",
+        "grams": 14.45
+      },
+      {
+        "color": "Bone White",
+        "grams": 1.58
+      },
+      {
+        "color": "Dark Gray",
+        "grams": 4.63
+      }
+    ],
+    "totalGrams": 117,
+    "filamentCost": 1.4040000000000001,
+    "profit": 6.596,
+    "url": "https://www.n3dmelbourne.com/design/0243-raikou",
+    "slug": "0243-raikou",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "cyndaquil",
+    "originalName": "0155 - Cyndaquil",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Sunflower Yellow",
+        "grams": 27.15
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.85
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 31.62
+      },
+      {
+        "color": "Dark Blue",
+        "grams": 25.34
+      },
+      {
+        "color": "Orange",
+        "grams": 20.04
+      }
+    ],
+    "totalGrams": 120.18,
+    "filamentCost": 1.44216,
+    "profit": 6.55784,
+    "url": "https://www.n3dmelbourne.com/design/0155-cyndaquil",
+    "slug": "0155-cyndaquil",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "charizard-mega-x",
+    "originalName": "0006 - Mega Charizard X",
+    "category": "Mega",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Dark Gray",
+        "grams": 62.81
+      },
+      {
+        "color": "Cobalt Blue",
+        "grams": 4.21
+      },
+      {
+        "color": "Ice Blue",
+        "grams": 4.16
+      },
+      {
+        "color": "Sky Blue",
+        "grams": 13.57
+      },
+      {
+        "color": "Dark Blue",
+        "grams": 11.15
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 1.34
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.58
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.8
+      }
+    ],
+    "totalGrams": 113.62,
+    "filamentCost": 1.36344,
+    "profit": 6.63656,
+    "url": "https://www.n3dmelbourne.com/design/0006-mega-charizard-x",
+    "slug": "0006-mega-charizard-x",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "absol",
+    "originalName": "0359 - Absol",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Blue Grey",
+        "grams": 39.32
+      },
+      {
+        "color": "Ivory White",
+        "grams": 43.81
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 15
+      }
+    ],
+    "totalGrams": 98.13,
+    "filamentCost": 1.17756,
+    "profit": 6.82244,
+    "url": "https://www.n3dmelbourne.com/design/0359-absol",
+    "slug": "0359-absol",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Team Galactic",
+    "originalName": "Team Galactic",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Gold",
+        "grams": 2.05
+      },
+      {
+        "color": "Ivory White",
+        "grams": 32.97
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 16.59
+      },
+      {
+        "color": "Nardo Gray",
+        "grams": 25.62
+      }
+    ],
+    "totalGrams": 77.23,
+    "filamentCost": 0.92676,
+    "profit": 7.07324,
+    "url": "https://www.n3dmelbourne.com/design/team-galactic",
+    "slug": "team-galactic",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "piplup",
+    "originalName": "0393 - Piplup",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Sunflower Yellow",
+        "grams": 3.14
+      },
+      {
+        "color": "Ice Blue",
+        "grams": 16.46
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.85
+      },
+      {
+        "color": "Ivory White",
+        "grams": 12.95
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 41.14
+      }
+    ],
+    "totalGrams": 88.54,
+    "filamentCost": 1.06248,
+    "profit": 6.93752,
+    "url": "https://www.n3dmelbourne.com/design/0393-piplup",
+    "slug": "0393-piplup",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "arceus",
+    "originalName": "0493 - Arceus",
+    "category": "Event",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Gold",
+        "grams": 13.12
+      },
+      {
+        "color": "Dark Gray",
+        "grams": 17.97
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.83
+      },
+      {
+        "color": "Ivory White",
+        "grams": 69.1
+      },
+      {
+        "color": "Bambu Green",
+        "grams": 0.78
+      }
+    ],
+    "totalGrams": 115.8,
+    "filamentCost": 1.3896,
+    "profit": 6.6104,
+    "url": "https://www.n3dmelbourne.com/design/0493-arceus",
+    "slug": "0493-arceus",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "venomoth",
+    "originalName": "0049 - Venomoth",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Sakura Pink",
+        "grams": 19.94
+      },
+      {
+        "color": "Lilac Purple",
+        "grams": 47.95
+      },
+      {
+        "color": "Bone White",
+        "grams": 12.46
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.99
+      },
+      {
+        "color": "Ivory White",
+        "grams": 7.29
+      }
+    ],
+    "totalGrams": 102.63,
+    "filamentCost": 1.23156,
+    "profit": 6.76844,
+    "url": "https://www.n3dmelbourne.com/design/0049-venomoth",
+    "slug": "0049-venomoth",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "marowak",
+    "originalName": "0105 - Marowak",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.97
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 13.28
+      },
+      {
+        "color": "Bone White",
+        "grams": 59.1
+      },
+      {
+        "color": "Caramel",
+        "grams": 37.35
+      }
+    ],
+    "totalGrams": 125.88,
+    "filamentCost": 1.51056,
+    "profit": 6.48944,
+    "url": "https://www.n3dmelbourne.com/design/0105-marowak",
+    "slug": "0105-marowak",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "venonat",
+    "originalName": "0048 - Venonat",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Lilac Purple",
+        "grams": 56.76
+      },
+      {
+        "color": "Magenta",
+        "grams": 4.37
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 2.13
+      },
+      {
+        "color": "Ivory White",
+        "grams": 2.34
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.81
+      }
+    ],
+    "totalGrams": 80.41,
+    "filamentCost": 0.96492,
+    "profit": 7.03508,
+    "url": "https://www.n3dmelbourne.com/design/0048-venonat",
+    "slug": "0048-venonat",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "parasect",
+    "originalName": "0047 - Parasect",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 19.21
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 52.74
+      },
+      {
+        "color": "Sunflower Yellow",
+        "grams": 4.39
+      },
+      {
+        "color": "Mandarin Orange",
+        "grams": 57.43
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      }
+    ],
+    "totalGrams": 134.95,
+    "filamentCost": 1.6194,
+    "profit": 6.3806,
+    "url": "https://www.n3dmelbourne.com/design/0047-parasect",
+    "slug": "0047-parasect",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "suicune",
+    "originalName": "0245 - Suicune",
+    "category": "Event",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Sky Blue",
+        "grams": 41.29
+      },
+      {
+        "color": "Turquoise",
+        "grams": 9.66
+      },
+      {
+        "color": "Lilac Purple",
+        "grams": 39.6
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 15
+      },
+      {
+        "color": "Ivory White",
+        "grams": 17.13
+      }
+    ],
+    "totalGrams": 122.68,
+    "filamentCost": 1.4721600000000001,
+    "profit": 6.527839999999999,
+    "url": "https://www.n3dmelbourne.com/design/0245-suicune",
+    "slug": "0245-suicune",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "poliwag",
+    "originalName": "0060 - Poliwag",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Marine Blue",
+        "grams": 53.45
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 1.18
+      },
+      {
+        "color": "Ivory White",
+        "grams": 12.99
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 17.19
+      }
+    ],
+    "totalGrams": 84.81,
+    "filamentCost": 1.01772,
+    "profit": 6.98228,
+    "url": "https://www.n3dmelbourne.com/design/0060-poliwag",
+    "slug": "0060-poliwag",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "paras",
+    "originalName": "0046 - Paras",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Mandarin Orange",
+        "grams": 67.82
+      },
+      {
+        "color": "Lemon Yellow",
+        "grams": 4.12
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 18.06
+      },
+      {
+        "color": "Ivory White",
+        "grams": 4.65
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 15.02
+      },
+      {
+        "color": "Bone White",
+        "grams": 6.15
+      }
+    ],
+    "totalGrams": 115.82,
+    "filamentCost": 1.38984,
+    "profit": 6.6101600000000005,
+    "url": "https://www.n3dmelbourne.com/design/0046-paras",
+    "slug": "0046-paras",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "cubone",
+    "originalName": "0104 - Cubone",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Bone White",
+        "grams": 56.68
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.84
+      },
+      {
+        "color": "Latte Brown",
+        "grams": 51.17
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 5.22
+      }
+    ],
+    "totalGrams": 129.09,
+    "filamentCost": 1.54908,
+    "profit": 6.45092,
+    "url": "https://www.n3dmelbourne.com/design/0104-cubone",
+    "slug": "0104-cubone",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "lapras",
+    "originalName": "0131 - Lapras",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 24.54
+      },
+      {
+        "color": "Ash Gray",
+        "grams": 40.18
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 1.11
+      },
+      {
+        "color": "Sky Blue",
+        "grams": 35.35
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 15
+      }
+    ],
+    "totalGrams": 117.36,
+    "filamentCost": 1.40832,
+    "profit": 6.59168,
+    "url": "https://www.n3dmelbourne.com/design/0131-lapras",
+    "slug": "0131-lapras",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "moltres",
+    "originalName": "0146 - Moltres",
+    "category": "Event",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Scarlet Red",
+        "grams": 15.12
+      },
+      {
+        "color": "Lemon Yellow",
+        "grams": 82.66
+      },
+      {
+        "color": "Mandarin Orange",
+        "grams": 14.94
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 11.3
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.73
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      }
+    ],
+    "totalGrams": 139.93,
+    "filamentCost": 1.6791600000000002,
+    "profit": 6.32084,
+    "url": "https://www.n3dmelbourne.com/design/0146-moltres",
+    "slug": "0146-moltres",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "electrode",
+    "originalName": "0101 - Electrode",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Scarlet Red",
+        "grams": 30.26
+      },
+      {
+        "color": "Ivory White",
+        "grams": 38.97
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 1.87
+      }
+    ],
+    "totalGrams": 71.1,
+    "filamentCost": 0.8532,
+    "profit": 7.1468,
+    "url": "https://www.n3dmelbourne.com/design/0101-electrode",
+    "slug": "0101-electrode",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "ninetales",
+    "originalName": "0038 - Ninetales",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 15.12
+      },
+      {
+        "color": "Latte Brown",
+        "grams": 1.54
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 133.13
+      }
+    ],
+    "totalGrams": 150.97,
+    "filamentCost": 1.81164,
+    "profit": 6.18836,
+    "url": "https://www.n3dmelbourne.com/design/0038-ninetales",
+    "slug": "0038-ninetales",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "voltorb",
+    "originalName": "0100 - Voltorb",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Scarlet Red",
+        "grams": 28.2
+      },
+      {
+        "color": "Ivory White",
+        "grams": 29.52
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 8.19
+      }
+    ],
+    "totalGrams": 65.91,
+    "filamentCost": 0.79092,
+    "profit": 7.20908,
+    "url": "https://www.n3dmelbourne.com/design/0100-voltorb",
+    "slug": "0100-voltorb",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "vulpix",
+    "originalName": "0037 - Vulpix",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Terracotta",
+        "grams": 56.3
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.88
+      },
+      {
+        "color": "Bone White",
+        "grams": 5.08
+      },
+      {
+        "color": "Dark Red",
+        "grams": 58.56
+      },
+      {
+        "color": "Dark Brown",
+        "grams": 2.18
+      }
+    ],
+    "totalGrams": 138.18,
+    "filamentCost": 1.65816,
+    "profit": 6.3418399999999995,
+    "url": "https://www.n3dmelbourne.com/design/0037-vulpix",
+    "slug": "0037-vulpix",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Team Aqua Ball",
+    "originalName": "Team Aqua Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ivory White",
+        "grams": 52.9
+      },
+      {
+        "color": "Sky Blue",
+        "grams": 16.99
+      }
+    ],
+    "totalGrams": 69.89,
+    "filamentCost": 0.83868,
+    "profit": 7.16132,
+    "url": "https://www.n3dmelbourne.com/design/team-aqua-ball",
+    "slug": "team-aqua-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "gardevoir",
+    "originalName": "0282 - Gardevoir",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Grass Green",
+        "grams": 53.77
+      },
+      {
+        "color": "Hot Pink",
+        "grams": 1.75
+      },
+      {
+        "color": "Ivory White",
+        "grams": 49.21
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.08
+      }
+    ],
+    "totalGrams": 118.81,
+    "filamentCost": 1.42572,
+    "profit": 6.57428,
+    "url": "https://www.n3dmelbourne.com/design/0282-gardevoir",
+    "slug": "0282-gardevoir",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Heavy Ball (Hisui)",
+    "originalName": "Heavy Ball (Hisui)",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 6.85
+      },
+      {
+        "color": "Dark Gray",
+        "grams": 48.56
+      },
+      {
+        "color": "Light Gray",
+        "grams": 21.49
+      }
+    ],
+    "totalGrams": 76.9,
+    "filamentCost": 0.9228000000000001,
+    "profit": 7.0771999999999995,
+    "url": "https://www.n3dmelbourne.com/design/heavy-ball-hisui",
+    "slug": "heavy-ball-hisui",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Feather Ball",
+    "originalName": "Feather Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ivory White",
+        "grams": 7
+      },
+      {
+        "color": "Latte Brown",
+        "grams": 26
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 27
+      },
+      {
+        "color": "Ash Gray",
+        "grams": 21
+      }
+    ],
+    "totalGrams": 81,
+    "filamentCost": 0.972,
+    "profit": 7.0280000000000005,
+    "url": "https://www.n3dmelbourne.com/design/feather-ball",
+    "slug": "feather-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "darkrai",
+    "originalName": "0491 - Darkrai",
+    "category": "Event",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Scarlet Red",
+        "grams": 12.27
+      },
+      {
+        "color": "Ivory White",
+        "grams": 16.79
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 93.87
+      }
+    ],
+    "totalGrams": 122.93,
+    "filamentCost": 1.47516,
+    "profit": 6.52484,
+    "url": "https://www.n3dmelbourne.com/design/0491-darkrai",
+    "slug": "0491-darkrai",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "jirachi",
+    "originalName": "0385 - Jirachi",
+    "category": "Event",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Turquoise",
+        "grams": 2.35
+      },
+      {
+        "color": "Lemon Yellow",
+        "grams": 50.16
+      },
+      {
+        "color": "Ivory White",
+        "grams": 28.99
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.85
+      }
+    ],
+    "totalGrams": 96.35,
+    "filamentCost": 1.1562,
+    "profit": 6.8438,
+    "url": "https://www.n3dmelbourne.com/design/0385-jirachi",
+    "slug": "0385-jirachi",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "ho-oh",
+    "originalName": "0250 - Ho Oh",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Scarlet Red",
+        "grams": 48.4
+      },
+      {
+        "color": "Grass Green",
+        "grams": 4.92
+      },
+      {
+        "color": "Ivory White",
+        "grams": 30.48
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 1.37
+      },
+      {
+        "color": "Lemon Yellow",
+        "grams": 30.44
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.8
+      },
+      {
+        "color": "Sunflower Yellow",
+        "grams": 6.17
+      }
+    ],
+    "totalGrams": 136.58,
+    "filamentCost": 1.6389600000000002,
+    "profit": 6.36104,
+    "url": "https://www.n3dmelbourne.com/design/0250-ho-oh",
+    "slug": "0250-ho-oh",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "entei",
+    "originalName": "0244 - Entei",
+    "category": "Event",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Sunflower Yellow",
+        "grams": 6.38
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 8.58
+      },
+      {
+        "color": "Terracotta",
+        "grams": 45.91
+      },
+      {
+        "color": "Light Gray",
+        "grams": 17.14
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 16.29
+      },
+      {
+        "color": "Ivory White",
+        "grams": 11.74
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.37
+      }
+    ],
+    "totalGrams": 120.41,
+    "filamentCost": 1.44492,
+    "profit": 6.55508,
+    "url": "https://www.n3dmelbourne.com/design/0244-entei",
+    "slug": "0244-entei",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "zapdos",
+    "originalName": "0145 - Zapdos",
+    "category": "Event",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Sunflower Yellow",
+        "grams": 74.43
+      },
+      {
+        "color": "Mandarin Orange",
+        "grams": 7.08
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 28.84
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      }
+    ],
+    "totalGrams": 111.53,
+    "filamentCost": 1.33836,
+    "profit": 6.66164,
+    "url": "https://www.n3dmelbourne.com/design/0145-zapdos",
+    "slug": "0145-zapdos",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "golbat",
+    "originalName": "0042 - Golbat",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Marine Blue",
+        "grams": 56.22
+      },
+      {
+        "color": "Lilac Purple",
+        "grams": 7.96
+      },
+      {
+        "color": "Ivory White",
+        "grams": 2.37
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 31.53
+      }
+    ],
+    "totalGrams": 98.08,
+    "filamentCost": 1.17696,
+    "profit": 6.82304,
+    "url": "https://www.n3dmelbourne.com/design/0042-golbat",
+    "slug": "0042-golbat",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "zubat",
+    "originalName": "0041 - Zubat",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Lilac Purple",
+        "grams": 5.41
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 63.81
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 23.26
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.86
+      }
+    ],
+    "totalGrams": 94.34,
+    "filamentCost": 1.13208,
+    "profit": 6.86792,
+    "url": "https://www.n3dmelbourne.com/design/0041-zubat",
+    "slug": "0041-zubat",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "wigglytuff",
+    "originalName": "0040 - Wiggletuff",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ivory White",
+        "grams": 9.7
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 56.06
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 16.1
+      }
+    ],
+    "totalGrams": 81.86,
+    "filamentCost": 0.98232,
+    "profit": 7.01768,
+    "url": "https://www.n3dmelbourne.com/design/0040-wigglytuff",
+    "slug": "0040-wigglytuff",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "clefable",
+    "originalName": "0036 - Clefable",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Sakura Pink",
+        "grams": 5.82
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.83
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.13
+      },
+      {
+        "color": "Dark Brown",
+        "grams": 2.17
+      },
+      {
+        "color": "Beige",
+        "grams": 63.78
+      }
+    ],
+    "totalGrams": 87.73,
+    "filamentCost": 1.0527600000000001,
+    "profit": 6.94724,
+    "url": "https://www.n3dmelbourne.com/design/0036-clefable",
+    "slug": "0036-clefable",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "clefairy",
+    "originalName": "0035 - Clefairy",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Sakura Pink",
+        "grams": 66.46
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 16.57
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.13
+      },
+      {
+        "color": "Brown",
+        "grams": 1.24
+      }
+    ],
+    "totalGrams": 85.4,
+    "filamentCost": 1.0248000000000002,
+    "profit": 6.9752,
+    "url": "https://www.n3dmelbourne.com/design/0035-clefairy",
+    "slug": "0035-clefairy",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "greninja",
+    "originalName": "0658 - Greninja",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ice Blue",
+        "grams": 3.71
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 52.11
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 20.71
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 28.02
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.77
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      }
+    ],
+    "totalGrams": 120.5,
+    "filamentCost": 1.446,
+    "profit": 6.554,
+    "url": "https://www.n3dmelbourne.com/design/0658-greninja",
+    "slug": "0658-greninja",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "oddish",
+    "originalName": "0043 - Oddish",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Blue Grey",
+        "grams": 47.84
+      },
+      {
+        "color": "Bambu Green",
+        "grams": 16.29
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.87
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      }
+    ],
+    "totalGrams": 80.18,
+    "filamentCost": 0.9621600000000001,
+    "profit": 7.03784,
+    "url": "https://www.n3dmelbourne.com/design/0043-oddish",
+    "slug": "0043-oddish",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Captain America",
+    "originalName": "Captain America",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Blue",
+        "grams": 20.29
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 31.17
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 15.19
+      },
+      {
+        "color": "Ivory White",
+        "grams": 13.11
+      },
+      {
+        "color": "Light Gray",
+        "grams": 1.29
+      }
+    ],
+    "totalGrams": 81.05,
+    "filamentCost": 0.9726,
+    "profit": 7.0274,
+    "url": "https://www.n3dmelbourne.com/design/captain-america",
+    "slug": "captain-america",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "articuno",
+    "originalName": "0144 - Articuno",
+    "category": "Event",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ice Blue",
+        "grams": 6
+      },
+      {
+        "color": "Sky Blue",
+        "grams": 63.46
+      },
+      {
+        "color": "Nardo Gray",
+        "grams": 7.32
+      },
+      {
+        "color": "Ivory White",
+        "grams": 6.23
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 12.21
+      },
+      {
+        "color": "Cyan",
+        "grams": 2.6
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.79
+      }
+    ],
+    "totalGrams": 112.61,
+    "filamentCost": 1.35132,
+    "profit": 6.64868,
+    "url": "https://www.n3dmelbourne.com/design/0144-articuno",
+    "slug": "0144-articuno",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "togepi",
+    "originalName": "0175 - Togepi",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Scarlet Red",
+        "grams": 4
+      },
+      {
+        "color": "Beige",
+        "grams": 26.21
+      },
+      {
+        "color": "Ivory White",
+        "grams": 46.91
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 4.03
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.93
+      }
+    ],
+    "totalGrams": 96.08,
+    "filamentCost": 1.15296,
+    "profit": 6.84704,
+    "url": "https://www.n3dmelbourne.com/design/0175-togepi",
+    "slug": "0175-togepi",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "pinsir",
+    "originalName": "0127 - Pinsir",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ivory White",
+        "grams": 6.63
+      },
+      {
+        "color": "Dark Brown",
+        "grams": 63.39
+      },
+      {
+        "color": "Bone White",
+        "grams": 15.91
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 19.79
+      }
+    ],
+    "totalGrams": 105.72,
+    "filamentCost": 1.26864,
+    "profit": 6.7313600000000005,
+    "url": "https://www.n3dmelbourne.com/design/0127-pinsir",
+    "slug": "0127-pinsir",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "weezing",
+    "originalName": "0110 - Weezing",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Lilac Purple",
+        "grams": 69.96
+      },
+      {
+        "color": "Ivory White",
+        "grams": 5.52
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.82
+      }
+    ],
+    "totalGrams": 90.3,
+    "filamentCost": 1.0836,
+    "profit": 6.9164,
+    "url": "https://www.n3dmelbourne.com/design/0110-weezing",
+    "slug": "0110-weezing",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "koffing",
+    "originalName": "0109 - Koffing",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Purple",
+        "grams": 50.76
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 7.39
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.77
+      },
+      {
+        "color": "Ivory White",
+        "grams": 4.07
+      }
+    ],
+    "totalGrams": 76.99,
+    "filamentCost": 0.9238799999999999,
+    "profit": 7.07612,
+    "url": "https://www.n3dmelbourne.com/design/0109-koffing",
+    "slug": "0109-koffing",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "magneton",
+    "originalName": "0082 - Magneton",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Scarlet Red",
+        "grams": 3.26
+      },
+      {
+        "color": "Light Gray",
+        "grams": 89.38
+      },
+      {
+        "color": "Dark Gray",
+        "grams": 14.9
+      },
+      {
+        "color": "Ivory White",
+        "grams": 7.68
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.78
+      },
+      {
+        "color": "Silver",
+        "grams": 6.32
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 3.22
+      }
+    ],
+    "totalGrams": 139.54,
+    "filamentCost": 1.67448,
+    "profit": 6.32552,
+    "url": "https://www.n3dmelbourne.com/design/0082-magneton",
+    "slug": "0082-magneton",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "gloom",
+    "originalName": "0044 - Gloom",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Blue Grey",
+        "grams": 47.86
+      },
+      {
+        "color": "Bone White",
+        "grams": 0.73
+      },
+      {
+        "color": "Terracotta",
+        "grams": 11.04
+      },
+      {
+        "color": "Dark Brown",
+        "grams": 19.81
+      },
+      {
+        "color": "Ivory White",
+        "grams": 2.61
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.69
+      },
+      {
+        "color": "Lilac Purple",
+        "grams": 5.98
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 3.8
+      }
+    ],
+    "totalGrams": 106.52,
+    "filamentCost": 1.27824,
+    "profit": 6.72176,
+    "url": "https://www.n3dmelbourne.com/design/0044-gloom",
+    "slug": "0044-gloom",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "nidoking",
+    "originalName": "0034 - Nidoking",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Bone White",
+        "grams": 19.02
+      },
+      {
+        "color": "Turquoise",
+        "grams": 0.84
+      },
+      {
+        "color": "Lilac Purple",
+        "grams": 59.58
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.96
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 1.41
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 15.04
+      }
+    ],
+    "totalGrams": 97.85,
+    "filamentCost": 1.1742,
+    "profit": 6.8258,
+    "url": "https://www.n3dmelbourne.com/design/0034-nidoking",
+    "slug": "0034-nidoking",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "nidorino",
+    "originalName": "0033 - Nidorino",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Lilac Purple",
+        "grams": 63.8
+      },
+      {
+        "color": "Ivory White",
+        "grams": 2.02
+      },
+      {
+        "color": "Turquoise",
+        "grams": 1.67
+      },
+      {
+        "color": "Indigo Purple",
+        "grams": 1.32
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.98
+      }
+    ],
+    "totalGrams": 83.79,
+    "filamentCost": 1.0054800000000002,
+    "profit": 6.99452,
+    "url": "https://www.n3dmelbourne.com/design/0033-nidorino",
+    "slug": "0033-nidorino",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "nidoran-m",
+    "originalName": "0032 - Nidoran♂",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 14.73
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.99
+      },
+      {
+        "color": "Turquoise",
+        "grams": 1.1
+      },
+      {
+        "color": "Lilac Purple",
+        "grams": 69.07
+      },
+      {
+        "color": "Indigo Purple",
+        "grams": 1.06
+      },
+      {
+        "color": "Sky Blue",
+        "grams": 1.29
+      },
+      {
+        "color": "Ice Blue",
+        "grams": 0.49
+      }
+    ],
+    "totalGrams": 89.73,
+    "filamentCost": 1.0767600000000002,
+    "profit": 6.92324,
+    "url": "https://www.n3dmelbourne.com/design/0032-nidoran",
+    "slug": "0032-nidoran",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "vileplume",
+    "originalName": "0045 - Vileplume",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Blue Grey",
+        "grams": 43.5
+      },
+      {
+        "color": "Red",
+        "grams": 46.92
+      },
+      {
+        "color": "Orange",
+        "grams": 4.16
+      },
+      {
+        "color": "Latte Brown",
+        "grams": 0.58
+      },
+      {
+        "color": "Ivory White",
+        "grams": 3.63
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 15.01
+      }
+    ],
+    "totalGrams": 113.8,
+    "filamentCost": 1.3656,
+    "profit": 6.6344,
+    "url": "https://www.n3dmelbourne.com/design/0045-vileplume",
+    "slug": "0045-vileplume",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "giratina-altered",
+    "originalName": "0487 - Giratina",
+    "category": "Event",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 35.7
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 9.41
+      },
+      {
+        "color": "Sunflower Yellow",
+        "grams": 48.27
+      },
+      {
+        "color": "Light Gray",
+        "grams": 51.65
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.04
+      }
+    ],
+    "totalGrams": 146.07,
+    "filamentCost": 1.75284,
+    "profit": 6.24716,
+    "url": "https://www.n3dmelbourne.com/design/0487-giratina",
+    "slug": "0487-giratina",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "jigglypuff",
+    "originalName": "0039 - Jigglypuff",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Sakura Pink",
+        "grams": 66.37
+      },
+      {
+        "color": "Ash Gray",
+        "grams": 0.3
+      },
+      {
+        "color": "Grass Green",
+        "grams": 0.82
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 16.39
+      }
+    ],
+    "totalGrams": 85.06,
+    "filamentCost": 1.02072,
+    "profit": 6.97928,
+    "url": "https://www.n3dmelbourne.com/design/0039-jigglypuff",
+    "slug": "0039-jigglypuff",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "glaceon",
+    "originalName": "0471 - Glaceon",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Sky Blue",
+        "grams": 12.94
+      },
+      {
+        "color": "Ice Blue",
+        "grams": 61.2
+      },
+      {
+        "color": "Turquoise",
+        "grams": 7.84
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.85
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      }
+    ],
+    "totalGrams": 98.01,
+    "filamentCost": 1.17612,
+    "profit": 6.82388,
+    "url": "https://www.n3dmelbourne.com/design/0471-glaceon",
+    "slug": "0471-glaceon",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "persian",
+    "originalName": "0053 - Persian",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Desert Tan",
+        "grams": 69.22
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 1.26
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.04
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 19.06
+      }
+    ],
+    "totalGrams": 90.58,
+    "filamentCost": 1.08696,
+    "profit": 6.9130400000000005,
+    "url": "https://www.n3dmelbourne.com/design/0053-persian",
+    "slug": "0053-persian",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "nidoqueen",
+    "originalName": "0031 - Nidoqueen",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Blue Grey",
+        "grams": 81.55
+      },
+      {
+        "color": "Dark Chocolate",
+        "grams": 1.56
+      },
+      {
+        "color": "Dark Brown",
+        "grams": 1.43
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.89
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 7.39
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      }
+    ],
+    "totalGrams": 108,
+    "filamentCost": 1.296,
+    "profit": 6.704,
+    "url": "https://www.n3dmelbourne.com/design/0031-nidoqueen",
+    "slug": "0031-nidoqueen",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "nidorina",
+    "originalName": "0030 - Nidorina",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ice Blue",
+        "grams": 70.74
+      },
+      {
+        "color": "Dark Blue",
+        "grams": 4.5
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 1.97
+      },
+      {
+        "color": "Ivory White",
+        "grams": 6.08
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 15.01
+      }
+    ],
+    "totalGrams": 98.3,
+    "filamentCost": 1.1796,
+    "profit": 6.8204,
+    "url": "https://www.n3dmelbourne.com/design/0030-nidorina",
+    "slug": "0030-nidorina",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "chansey",
+    "originalName": "0113 - Chansey",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Sakura Pink",
+        "grams": 59.2
+      },
+      {
+        "color": "Pink",
+        "grams": 4.23
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.8
+      },
+      {
+        "color": "Ivory White",
+        "grams": 5.52
+      }
+    ],
+    "totalGrams": 83.75,
+    "filamentCost": 1.0050000000000001,
+    "profit": 6.995,
+    "url": "https://www.n3dmelbourne.com/design/0113-chansey",
+    "slug": "0113-chansey",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "rayquaza",
+    "originalName": "0384 - Rayquaza",
+    "category": "Event",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Bambu Green",
+        "grams": 67.19
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 16.01
+      },
+      {
+        "color": "Sunflower Yellow",
+        "grams": 7.24
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.83
+      }
+    ],
+    "totalGrams": 106.45,
+    "filamentCost": 1.2774,
+    "profit": 6.7226,
+    "url": "https://www.n3dmelbourne.com/design/0384-rayquaza",
+    "slug": "0384-rayquaza",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "ditto",
+    "originalName": "0132 - Ditto",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Lilac Purple",
+        "grams": 52.38
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 15.05
+      }
+    ],
+    "totalGrams": 68.61,
+    "filamentCost": 0.82332,
+    "profit": 7.17668,
+    "url": "https://www.n3dmelbourne.com/design/0132-ditto",
+    "slug": "0132-ditto",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "umbreon",
+    "originalName": "0197 - Umbreon",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Lemon Yellow",
+        "grams": 15.14
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 85.57
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      }
+    ],
+    "totalGrams": 101.89,
+    "filamentCost": 1.22268,
+    "profit": 6.77732,
+    "url": "https://www.n3dmelbourne.com/design/0197-umbreon",
+    "slug": "0197-umbreon",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "mewtwo",
+    "originalName": "0150 - Mewtwo",
+    "category": "Event",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Light Gray",
+        "grams": 49.65
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Lilac Purple",
+        "grams": 31.87
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 15
+      }
+    ],
+    "totalGrams": 97.7,
+    "filamentCost": 1.1724,
+    "profit": 6.8276,
+    "url": "https://www.n3dmelbourne.com/design/0150-mewtwo",
+    "slug": "0150-mewtwo",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "snorlax",
+    "originalName": "0143 - Snorlax",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Dark Blue",
+        "grams": 48.26
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 19.29
+      },
+      {
+        "color": "Ivory White",
+        "grams": 2.01
+      },
+      {
+        "color": "Latte Brown",
+        "grams": 1.21
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.97
+      }
+    ],
+    "totalGrams": 85.74,
+    "filamentCost": 1.02888,
+    "profit": 6.97112,
+    "url": "https://www.n3dmelbourne.com/design/0143-snorlax",
+    "slug": "0143-snorlax",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "leafeon",
+    "originalName": "0470 - Leafeon",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Desert Tan",
+        "grams": 57.92
+      },
+      {
+        "color": "Grass Green",
+        "grams": 14.95
+      },
+      {
+        "color": "Dark Brown",
+        "grams": 0.95
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.78
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      }
+    ],
+    "totalGrams": 89.78,
+    "filamentCost": 1.07736,
+    "profit": 6.9226399999999995,
+    "url": "https://www.n3dmelbourne.com/design/0470-leafeon",
+    "slug": "0470-leafeon",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "lugia",
+    "originalName": "0249 - Lugia",
+    "category": "Event",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Dark Blue",
+        "grams": 7.07
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 5.49
+      },
+      {
+        "color": "Ivory White",
+        "grams": 80.93
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.87
+      }
+    ],
+    "totalGrams": 108.36,
+    "filamentCost": 1.30032,
+    "profit": 6.69968,
+    "url": "https://www.n3dmelbourne.com/design/0249-lugia",
+    "slug": "0249-lugia",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Nest Ball",
+    "originalName": "Nest Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Lemon Yellow",
+        "grams": 9.93
+      },
+      {
+        "color": "Grass Green",
+        "grams": 25.44
+      },
+      {
+        "color": "Ivory White",
+        "grams": 25.61
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.93
+      }
+    ],
+    "totalGrams": 75.91,
+    "filamentCost": 0.91092,
+    "profit": 7.08908,
+    "url": "https://www.n3dmelbourne.com/design/nest-ball",
+    "slug": "nest-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Dive Ball",
+    "originalName": "Dive Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Dark Blue",
+        "grams": 23.16
+      },
+      {
+        "color": "Ivory White",
+        "grams": 24.3
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 31.92
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.83
+      }
+    ],
+    "totalGrams": 94.21,
+    "filamentCost": 1.13052,
+    "profit": 6.86948,
+    "url": "https://www.n3dmelbourne.com/design/dive-ball",
+    "slug": "dive-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Sport Ball",
+    "originalName": "Sport Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Scarlet Red",
+        "grams": 25.95
+      },
+      {
+        "color": "Ivory White",
+        "grams": 29.31
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.99
+      }
+    ],
+    "totalGrams": 70.25,
+    "filamentCost": 0.843,
+    "profit": 7.157,
+    "url": "https://www.n3dmelbourne.com/design/sport-ball",
+    "slug": "sport-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "groudon",
+    "originalName": "0383 - Groudon",
+    "category": "Event",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 30.01
+      },
+      {
+        "color": "Bone White",
+        "grams": 26.44
+      },
+      {
+        "color": "Ivory White",
+        "grams": 6.85
+      },
+      {
+        "color": "Dark Red",
+        "grams": 34.61
+      }
+    ],
+    "totalGrams": 97.91,
+    "filamentCost": 1.17492,
+    "profit": 6.82508,
+    "url": "https://www.n3dmelbourne.com/design/0383-groudon",
+    "slug": "0383-groudon",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "pidgeot",
+    "originalName": "0018 - Pidgeot",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Dark Red",
+        "grams": 12.4
+      },
+      {
+        "color": "Ivory White",
+        "grams": 12.22
+      },
+      {
+        "color": "Lemon Yellow",
+        "grams": 6.56
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 9.31
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 10.75
+      },
+      {
+        "color": "Latte Brown",
+        "grams": 0.59
+      }
+    ],
+    "totalGrams": 51.83,
+    "filamentCost": 0.62196,
+    "profit": 7.37804,
+    "url": "https://www.n3dmelbourne.com/design/0018-pidgeot",
+    "slug": "0018-pidgeot",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "haunter",
+    "originalName": "0093 - Haunter",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Lilac Purple",
+        "grams": 72.79
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 15.06
+      }
+    ],
+    "totalGrams": 89.03,
+    "filamentCost": 1.06836,
+    "profit": 6.93164,
+    "url": "https://www.n3dmelbourne.com/design/0093-haunter",
+    "slug": "0093-haunter",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "dragonite",
+    "originalName": "0149 - Dragonite",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Mandarin Orange",
+        "grams": 52.07
+      },
+      {
+        "color": "Sunflower Yellow",
+        "grams": 1.14
+      },
+      {
+        "color": "Turquoise",
+        "grams": 3.77
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 24.11
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.16
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.7
+      }
+    ],
+    "totalGrams": 96.95,
+    "filamentCost": 1.1634,
+    "profit": 6.8366,
+    "url": "https://www.n3dmelbourne.com/design/0149-dragonite",
+    "slug": "0149-dragonite",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "butterfree",
+    "originalName": "0012 - Butterfree",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 21.68
+      },
+      {
+        "color": "Ivory White",
+        "grams": 27.63
+      },
+      {
+        "color": "Lilac Purple",
+        "grams": 51.04
+      },
+      {
+        "color": "Ice Blue",
+        "grams": 5.73
+      }
+    ],
+    "totalGrams": 106.08,
+    "filamentCost": 1.27296,
+    "profit": 6.72704,
+    "url": "https://www.n3dmelbourne.com/design/0012-butterfree",
+    "slug": "0012-butterfree",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "flareon",
+    "originalName": "0136 - Flareon",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Mandarin Orange",
+        "grams": 48.01
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 61.14
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 16.66
+      },
+      {
+        "color": "Dark Blue",
+        "grams": 1.33
+      }
+    ],
+    "totalGrams": 128.32,
+    "filamentCost": 1.5398399999999999,
+    "profit": 6.46016,
+    "url": "https://www.n3dmelbourne.com/design/0136-flareon",
+    "slug": "0136-flareon",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "dragonair",
+    "originalName": "0148 - Dragonair",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Cyan",
+        "grams": 51.38
+      },
+      {
+        "color": "Ivory White",
+        "grams": 25.2
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.85
+      },
+      {
+        "color": "Blue",
+        "grams": 2.34
+      }
+    ],
+    "totalGrams": 93.77,
+    "filamentCost": 1.12524,
+    "profit": 6.87476,
+    "url": "https://www.n3dmelbourne.com/design/0148-dragonair",
+    "slug": "0148-dragonair",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Premier Ball",
+    "originalName": "Premier Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Scarlet Red",
+        "grams": 14.98
+      },
+      {
+        "color": "Ivory White",
+        "grams": 50.91
+      }
+    ],
+    "totalGrams": 65.89,
+    "filamentCost": 0.79068,
+    "profit": 7.20932,
+    "url": "https://www.n3dmelbourne.com/design/premier-ball",
+    "slug": "premier-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Friend Ball",
+    "originalName": "Friend Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 14.98
+      },
+      {
+        "color": "Ivory White",
+        "grams": 26.99
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 1.03
+      },
+      {
+        "color": "Grass Green",
+        "grams": 25.34
+      },
+      {
+        "color": "Lemon Yellow",
+        "grams": 0.38
+      }
+    ],
+    "totalGrams": 68.72,
+    "filamentCost": 0.82464,
+    "profit": 7.1753599999999995,
+    "url": "https://www.n3dmelbourne.com/design/friend-ball",
+    "slug": "friend-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Park Ball",
+    "originalName": "Park Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Marine Blue",
+        "grams": 15.14
+      },
+      {
+        "color": "Lemon Yellow",
+        "grams": 24.87
+      },
+      {
+        "color": "Ivory White",
+        "grams": 25.33
+      },
+      {
+        "color": "Mandarin Orange",
+        "grams": 1.17
+      }
+    ],
+    "totalGrams": 66.51,
+    "filamentCost": 0.79812,
+    "profit": 7.20188,
+    "url": "https://www.n3dmelbourne.com/design/park-ball",
+    "slug": "park-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Team Rocket Ball",
+    "originalName": "Team Rocket Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Scarlet Red",
+        "grams": 2.09
+      },
+      {
+        "color": "Ivory White",
+        "grams": 27.8
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 40.11
+      }
+    ],
+    "totalGrams": 70,
+    "filamentCost": 0.84,
+    "profit": 7.16,
+    "url": "https://www.n3dmelbourne.com/design/team-rocket-ball",
+    "slug": "team-rocket-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Heal Ball",
+    "originalName": "Heal Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Sakura Pink",
+        "grams": 36.71
+      },
+      {
+        "color": "Lilac Purple",
+        "grams": 1.18
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 31.5
+      },
+      {
+        "color": "Ice Blue",
+        "grams": 15
+      }
+    ],
+    "totalGrams": 84.39,
+    "filamentCost": 1.01268,
+    "profit": 6.98732,
+    "url": "https://www.n3dmelbourne.com/design/heal-ball",
+    "slug": "heal-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Moon Ball",
+    "originalName": "Moon Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Sunflower Yellow",
+        "grams": 6.44
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 11.75
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 34
+      },
+      {
+        "color": "Ivory White",
+        "grams": 26.44
+      }
+    ],
+    "totalGrams": 78.63,
+    "filamentCost": 0.94356,
+    "profit": 7.05644,
+    "url": "https://www.n3dmelbourne.com/design/moon-ball",
+    "slug": "moon-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "kadabra",
+    "originalName": "0064 - Kadabra",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Lemon Yellow",
+        "grams": 63.84
+      },
+      {
+        "color": "Dark Brown",
+        "grams": 10.72
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 15.46
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.21
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 1.14
+      },
+      {
+        "color": "Ash Gray",
+        "grams": 1.67
+      }
+    ],
+    "totalGrams": 94.04,
+    "filamentCost": 1.1284800000000001,
+    "profit": 6.87152,
+    "url": "https://www.n3dmelbourne.com/design/0064-kadabra",
+    "slug": "0064-kadabra",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Clone Ball",
+    "originalName": "Clone Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Lilac Purple",
+        "grams": 26.33
+      },
+      {
+        "color": "Indigo Purple",
+        "grams": 46.64
+      },
+      {
+        "color": "Sunflower Yellow",
+        "grams": 0.91
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 0.96
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 7.69
+      }
+    ],
+    "totalGrams": 82.53,
+    "filamentCost": 0.99036,
+    "profit": 7.00964,
+    "url": "https://www.n3dmelbourne.com/design/clone-ball",
+    "slug": "clone-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "squirtle",
+    "originalName": "0007 - Squirtle",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ivory White",
+        "grams": 13
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 27
+      },
+      {
+        "color": "Ice Blue",
+        "grams": 13
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 15
+      },
+      {
+        "color": "Brown",
+        "grams": 24
+      }
+    ],
+    "totalGrams": 92,
+    "filamentCost": 1.104,
+    "profit": 6.896,
+    "url": "https://www.n3dmelbourne.com/design/0007-squirtle",
+    "slug": "0007-squirtle",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "gengar",
+    "originalName": "0094 - Gengar",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 26.08
+      },
+      {
+        "color": "Purple",
+        "grams": 54.67
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 6.12
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 3.01
+      },
+      {
+        "color": "Ivory White",
+        "grams": 5.09
+      }
+    ],
+    "totalGrams": 94.97,
+    "filamentCost": 1.13964,
+    "profit": 6.86036,
+    "url": "https://www.n3dmelbourne.com/design/0094-gengar",
+    "slug": "0094-gengar",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "GS Ball",
+    "originalName": "GS Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Gold",
+        "grams": 23.74
+      },
+      {
+        "color": "Silver",
+        "grams": 23.78
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.84
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.38
+      }
+    ],
+    "totalGrams": 63.74,
+    "filamentCost": 0.76488,
+    "profit": 7.23512,
+    "url": "https://www.n3dmelbourne.com/design/gs-ball",
+    "slug": "gs-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "espeon",
+    "originalName": "0196 - Espeon",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Sakura Pink",
+        "grams": 74.33
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Dark Blue",
+        "grams": 3.66
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 1.4
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.97
+      }
+    ],
+    "totalGrams": 95.54,
+    "filamentCost": 1.1464800000000002,
+    "profit": 6.85352,
+    "url": "https://www.n3dmelbourne.com/design/0196-espeon",
+    "slug": "0196-espeon",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "metapod",
+    "originalName": "0011 - Metapod",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 20.22
+      },
+      {
+        "color": "Grass Green",
+        "grams": 60.72
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.93
+      }
+    ],
+    "totalGrams": 82.87,
+    "filamentCost": 0.9944400000000001,
+    "profit": 7.00556,
+    "url": "https://www.n3dmelbourne.com/design/0011-metapod",
+    "slug": "0011-metapod",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "mimikyu-disguised",
+    "originalName": "0778 - Mimikyu",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Desert Tan",
+        "grams": 113.65
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 33.95
+      },
+      {
+        "color": "Terracotta",
+        "grams": 2.02
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Dark Brown",
+        "grams": 6.46
+      }
+    ],
+    "totalGrams": 157.26,
+    "filamentCost": 1.88712,
+    "profit": 6.1128800000000005,
+    "url": "https://www.n3dmelbourne.com/design/0778-mimikyu",
+    "slug": "0778-mimikyu",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "raticate",
+    "originalName": "0020 - Raticate",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Sakura Pink",
+        "grams": 2.66
+      },
+      {
+        "color": "Ivory White",
+        "grams": 3.31
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.95
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 24.77
+      },
+      {
+        "color": "Latte Brown",
+        "grams": 54.68
+      }
+    ],
+    "totalGrams": 100.37,
+    "filamentCost": 1.2044400000000002,
+    "profit": 6.79556,
+    "url": "https://www.n3dmelbourne.com/design/0020-raticate",
+    "slug": "0020-raticate",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Dusk Ball",
+    "originalName": "Dusk Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 37.17
+      },
+      {
+        "color": "Bambu Green",
+        "grams": 37.38
+      },
+      {
+        "color": "Orange",
+        "grams": 15.07
+      }
+    ],
+    "totalGrams": 89.62,
+    "filamentCost": 1.0754400000000002,
+    "profit": 6.92456,
+    "url": "https://www.n3dmelbourne.com/design/dusk-ball",
+    "slug": "dusk-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "caterpie",
+    "originalName": "0010 - Caterpie",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Grass Green",
+        "grams": 48.53
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 16.71
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 15.38
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 3.32
+      }
+    ],
+    "totalGrams": 85.12,
+    "filamentCost": 1.0214400000000001,
+    "profit": 6.97856,
+    "url": "https://www.n3dmelbourne.com/design/0010-caterpie",
+    "slug": "0010-caterpie",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Repeat Ball",
+    "originalName": "Repeat Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Scarlet Red",
+        "grams": 15.94
+      },
+      {
+        "color": "Lemon Yellow",
+        "grams": 20.37
+      },
+      {
+        "color": "Ivory White",
+        "grams": 26.54
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 20.6
+      }
+    ],
+    "totalGrams": 83.45,
+    "filamentCost": 1.0014,
+    "profit": 6.9986,
+    "url": "https://www.n3dmelbourne.com/design/repeat-ball",
+    "slug": "repeat-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "meowth",
+    "originalName": "0052 - Meowth",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 26.94
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 55.17
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Dark Brown",
+        "grams": 7.94
+      },
+      {
+        "color": "Gold",
+        "grams": 1.82
+      }
+    ],
+    "totalGrams": 93.05,
+    "filamentCost": 1.1166,
+    "profit": 6.8834,
+    "url": "https://www.n3dmelbourne.com/design/0052-meowth",
+    "slug": "0052-meowth",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Level Ball",
+    "originalName": "Level Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Sunflower Yellow",
+        "grams": 21.42
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 2.19
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 22.97
+      },
+      {
+        "color": "Ivory White",
+        "grams": 26.3
+      }
+    ],
+    "totalGrams": 72.88,
+    "filamentCost": 0.87456,
+    "profit": 7.12544,
+    "url": "https://www.n3dmelbourne.com/design/level-ball",
+    "slug": "level-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "alakazam",
+    "originalName": "0065 - Alakazam",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Lemon Yellow",
+        "grams": 51.65
+      },
+      {
+        "color": "Dark Brown",
+        "grams": 25.67
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 15.5
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.21
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 4.6
+      },
+      {
+        "color": "Ash Gray",
+        "grams": 3.09
+      }
+    ],
+    "totalGrams": 101.72,
+    "filamentCost": 1.22064,
+    "profit": 6.7793600000000005,
+    "url": "https://www.n3dmelbourne.com/design/0065-alakazam",
+    "slug": "0065-alakazam",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "venusaur",
+    "originalName": "0003 - Venusaur",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Mistletoe Green",
+        "grams": 15.42
+      },
+      {
+        "color": "Ice Blue",
+        "grams": 52.73
+      },
+      {
+        "color": "Magenta",
+        "grams": 24.06
+      },
+      {
+        "color": "Sunflower Yellow",
+        "grams": 3.44
+      },
+      {
+        "color": "Dark Brown",
+        "grams": 4.5
+      },
+      {
+        "color": "Pink",
+        "grams": 0.63
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 15.08
+      },
+      {
+        "color": "Ivory White",
+        "grams": 3.83
+      }
+    ],
+    "totalGrams": 119.69,
+    "filamentCost": 1.43628,
+    "profit": 6.56372,
+    "url": "https://www.n3dmelbourne.com/design/0003-venusaur",
+    "slug": "0003-venusaur",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Poke Ball (Hisui)",
+    "originalName": "Poke Ball (Hisui)",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Scarlet Red",
+        "grams": 25.24
+      },
+      {
+        "color": "Latte Brown",
+        "grams": 25.65
+      },
+      {
+        "color": "Ash Gray",
+        "grams": 20.16
+      }
+    ],
+    "totalGrams": 71.05,
+    "filamentCost": 0.8526,
+    "profit": 7.1474,
+    "url": "https://www.n3dmelbourne.com/design/poke-ball-hisui",
+    "slug": "poke-ball-hisui",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "eevee",
+    "originalName": "0133 - Eevee",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Desert Tan",
+        "grams": 17.36
+      },
+      {
+        "color": "Caramel",
+        "grams": 67.83
+      },
+      {
+        "color": "Dark Brown",
+        "grams": 1.26
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 16.08
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      }
+    ],
+    "totalGrams": 103.71,
+    "filamentCost": 1.2445199999999998,
+    "profit": 6.75548,
+    "url": "https://www.n3dmelbourne.com/design/0133-eevee",
+    "slug": "0133-eevee",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "gyarados",
+    "originalName": "0130 - Gyarados",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ivory White",
+        "grams": 10.54
+      },
+      {
+        "color": "Cobalt Blue",
+        "grams": 4.98
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.8
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 16.29
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 67.29
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 1.66
+      }
+    ],
+    "totalGrams": 115.56,
+    "filamentCost": 1.38672,
+    "profit": 6.61328,
+    "url": "https://www.n3dmelbourne.com/design/0130-gyarados",
+    "slug": "0130-gyarados",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "kakuna",
+    "originalName": "0014 - Kakuna",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 25.38
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 17.53
+      },
+      {
+        "color": "Yellow",
+        "grams": 54.52
+      }
+    ],
+    "totalGrams": 98.61,
+    "filamentCost": 1.18332,
+    "profit": 6.81668,
+    "url": "https://www.n3dmelbourne.com/design/0014-kakuna",
+    "slug": "0014-kakuna",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Beast Ball",
+    "originalName": "Beast Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Marine Blue",
+        "grams": 37.21
+      },
+      {
+        "color": "Lemon Yellow",
+        "grams": 12.28
+      },
+      {
+        "color": "Ice Blue",
+        "grams": 62.32
+      },
+      {
+        "color": "Ivory White",
+        "grams": 7.7
+      }
+    ],
+    "totalGrams": 119.51,
+    "filamentCost": 1.43412,
+    "profit": 6.56588,
+    "url": "https://www.n3dmelbourne.com/design/beast-ball",
+    "slug": "beast-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Poke Ball",
+    "originalName": "Poke Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 14.96
+      },
+      {
+        "color": "Ivory White",
+        "grams": 26.01
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 24.52
+      }
+    ],
+    "totalGrams": 65.49,
+    "filamentCost": 0.7858799999999999,
+    "profit": 7.21412,
+    "url": "https://www.n3dmelbourne.com/design/poke-ball",
+    "slug": "poke-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "raichu",
+    "originalName": "0026 - Raichu",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Mandarin Orange",
+        "grams": 49.85
+      },
+      {
+        "color": "Sunflower Yellow",
+        "grams": 13.17
+      },
+      {
+        "color": "Dark Brown",
+        "grams": 4.3
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.25
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 17.6
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 4.79
+      }
+    ],
+    "totalGrams": 90.96,
+    "filamentCost": 1.09152,
+    "profit": 6.90848,
+    "url": "https://www.n3dmelbourne.com/design/0026-raichu",
+    "slug": "0026-raichu",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Luxury Ball",
+    "originalName": "Luxury Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 56.25
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 5.65
+      },
+      {
+        "color": "Gold",
+        "grams": 8.88
+      },
+      {
+        "color": "Silver",
+        "grams": 16.48
+      }
+    ],
+    "totalGrams": 87.26,
+    "filamentCost": 1.04712,
+    "profit": 6.95288,
+    "url": "https://www.n3dmelbourne.com/design/luxury-ball",
+    "slug": "luxury-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "golduck",
+    "originalName": "0055 - Golduck",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Marine Blue",
+        "grams": 58.28
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 0.62
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 5.62
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 20.07
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.78
+      }
+    ],
+    "totalGrams": 100.55,
+    "filamentCost": 1.2066,
+    "profit": 6.7934,
+    "url": "https://www.n3dmelbourne.com/design/0055-golduck",
+    "slug": "0055-golduck",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "pidgeotto",
+    "originalName": "0017 - Pidgeotto",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Latte Brown",
+        "grams": 27.82
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 4.27
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 25.18
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 17.59
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 38.49
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      }
+    ],
+    "totalGrams": 114.53,
+    "filamentCost": 1.37436,
+    "profit": 6.62564,
+    "url": "https://www.n3dmelbourne.com/design/0017-pidgeotto",
+    "slug": "0017-pidgeotto",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "nidoran-f",
+    "originalName": "0029 - Nidoran♀",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Marine Blue",
+        "grams": 2.03
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.69
+      },
+      {
+        "color": "Ice Blue",
+        "grams": 65.19
+      },
+      {
+        "color": "Turquoise",
+        "grams": 1.67
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.85
+      }
+    ],
+    "totalGrams": 85.43,
+    "filamentCost": 1.02516,
+    "profit": 6.97484,
+    "url": "https://www.n3dmelbourne.com/design/0029-nidoran",
+    "slug": "0029-nidoran",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Ultra Ball",
+    "originalName": "Ultra Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ivory White",
+        "grams": 26.42
+      },
+      {
+        "color": "Yellow",
+        "grams": 21.98
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 33.33
+      }
+    ],
+    "totalGrams": 81.73,
+    "filamentCost": 0.9807600000000001,
+    "profit": 7.01924,
+    "url": "https://www.n3dmelbourne.com/design/ultra-ball",
+    "slug": "ultra-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "pikachu",
+    "originalName": "0025 - Pikachu - Female",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ivory White",
+        "grams": 2
+      },
+      {
+        "color": "Dark Brown",
+        "grams": 4
+      },
+      {
+        "color": "Sakura Pink",
+        "grams": 7
+      },
+      {
+        "color": "Lemon Yellow",
+        "grams": 64
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 2
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 17
+      }
+    ],
+    "totalGrams": 96,
+    "filamentCost": 1.1520000000000001,
+    "profit": 6.848,
+    "url": "https://www.n3dmelbourne.com/design/0025-pikachu-female",
+    "slug": "0025-pikachu-female",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Net Ball",
+    "originalName": "Net Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ivory White",
+        "grams": 26
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 49
+      },
+      {
+        "color": "Ocean to Meadow Gradient",
+        "grams": 26
+      }
+    ],
+    "totalGrams": 101,
+    "filamentCost": 1.212,
+    "profit": 6.788,
+    "url": "https://www.n3dmelbourne.com/design/net-ball",
+    "slug": "net-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "dratini",
+    "originalName": "0147 - Dratini",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Cyan",
+        "grams": 46.2
+      },
+      {
+        "color": "Ivory White",
+        "grams": 39.3
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 14.86
+      }
+    ],
+    "totalGrams": 100.36,
+    "filamentCost": 1.20432,
+    "profit": 6.79568,
+    "url": "https://www.n3dmelbourne.com/design/0147-dratini",
+    "slug": "0147-dratini",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Great Ball",
+    "originalName": "Great Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Ivory White",
+        "grams": 26.94
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 11.65
+      },
+      {
+        "color": "Marine Blue",
+        "grams": 26.35
+      },
+      {
+        "color": "Charcoal Black",
+        "grams": 15.58
+      }
+    ],
+    "totalGrams": 80.52,
+    "filamentCost": 0.96624,
+    "profit": 7.03376,
+    "url": "https://www.n3dmelbourne.com/design/great-ball",
+    "slug": "great-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "sandslash",
+    "originalName": "0028 - Sandslash",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Charcoal Black",
+        "grams": 14.75
+      },
+      {
+        "color": "Ivory White",
+        "grams": 1.18
+      },
+      {
+        "color": "Dark Brown",
+        "grams": 59.99
+      },
+      {
+        "color": "Lemon Yellow",
+        "grams": 48.01
+      },
+      {
+        "color": "Desert Tan",
+        "grams": 21.41
+      }
+    ],
+    "totalGrams": 145.34,
+    "filamentCost": 1.74408,
+    "profit": 6.25592,
+    "url": "https://www.n3dmelbourne.com/design/0028-sandslash",
+    "slug": "0028-sandslash",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  },
+  {
+    "name": "Lure Ball",
+    "originalName": "Lure Ball",
+    "category": "Standard",
+    "price": 8.0,
+    "colors": [
+      {
+        "color": "Marine Blue",
+        "grams": 13.3
+      },
+      {
+        "color": "Lemon Yellow",
+        "grams": 7.2
+      },
+      {
+        "color": "Ivory White",
+        "grams": 10.15
+      },
+      {
+        "color": "Scarlet Red",
+        "grams": 7.54
+      }
+    ],
+    "totalGrams": 38.19,
+    "filamentCost": 0.45827999999999997,
+    "profit": 7.54172,
+    "url": "https://www.n3dmelbourne.com/design/lure-ball",
+    "slug": "lure-ball",
+    "lastUpdated": "2026-03-29T05:05:51Z"
+  }
+]
