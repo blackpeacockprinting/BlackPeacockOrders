@@ -18,130 +18,78 @@ jobs:
           N3D_API_KEY: ${{ secrets.N3D_API_KEY }}
         run: |
           echo "Starting N3D API sync..."
-
-          # Create data directory
           mkdir -p data
 
-          # Fetch designs with verbose output
-          echo "Calling N3D API..."
           HTTP_CODE=$(curl -s -w "%{http_code}" -o /tmp/api-response.json             "https://www.n3dmelbourne.com/api/v1/designs?limit=200&page=1&include=details&locale=US"             -H "Authorization: Bearer $N3D_API_KEY"             -H "Content-Type: application/json")
 
           echo "HTTP Response code: $HTTP_CODE"
 
-          # Check if request succeeded
           if [ "$HTTP_CODE" != "200" ]; then
             echo "Error: API returned HTTP $HTTP_CODE"
-            echo "Response content:"
             cat /tmp/api-response.json
             exit 1
           fi
 
-          # Check if response is valid JSON
           if ! jq empty /tmp/api-response.json 2>/dev/null; then
             echo "Error: Invalid JSON response"
             cat /tmp/api-response.json
             exit 1
           fi
 
-          echo "API call successful, processing data..."
-
-          # Save raw response for debugging
-          cp /tmp/api-response.json data/api-debug.json
-
-          # Extract data array
+          echo "API call successful!"
           jq '.data' /tmp/api-response.json > /tmp/designs-array.json
-
           echo "Found $(jq length /tmp/designs-array.json) designs"
 
       - name: Transform designs
         run: |
-          echo "Transforming designs to your format..."
+          echo "Transforming designs..."
 
-          # Transform using jq with explicit error handling
+          # Fix: Use proper jq syntax with double backslashes
           jq '
-            if type != "array" then 
-              error("Expected array, got " + type)
-            else
-              map(
-                if type != "object" then
-                  error("Expected object in array")
-                else
-                  {
-                    name: ((.pokemon.name // .title) | sub("\s+V[0-9]+$"; "")),
-                    originalName: .title,
-                    category: (
-                      if (.title | ascii_downcase | contains("mega")) then "Mega"
-                      elif (.title | ascii_downcase | test("(articuno|zapdos|moltres|mew|mewtwo|celebi|lugia|ho-oh|entei|raikou|suicune|kyogre|groudon|rayquaza|deoxys|jirachi|darkrai|arceus|dialga|palkia|giratina|zekrom)")) then "Event"
-                      elif (.title | ascii_downcase | test("(christmas|halloween|love|galarian)")) then "Special"
-                      else "Standard"
-                      end
-                    ),
-                    price: 8.0,
-                    colors: (.filaments // [] | map({color: .color, grams: .weight_grams})),
-                    totalGrams: (.total_weight_grams // 0),
-                    filamentCost: ((.total_weight_grams // 0) * 0.012),
-                    profit: (8.0 - ((.total_weight_grams // 0) * 0.012)),
-                    url: ("https://www.n3dmelbourne.com/design/" + .slug),
-                    slug: .slug,
-                    lastUpdated: now | todateiso8601
-                  }
+            map({
+              name: ((.pokemon.name // .title) | sub("\\s+V[0-9]+$"; "")),
+              originalName: .title,
+              category: (
+                if (.title | ascii_downcase | contains("mega")) then "Mega"
+                elif (.title | ascii_downcase | test("(articuno|zapdos|moltres|mew|mewtwo|celebi|lugia|ho-oh|entei|raikou|suicune|kyogre|groudon|rayquaza|deoxys|jirachi|darkrai|arceus|dialga|palkia|giratina|zekrom)")) then "Event"
+                elif (.title | ascii_downcase | test("(christmas|halloween|love|galarian)")) then "Special"
+                else "Standard"
                 end
-              )
-            end
+              ),
+              price: 8.0,
+              colors: (.filaments // [] | map({color: .color, grams: .weight_grams})),
+              totalGrams: (.total_weight_grams // 0),
+              filamentCost: ((.total_weight_grams // 0) * 0.012),
+              profit: (8.0 - ((.total_weight_grams // 0) * 0.012)),
+              url: ("https://www.n3dmelbourne.com/design/" + .slug),
+              slug: .slug,
+              lastUpdated: now | todateiso8601
+            })
           ' /tmp/designs-array.json > data/n3d-designs.json
 
-          echo "Transformation complete"
           echo "Saved $(jq length data/n3d-designs.json) designs"
-
-          # Show first design as sample
-          echo "Sample design:"
           jq '.[0] | {name, category, totalGrams}' data/n3d-designs.json
 
       - name: Check for new designs
         run: |
           if [ -f data/n3d-designs-prev.json ]; then
-            echo "Comparing with previous designs..."
-
-            # Get list of slugs from both files
-            NEW_COUNT=$(jq -s '
-              (.[0] | map(.slug)) as $current |
-              (.[1] | map(.slug)) as $previous |
-              $current - $previous |
-              length
-            ' data/n3d-designs.json data/n3d-designs-prev.json)
-
-            echo "New designs found: $NEW_COUNT"
-
-            if [ "$NEW_COUNT" -gt 0 ]; then
-              echo "New design names:"
-              jq -s '
-                (.[0] | map(.slug)) as $current |
-                (.[1] | map(.slug)) as $previous |
-                $current - $previous |
-                .[] as $new_slug |
-                .[0][] | select(.slug == $new_slug) | .name
-              ' data/n3d-designs.json data/n3d-designs-prev.json
-            fi
+            echo "Checking for new designs..."
+            NEW_COUNT=$(jq -s '(.[0] | map(.slug)) - (.[1] | map(.slug)) | length' data/n3d-designs.json data/n3d-designs-prev.json)
+            echo "New designs: $NEW_COUNT"
           else
-            echo "No previous designs file found (first run)"
+            echo "First run - no previous data"
           fi
-
-          # Save current as previous for next comparison
           cp data/n3d-designs.json data/n3d-designs-prev.json
 
       - name: Commit and push
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
-
-          # Add all changes in data folder
           git add data/
-
-          # Check if there are changes to commit
           if git diff --cached --quiet; then
-            echo "No changes to commit"
+            echo "No changes"
           else
             git commit -m "Sync N3D designs: $(date -u '+%Y-%m-%d %H:%M UTC')"
             git push
-            echo "Changes committed and pushed successfully"
+            echo "Changes pushed"
           fi
