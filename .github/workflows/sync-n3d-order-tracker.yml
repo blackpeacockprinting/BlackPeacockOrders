@@ -5,6 +5,9 @@ on:
     - cron: '0 6 * * *'
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   sync-designs:
     runs-on: ubuntu-latest
@@ -44,7 +47,6 @@ jobs:
         run: |
           echo "Transforming designs..."
 
-          # Fix: Use proper jq syntax with double backslashes
           jq '
             map({
               name: ((.pokemon.name // .title) | sub("\\s+V[0-9]+$"; "")),
