@@ -5,585 +5,161 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PokePrint Order Tracker</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            min-height: 100vh;
-            color: #fff;
-            padding: 20px;
+            min-height: 100vh; color: #fff; padding: 20px;
         }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            color: #a0a0a0;
-        }
-
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-size: 2.5em; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin-bottom: 10px; }
+        .header p { color: #a0a0a0; }
         .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px; margin-bottom: 30px; max-width: 1200px; margin-left: auto; margin-right: auto;
         }
-
         .stat-card {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: transform 0.3s;
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);
+            border-radius: 15px; padding: 20px; text-align: center;
+            border: 1px solid rgba(255,255,255,0.2); transition: transform 0.3s;
         }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
+        .stat-card:hover { transform: translateY(-5px); }
         .stat-card.pending { border-top: 4px solid #ff6b6b; }
         .stat-card.printing { border-top: 4px solid #feca57; }
         .stat-card.completed { border-top: 4px solid #48dbfb; }
         .stat-card.filament { border-top: 4px solid #ff9ff3; }
         .stat-card.low-stock { border-top: 4px solid #ff6348; }
         .stat-card.shopping { border-top: 4px solid #54a0ff; }
-
-        .stat-number {
-            font-size: 2em;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .stat-label {
-            font-size: 0.9em;
-            color: #a0a0a0;
-        }
-
-        .actions {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
+        .stat-number { font-size: 2em; font-weight: bold; margin-bottom: 5px; }
+        .stat-label { font-size: 0.9em; color: #a0a0a0; }
+        .actions { display: flex; gap: 10px; justify-content: center; margin-bottom: 30px; flex-wrap: wrap; }
         .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            padding: 12px 24px; border: none; border-radius: 25px; cursor: pointer;
+            font-size: 1em; transition: all 0.3s; display: flex; align-items: center; gap: 8px;
         }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-            color: white;
-        }
-
-        .btn-warning {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-        }
-
-        .btn-info {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
-        }
-
-        .btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-        }
-
-        .customer-section {
-            max-width: 1200px;
-            margin: 0 auto 20px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 15px;
-            overflow: hidden;
-        }
-
+        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .btn-success { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; }
+        .btn-warning { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; }
+        .btn-info { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; }
+        .btn:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .customer-section { max-width: 1200px; margin: 0 auto 20px; background: rgba(255,255,255,0.05); border-radius: 15px; overflow: hidden; }
         .customer-header {
-            background: rgba(255,255,255,0.1);
-            padding: 15px 20px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background 0.3s;
+            background: rgba(255,255,255,0.1); padding: 15px 20px; cursor: pointer;
+            display: flex; justify-content: space-between; align-items: center; transition: background 0.3s;
         }
-
-        .customer-header:hover {
-            background: rgba(255,255,255,0.15);
-        }
-
-        .customer-name {
-            font-size: 1.3em;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .customer-stats {
-            display: flex;
-            gap: 15px;
-            font-size: 0.9em;
-            color: #a0a0a0;
-        }
-
-        .customer-orders {
-            padding: 20px;
-            display: none;
-        }
-
-        .customer-orders.expanded {
-            display: block;
-        }
-
+        .customer-header:hover { background: rgba(255,255,255,0.15); }
+        .customer-name { font-size: 1.3em; font-weight: bold; display: flex; align-items: center; gap: 10px; }
+        .customer-stats { display: flex; gap: 15px; font-size: 0.9em; color: #a0a0a0; }
+        .customer-orders { padding: 20px; display: none; }
+        .customer-orders.expanded { display: block; }
         .order-card {
-            background: rgba(255,255,255,0.08);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-left: 4px solid #667eea;
-            transition: all 0.3s;
+            background: rgba(255,255,255,0.08); border-radius: 10px; padding: 15px;
+            margin-bottom: 15px; border-left: 4px solid #667eea; transition: all 0.3s;
         }
-
-        .order-card:hover {
-            background: rgba(255,255,255,0.12);
-            transform: translateX(5px);
-        }
-
+        .order-card:hover { background: rgba(255,255,255,0.12); transform: translateX(5px); }
         .order-card.pending { border-left-color: #ff6b6b; }
         .order-card.printing { border-left-color: #feca57; }
         .order-card.completed { border-left-color: #48dbfb; }
-
-        .order-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .order-id {
-            font-weight: bold;
-            color: #667eea;
-        }
-
-        .order-status {
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 0.8em;
-            font-weight: bold;
-        }
-
+        .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .order-id { font-weight: bold; color: #667eea; }
+        .order-status { padding: 4px 12px; border-radius: 12px; font-size: 0.8em; font-weight: bold; }
         .status-pending { background: #ff6b6b; }
         .status-printing { background: #feca57; color: #333; }
         .status-completed { background: #48dbfb; color: #333; }
-
-        .order-items {
-            margin: 10px 0;
-        }
-
-        .item-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .item-row:last-child {
-            border-bottom: none;
-        }
-
+        .order-items { margin: 10px 0; }
+        .item-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .item-row:last-child { border-bottom: none; }
         .pokeball {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid #333;
-            flex-shrink: 0;
+            width: 24px; height: 24px; border-radius: 50%; position: relative;
+            overflow: hidden; border: 2px solid #333; flex-shrink: 0;
         }
-
-        .pokeball::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 50%;
-            background: #ff0000;
-        }
-
-        .pokeball::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 50%;
-            background: #fff;
-        }
-
+        .pokeball::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 50%; background: #ff0000; }
+        .pokeball::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 50%; background: #fff; }
         .pokeball-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 8px;
-            height: 8px;
-            background: #fff;
-            border: 2px solid #333;
-            border-radius: 50%;
-            z-index: 1;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 8px; height: 8px; background: #fff; border: 2px solid #333; border-radius: 50%; z-index: 1;
         }
-
-        .pokeball.great {
-            border-color: #4169e1;
-        }
+        .pokeball.great { border-color: #4169e1; }
         .pokeball.great::before { background: #4169e1; }
-
-        .pokeball.ultra {
-            border-color: #ffd700;
-        }
+        .pokeball.ultra { border-color: #ffd700; }
         .pokeball.ultra::before { background: #ffd700; }
-
-        .pokeball.master {
-            border-color: #800080;
-        }
+        .pokeball.master { border-color: #800080; }
         .pokeball.master::before { background: #800080; }
-
-        .pokeball.shiny {
-            border-color: #ffd700;
-            box-shadow: 0 0 10px #ffd700;
-        }
+        .pokeball.shiny { border-color: #ffd700; box-shadow: 0 0 10px #ffd700; }
         .pokeball.shiny::before { background: linear-gradient(135deg, #ffd700, #ffed4e); }
-
-        .item-details {
-            flex: 1;
-        }
-
-        .item-name {
-            font-weight: 500;
-        }
-
-        .item-filament {
-            font-size: 0.8em;
-            color: #a0a0a0;
-        }
-
-        .badges {
-            display: flex;
-            gap: 5px;
-        }
-
-        .badge {
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 0.7em;
-            font-weight: bold;
-        }
-
-        .badge-shiny {
-            background: linear-gradient(135deg, #ffd700, #ffed4e);
-            color: #333;
-        }
-
-        .badge-mystery {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-        }
-
-        .order-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .btn-small {
-            padding: 6px 12px;
-            font-size: 0.8em;
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
+        .item-details { flex: 1; }
+        .item-name { font-weight: 500; }
+        .item-filament { font-size: 0.8em; color: #a0a0a0; }
+        .badges { display: flex; gap: 5px; }
+        .badge { padding: 2px 8px; border-radius: 10px; font-size: 0.7em; font-weight: bold; }
+        .badge-shiny { background: linear-gradient(135deg, #ffd700, #ffed4e); color: #333; }
+        .badge-mystery { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .order-actions { display: flex; gap: 10px; margin-top: 10px; }
+        .btn-small { padding: 6px 12px; font-size: 0.8em; border: none; border-radius: 15px; cursor: pointer; transition: all 0.3s; }
         .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px;
         }
-
-        .modal.active {
-            display: flex;
-        }
-
+        .modal.active { display: flex; }
         .modal-content {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 600px;
-            width: 100%;
-            max-height: 80vh;
-            overflow-y: auto;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 20px;
+            padding: 30px; max-width: 900px; width: 100%; max-height: 80vh; overflow-y: auto;
             border: 1px solid rgba(255,255,255,0.2);
         }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-title { font-size: 1.5em; display: flex; align-items: center; gap: 10px; }
+        .close-btn { background: none; border: none; color: #fff; font-size: 1.5em; cursor: pointer; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; color: #a0a0a0; }
+        .form-group input, .form-group select {
+            width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px; background: rgba(255,255,255,0.1); color: #fff; font-size: 1em;
         }
-
-        .modal-title {
-            font-size: 1.5em;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 1.5em;
-            cursor: pointer;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #a0a0a0;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 8px;
-            background: rgba(255,255,255,0.1);
-            color: #fff;
-            font-size: 1em;
-        }
-
-        .filament-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-        }
-
+        .filament-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
         .filament-card {
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-            border: 2px solid transparent;
-            transition: all 0.3s;
+            background: rgba(255,255,255,0.1); border-radius: 10px; padding: 15px;
+            text-align: center; border: 2px solid transparent; transition: all 0.3s;
         }
-
-        .filament-card:hover {
-            border-color: #667eea;
-            transform: scale(1.02);
-        }
-
-        .filament-card.low-stock {
-            border-color: #ff6348;
-            background: rgba(255,99,71,0.1);
-        }
-
-        .filament-color {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin: 0 auto 10px;
-            border: 3px solid #fff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-
-        .filament-name {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .filament-amount {
-            font-size: 1.2em;
-            color: #48dbfb;
-            margin-bottom: 10px;
-        }
-
-        .filament-actions {
-            display: flex;
-            gap: 5px;
-            justify-content: center;
-        }
-
-        .btn-tiny {
-            padding: 4px 8px;
-            font-size: 0.75em;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-
-        .shopping-list {
-            list-style: none;
-        }
-
-        .shopping-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            background: rgba(255,99,71,0.1);
-            border-radius: 8px;
-            margin-bottom: 8px;
-            border-left: 4px solid #ff6348;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #a0a0a0;
-        }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(255,255,255,0.1);
-            border-top-color: #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .sync-status {
-            text-align: center;
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-            display: none;
-        }
-
-        .sync-status.success {
-            background: rgba(72,219,251,0.2);
-            border: 1px solid #48dbfb;
-            display: block;
-        }
-
-        .sync-status.error {
-            background: rgba(255,107,107,0.2);
-            border: 1px solid #ff6b6b;
-            display: block;
-        }
+        .filament-card:hover { border-color: #667eea; transform: scale(1.02); }
+        .filament-card.low-stock { border-color: #ff6348; background: rgba(255,99,71,0.1); }
+        .filament-color { width: 50px; height: 50px; border-radius: 50%; margin: 0 auto 10px; border: 3px solid #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        .filament-name { font-weight: bold; margin-bottom: 5px; font-size: 0.95em; }
+        .filament-amount { font-size: 1.4em; color: #48dbfb; margin-bottom: 10px; font-weight: bold; }
+        .filament-actions { display: flex; gap: 5px; justify-content: center; }
+        .btn-tiny { padding: 6px 12px; font-size: 0.8em; border: none; border-radius: 15px; cursor: pointer; font-weight: bold; }
+        .shopping-list { list-style: none; }
+        .shopping-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(255,99,71,0.1); border-radius: 8px; margin-bottom: 8px; border-left: 4px solid #ff6348; }
+        .loading { text-align: center; padding: 40px; color: #a0a0a0; }
+        .spinner { width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1); border-top-color: #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .sync-status { text-align: center; padding: 10px; margin-bottom: 20px; border-radius: 10px; display: none; }
+        .sync-status.success { background: rgba(72,219,251,0.2); border: 1px solid #48dbfb; display: block; }
+        .sync-status.error { background: rgba(255,107,107,0.2); border: 1px solid #ff6b6b; display: block; }
+        .sync-status.info { background: rgba(102,126,234,0.2); border: 1px solid #667eea; display: block; }
     </style>
-<base target="_blank">
 </head>
 <body>
     <div class="header">
         <h1>⚡ PokePrint Order Tracker</h1>
         <p>Manage orders, track filament, catch 'em all!</p>
     </div>
-
     <div id="syncStatus" class="sync-status"></div>
-
     <div class="stats-grid">
-        <div class="stat-card pending">
-            <div class="stat-number" id="pendingCount">0</div>
-            <div class="stat-label">Pending</div>
-        </div>
-        <div class="stat-card printing">
-            <div class="stat-number" id="printingCount">0</div>
-            <div class="stat-label">Printing</div>
-        </div>
-        <div class="stat-card completed">
-            <div class="stat-number" id="completedCount">0</div>
-            <div class="stat-label">Completed</div>
-        </div>
-        <div class="stat-card filament">
-            <div class="stat-number" id="filamentCount">0</div>
-            <div class="stat-label">Filament Colors</div>
-        </div>
-        <div class="stat-card low-stock">
-            <div class="stat-number" id="lowStockCount">0</div>
-            <div class="stat-label">Low Stock</div>
-        </div>
-        <div class="stat-card shopping">
-            <div class="stat-number" id="shoppingCount">0</div>
-            <div class="stat-label">Shopping List</div>
-        </div>
+        <div class="stat-card pending"><div class="stat-number" id="pendingCount">0</div><div class="stat-label">Pending</div></div>
+        <div class="stat-card printing"><div class="stat-number" id="printingCount">0</div><div class="stat-label">Printing</div></div>
+        <div class="stat-card completed"><div class="stat-number" id="completedCount">0</div><div class="stat-label">Completed</div></div>
+        <div class="stat-card filament"><div class="stat-number" id="filamentCount">0</div><div class="stat-label">Filament Colors</div></div>
+        <div class="stat-card low-stock"><div class="stat-number" id="lowStockCount">0</div><div class="stat-label">Low Stock</div></div>
+        <div class="stat-card shopping"><div class="stat-number" id="shoppingCount">0</div><div class="stat-label">Shopping List</div></div>
     </div>
-
     <div class="actions">
-        <button class="btn btn-primary" onclick="syncOrders()">
-            🔄 Sync Orders
-        </button>
-        <button class="btn btn-success" onclick="openNewOrderModal()">
-            ➕ New Order
-        </button>
-        <button class="btn btn-warning" onclick="openFilamentModal()">
-            🧵 Filament
-        </button>
-        <button class="btn btn-info" onclick="openShoppingModal()">
-            🛒 Shopping
-        </button>
+        <button class="btn btn-primary" onclick="syncOrders()">🔄 Sync Orders</button>
+        <button class="btn btn-success" onclick="openNewOrderModal()">➕ New Order</button>
+        <button class="btn btn-warning" onclick="openFilamentModal()">🧵 Filament</button>
+        <button class="btn btn-info" onclick="openShoppingModal()">🛒 Shopping</button>
+        <button class="btn btn-primary" onclick="syncN3DFilaments()">🎨 Sync N3D Colors</button>
     </div>
-
-    <div id="ordersContainer">
-        <div class="loading">
-            <div class="spinner"></div>
-            <p>Loading orders from Google Sheets...</p>
-        </div>
-    </div>
-
-    <!-- New Order Modal -->
+    <div id="ordersContainer"><div class="loading"><div class="spinner"></div><p>Loading orders from Google Sheets...</p></div></div>
     <div id="newOrderModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -605,16 +181,6 @@
                         <input type="text" class="item-name" placeholder="Pokemon/Item name" required>
                         <select class="item-filament" style="margin-top: 5px;">
                             <option value="">Select Filament Color</option>
-                            <option value="Red">Red</option>
-                            <option value="Blue">Blue</option>
-                            <option value="Green">Green</option>
-                            <option value="Yellow">Yellow</option>
-                            <option value="Black">Black</option>
-                            <option value="White">White</option>
-                            <option value="Purple">Purple</option>
-                            <option value="Orange">Orange</option>
-                            <option value="Pink">Pink</option>
-                            <option value="Gray">Gray</option>
                         </select>
                         <label style="margin-top: 5px;">
                             <input type="checkbox" class="item-shiny"> Shiny
@@ -624,577 +190,196 @@
                         </label>
                     </div>
                 </div>
-                <button type="button" class="btn btn-info" onclick="addItemField()" style="margin-bottom: 15px;">
-                    ➕ Add Item
-                </button>
-                <button type="submit" class="btn btn-success" style="width: 100%;">
-                    Create Order
-                </button>
+                <button type="button" class="btn btn-info" onclick="addItemField()" style="margin-bottom: 15px;">➕ Add Item</button>
+                <button type="submit" class="btn btn-success" style="width: 100%;">Create Order</button>
             </form>
         </div>
     </div>
-
-    <!-- Filament Modal -->
     <div id="filamentModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title">🧵 Filament Inventory</div>
+                <div class="modal-title">🧵 Filament Inventory (N3D Colors)</div>
                 <button class="close-btn" onclick="closeModal('filamentModal')">&times;</button>
             </div>
-            <div id="filamentContainer" class="filament-grid">
-                <!-- Filament cards loaded here -->
-            </div>
+            <div id="filamentContainer" class="filament-grid"></div>
         </div>
     </div>
-
-    <!-- Shopping Modal -->
     <div id="shoppingModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="modal-title">🛒 Shopping List</div>
                 <button class="close-btn" onclick="closeModal('shoppingModal')">&times;</button>
             </div>
-            <ul id="shoppingList" class="shopping-list">
-                <!-- Shopping items loaded here -->
-            </ul>
+            <ul id="shoppingList" class="shopping-list"></ul>
         </div>
     </div>
-
     <script>
-        // YOUR PUBLISHED CSV URL - Form Responses 1
         const PUBLISHED_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSk8BdvDMwzoPI2A5X863_8OAXKaSWs5a-aijyX7qMJRWFDoquKJs3gM20wcS-ggas_UuGjU8mCmz1V/pub?gid=1413466324&single=true&output=csv';
-
+        const N3D_DESIGNS_URL = 'https://raw.githubusercontent.com/blackpeacockprinting/BlackPeacockOrders/main/data/n3d-designs.json';
         const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxYb6EcK1jZHkrgYw-Ha3rUcDzV6v6O2DxtqD0eC5zE0i7NhXhO8pD6V9q0W1v2x3y4z5/exec';
-
-        // State
-        let orders = [];
-        let filaments = {};
-        let customers = {};
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            loadFilaments();
-            syncOrders(); // Auto-sync on load now that we have the URL
-        });
-
-        // Filament Management
+        let orders = [], filaments = {}, customers = [], n3dDesigns = [];
+        document.addEventListener('DOMContentLoaded', () => { loadFilaments(); syncOrders(); });
         function loadFilaments() {
             const saved = localStorage.getItem('pokeprint_filaments');
-            if (saved) {
-                filaments = JSON.parse(saved);
-            } else {
-                const defaultColors = ['Red', 'Blue', 'Green', 'Yellow', 'Black', 'White', 'Purple', 'Orange', 'Pink', 'Gray'];
-                defaultColors.forEach(color => {
-                    filaments[color] = { amount: 1000, color: getColorHex(color) };
-                });
+            if (saved) { filaments = JSON.parse(saved); updateStats(); updateFilamentDropdowns(); }
+            else { filaments = {}; updateStats(); }
+        }
+        function saveFilaments() { localStorage.setItem('pokeprint_filaments', JSON.stringify(filaments)); updateStats(); updateFilamentDropdowns(); }
+        async function syncN3DFilaments() {
+            showSyncStatus('Fetching N3D filament colors...', 'info');
+            try {
+                const response = await fetch(N3D_DESIGNS_URL);
+                if (!response.ok) throw new Error('Failed to fetch N3D designs');
+                n3dDesigns = await response.json();
+                const uniqueColors = new Set();
+                n3dDesigns.forEach(design => { if (design.colors && Array.isArray(design.colors)) { design.colors.forEach(c => { if (c.color) uniqueColors.add(c.color); }); } });
+                const colorList = Array.from(uniqueColors).sort();
+                let addedCount = 0;
+                colorList.forEach(colorName => { if (!filaments[colorName]) { filaments[colorName] = { amount: 1000, color: generateColorHex(colorName) }; addedCount++; } });
                 saveFilaments();
-            }
-            updateStats();
+                if (addedCount > 0) showSyncStatus(`✅ Added ${addedCount} N3D filament colors! Total: ${colorList.length} colors`, 'success');
+                else showSyncStatus(`✅ All ${colorList.length} N3D colors already loaded`, 'success');
+                if (document.getElementById('filamentModal').classList.contains('active')) renderFilaments();
+            } catch (error) { showSyncStatus('❌ Failed to fetch N3D colors: ' + error.message, 'error'); }
         }
-
-        function saveFilaments() {
-            localStorage.setItem('pokeprint_filaments', JSON.stringify(filaments));
-            updateStats();
+        function generateColorHex(colorName) {
+            const colorMap = { 'Ivory White': '#FFFFF0', 'Charcoal Black': '#36454F', 'Scarlet Red': '#FF2400', 'Marine Blue': '#0077BE', 'Lilac Purple': '#C8A2C8', 'Sakura Pink': '#FFB7C5', 'Turquoise': '#40E0D0', 'Mandarin Orange': '#F37A48', 'Sunflower Yellow': '#FFC512', 'Grass Green': '#7CFC00', 'Ice Blue': '#B0E0E6', 'Sky Blue': '#87CEEB', 'Ash Gray': '#B2BEB5', 'Dark Gray': '#A9A9A9', 'Light Gray': '#D3D3D3', 'Nardo Gray': '#686A6C', 'Desert Tan': '#C2B280', 'Caramel': '#FFD59A', 'Latte Brown': '#C5A582', 'Dark Brown': '#654321', 'Bone White': '#E3DAC9', 'Beige': '#F5F5DC', 'Hot Pink': '#FF69B4', 'Purple': '#800080', 'Indigo Purple': '#4B0082', 'Gold': '#FFD700', 'Silver': '#C0C0C0', 'Bambu Green': '#8FBC8F', 'Apple Green': '#8DB600', 'Lemon Yellow': '#FFF44F', 'Mistletoe Green': '#3B7A57', 'Dark Green': '#006400', 'Dark Blue': '#00008B', 'Cobalt Blue': '#0047AB', 'Blue Grey': '#6699CC', 'Blue': '#0000FF', 'Red': '#FF0000', 'Yellow': '#FFFF00', 'Orange': '#FFA500', 'Pink': '#FFC0CB', 'Green': '#008000', 'Cyan': '#00FFFF', 'Magenta': '#FF00FF', 'Plum': '#DDA0DD', 'Terracotta': '#E2725B', 'Dark Red': '#8B0000', 'Navy': '#000080', 'Teal': '#008080', 'Olive': '#808000', 'Maroon': '#800000', 'Lime': '#00FF00', 'Aqua': '#00FFFF', 'Coral': '#FF7F50', 'Crimson': '#DC143C', 'Fire Brick': '#B22222', 'Forest Green': '#228B22', 'Golden Rod': '#DAA520', 'Indian Red': '#CD5C5C', 'Medium Blue': '#0000CD', 'Medium Purple': '#9370DB', 'Midnight Blue': '#191970', 'Olive Drab': '#6B8E23', 'Orange Red': '#FF4500', 'Pale Green': '#98FB98', 'Pale Violet Red': '#DB7093', 'Peru': '#CD853F', 'Royal Blue': '#4169E1', 'Saddle Brown': '#8B4513', 'Salmon': '#FA8072', 'Sandy Brown': '#F4A460', 'Sea Green': '#2E8B57', 'Sienna': '#A0522D', 'Slate Blue': '#6A5ACD', 'Slate Gray': '#708090', 'Spring Green': '#00FF7F', 'Steel Blue': '#4682B4', 'Tan': '#D2B48C', 'Thistle': '#D8BFD8', 'Tomato': '#FF6347', 'Violet': '#EE82EE', 'Wheat': '#F5DEB3', 'Yellow Green': '#9ACD32' };
+            if (colorMap[colorName]) return colorMap[colorName];
+            for (const [key, value] of Object.entries(colorMap)) { if (colorName.toLowerCase().includes(key.toLowerCase()) || key.toLowerCase().includes(colorName.toLowerCase())) return value; }
+            let hash = 0; for (let i = 0; i < colorName.length; i++) { hash = colorName.charCodeAt(i) + ((hash << 5) - hash); }
+            const c = (hash & 0x00FFFFFF).toString(16).toUpperCase(); return '#' + '00000'.substring(0, 6 - c.length) + c;
         }
-
-        function getColorHex(colorName) {
-            const colors = {
-                'Red': '#ff4757', 'Blue': '#3742fa', 'Green': '#2ed573',
-                'Yellow': '#ffa502', 'Black': '#2f3542', 'White': '#f1f2f6',
-                'Purple': '#8e44ad', 'Orange': '#e67e22', 'Pink': '#ff6b81',
-                'Gray': '#747d8c'
-            };
-            return colors[colorName] || '#747d8c';
+        function updateFilamentDropdowns() {
+            const dropdowns = document.querySelectorAll('.item-filament'), colors = Object.keys(filaments).sort();
+            dropdowns.forEach(dropdown => { const currentValue = dropdown.value; dropdown.innerHTML = '<option value="">Select Filament Color</option>'; colors.forEach(color => { const option = document.createElement('option'); option.value = color; option.textContent = color; dropdown.appendChild(option); }); if (currentValue) dropdown.value = currentValue; });
         }
-
-        function addFilament(color, amount) {
-            if (!filaments[color]) {
-                filaments[color] = { amount: 0, color: getColorHex(color) };
-            }
-            filaments[color].amount += amount;
-            saveFilaments();
-            renderFilaments();
-        }
-
-        function subtractFilament(color, amount) {
-            if (filaments[color]) {
-                filaments[color].amount = Math.max(0, filaments[color].amount - amount);
-                saveFilaments();
-                renderFilaments();
-            }
-        }
-
-        // PROPER CSV PARSER that handles multi-line cells
         function parseCSV(csvText) {
-            const rows = [];
-            let currentRow = [];
-            let currentCell = '';
-            let insideQuotes = false;
-            let i = 0;
-
+            const rows = []; let currentRow = []; let currentCell = ''; let insideQuotes = false; let i = 0;
             while (i < csvText.length) {
-                const char = csvText[i];
-                const nextChar = csvText[i + 1];
-
+                const char = csvText[i], nextChar = csvText[i + 1];
                 if (insideQuotes) {
-                    if (char === '"') {
-                        if (nextChar === '"') {
-                            currentCell += '"';
-                            i += 2;
-                            continue;
-                        } else {
-                            insideQuotes = false;
-                        }
-                    } else {
-                        currentCell += char;
-                    }
+                    if (char === '"') { if (nextChar === '"') { currentCell += '"'; i += 2; continue; } else insideQuotes = false; }
+                    else currentCell += char;
                 } else {
-                    if (char === '"') {
-                        insideQuotes = true;
-                    } else if (char === ',') {
-                        currentRow.push(currentCell.trim());
-                        currentCell = '';
-                    } else if (char === '\n' || char === '\r') {
-                        if (currentCell || currentRow.length > 0) {
-                            currentRow.push(currentCell.trim());
-                            rows.push(currentRow);
-                            currentRow = [];
-                            currentCell = '';
-                        }
-                        if (char === '\r' && nextChar === '\n') {
-                            i++;
-                        }
-                    } else {
-                        currentCell += char;
-                    }
+                    if (char === '"') insideQuotes = true;
+                    else if (char === ',') { currentRow.push(currentCell.trim()); currentCell = ''; }
+                    else if (char === '\n' || char === '\r') {
+                        if (currentCell || currentRow.length > 0) { currentRow.push(currentCell.trim()); rows.push(currentRow); currentRow = []; currentCell = ''; }
+                        if (char === '\r' && nextChar === '\n') i++;
+                    } else currentCell += char;
                 }
                 i++;
             }
-
-            if (currentCell || currentRow.length > 0) {
-                currentRow.push(currentCell.trim());
-                rows.push(currentRow);
-            }
-
+            if (currentCell || currentRow.length > 0) { currentRow.push(currentCell.trim()); rows.push(currentRow); }
             if (rows.length === 0) return [];
-
-            const headers = rows[0].map(h => h.trim());
-            const orders = [];
-
+            const headers = rows[0].map(h => h.trim()), orders = [];
             for (let i = 1; i < rows.length; i++) {
-                const row = rows[i];
-                if (row.length < 2) continue;
-
-                const order = {};
-                headers.forEach((header, index) => {
-                    order[header] = row[index] || '';
-                });
-
+                const row = rows[i]; if (row.length < 2) continue;
+                const order = {}; headers.forEach((header, index) => { order[header] = row[index] || ''; });
                 const orderId = order['Order ID'] || order['OrderID'] || order['ID'] || `ORD-${i}`;
                 const customer = order['Customer'] || order['Customer Name'] || order['Name'] || 'Unknown';
                 const status = order['Status'] || order['Order Status'] || 'Pending';
                 const orderDetails = order['Order Details'] || order['Items'] || order['Details'] || '';
-
-                if (orderId && customer) {
-                    orders.push({
-                        id: orderId,
-                        customer: customer,
-                        status: status,
-                        items: parseItems(orderDetails),
-                        date: order['Date'] || order['Timestamp'] || new Date().toISOString().split('T')[0]
-                    });
-                }
+                if (orderId && customer) orders.push({ id: orderId, customer: customer, status: status, items: parseItems(orderDetails), date: order['Date'] || order['Timestamp'] || new Date().toISOString().split('T')[0] });
             }
-
             return orders;
         }
-
         function parseItems(itemsText) {
             if (!itemsText) return [];
-
-            const items = [];
-            const lines = itemsText.split(/[;\n]/);
-
+            const items = [], lines = itemsText.split(/[;\n]/);
             lines.forEach(line => {
-                line = line.trim();
-                if (!line) return;
-
+                line = line.trim(); if (!line) return;
                 const shiny = line.toLowerCase().includes('shiny') || line.includes('✨');
                 const mystery = line.toLowerCase().includes('mystery') || line.includes('❓');
-
                 let name = line.replace(/shiny|mystery|✨|❓/gi, '').trim();
-
-                let filament = 'White';
-                const colors = ['Red', 'Blue', 'Green', 'Yellow', 'Black', 'White', 'Purple', 'Orange', 'Pink', 'Gray'];
-                for (const color of colors) {
-                    if (line.toLowerCase().includes(color.toLowerCase())) {
-                        filament = color;
-                        break;
-                    }
-                }
-
-                items.push({
-                    name: name,
-                    filament: filament,
-                    shiny: shiny,
-                    mystery: mystery,
-                    pokeball: shiny ? 'shiny' : 'normal'
-                });
+                let filament = 'Ivory White';
+                const knownColors = Object.keys(filaments).length > 0 ? Object.keys(filaments) : [];
+                for (const color of knownColors) { if (line.toLowerCase().includes(color.toLowerCase())) { filament = color; break; } }
+                items.push({ name: name, filament: filament, shiny: shiny, mystery: mystery, pokeball: shiny ? 'shiny' : 'normal' });
             });
-
             return items;
         }
-
-        // Order Management
         async function syncOrders() {
             showSyncStatus('Syncing orders...', 'info');
-
             try {
-                console.log('Fetching from:', PUBLISHED_CSV_URL);
                 const response = await fetch(PUBLISHED_CSV_URL);
-
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                }
-
-                const csvText = await response.text();
-                console.log('CSV received, length:', csvText.length);
-                console.log('First 500 chars:', csvText.substring(0, 500));
-
-                orders = parseCSV(csvText);
-
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const csvText = await response.text(); orders = parseCSV(csvText);
                 localStorage.setItem('pokeprint_orders', JSON.stringify(orders));
-
-                groupOrdersByCustomer();
-                renderOrders();
-                updateStats();
-
-                if (orders.length === 0) {
-                    showSyncStatus('⚠️ No orders found in sheet', 'error');
-                } else {
-                    showSyncStatus(`✅ Synced ${orders.length} orders`, 'success');
-                }
+                groupOrdersByCustomer(); renderOrders(); updateStats();
+                if (orders.length === 0) showSyncStatus('⚠️ No orders found', 'error');
+                else showSyncStatus(`✅ Synced ${orders.length} orders`, 'success');
             } catch (error) {
-                console.error('Sync error:', error);
                 showSyncStatus('❌ Sync failed: ' + error.message, 'error');
-
-                // Load from localStorage as fallback
                 const saved = localStorage.getItem('pokeprint_orders');
-                if (saved) {
-                    orders = JSON.parse(saved);
-                    groupOrdersByCustomer();
-                    renderOrders();
-                    showSyncStatus(`⚠️ Using cached data (${orders.length} orders)`, 'error');
-                }
+                if (saved) { orders = JSON.parse(saved); groupOrdersByCustomer(); renderOrders(); }
             }
         }
-
-        function groupOrdersByCustomer() {
-            customers = {};
-            orders.forEach(order => {
-                const customerName = order.customer || 'Unknown';
-                if (!customers[customerName]) {
-                    customers[customerName] = [];
-                }
-                customers[customerName].push(order);
-            });
-        }
-
+        function groupOrdersByCustomer() { customers = {}; orders.forEach(order => { const customerName = order.customer || 'Unknown'; if (!customers[customerName]) customers[customerName] = []; customers[customerName].push(order); }); }
         function renderOrders() {
             const container = document.getElementById('ordersContainer');
-
-            if (Object.keys(customers).length === 0) {
-                container.innerHTML = '<div class="loading"><p>No orders to display</p></div>';
-                return;
-            }
-
+            if (Object.keys(customers).length === 0) { container.innerHTML = '<div class="loading"><p>No orders to display</p></div>'; return; }
             let html = '';
-
             Object.keys(customers).sort().forEach(customer => {
                 const customerOrders = customers[customer];
                 const pendingCount = customerOrders.filter(o => o.status === 'Pending').length;
                 const printingCount = customerOrders.filter(o => o.status === 'Printing').length;
                 const completedCount = customerOrders.filter(o => o.status === 'Completed').length;
-
-                html += `
-                    <div class="customer-section">
-                        <div class="customer-header" onclick="toggleCustomer('${customer.replace(/'/g, "\'")}')">
-                            <div class="customer-name">
-                                👤 ${customer}
-                            </div>
-                            <div class="customer-stats">
-                                <span>📝 ${customerOrders.length} orders</span>
-                                ${pendingCount > 0 ? `<span style="color: #ff6b6b">⏳ ${pendingCount}</span>` : ''}
-                                ${printingCount > 0 ? `<span style="color: #feca57">🖨️ ${printingCount}</span>` : ''}
-                                ${completedCount > 0 ? `<span style="color: #48dbfb">✅ ${completedCount}</span>` : ''}
-                            </div>
-                        </div>
-                        <div class="customer-orders expanded" id="customer-${customer.replace(/\s+/g, '-').replace(/'/g, '')}">
-                            ${customerOrders.map(order => renderOrderCard(order)).join('')}
-                        </div>
-                    </div>
-                `;
+                html += `<div class="customer-section"><div class="customer-header" onclick="toggleCustomer('${customer.replace(/'/g, "\\'")}')"><div class="customer-name">👤 ${customer}</div><div class="customer-stats"><span>📝 ${customerOrders.length} orders</span>${pendingCount > 0 ? `<span style="color: #ff6b6b">⏳ ${pendingCount}</span>` : ''}${printingCount > 0 ? `<span style="color: #feca57">🖨️ ${printingCount}</span>` : ''}${completedCount > 0 ? `<span style="color: #48dbfb">✅ ${completedCount}</span>` : ''}</div></div><div class="customer-orders expanded" id="customer-${customer.replace(/\s+/g, '-').replace(/'/g, '')}">${customerOrders.map(order => renderOrderCard(order)).join('')}</div></div>`;
             });
-
             container.innerHTML = html;
         }
-
         function renderOrderCard(order) {
             const statusClass = (order.status || 'pending').toLowerCase();
-
-            return `
-                <div class="order-card ${statusClass}">
-                    <div class="order-header">
-                        <span class="order-id">#${order.id}</span>
-                        <span class="order-status status-${statusClass}">${order.status || 'Pending'}</span>
-                    </div>
-                    <div class="order-items">
-                        ${order.items.map(item => `
-                            <div class="item-row">
-                                <div class="pokeball ${item.pokeball} ${item.shiny ? 'shiny' : ''}">
-                                    <div class="pokeball-center"></div>
-                                </div>
-                                <div class="item-details">
-                                    <div class="item-name">${item.name}</div>
-                                    <div class="item-filament">${item.filament}</div>
-                                </div>
-                                <div class="badges">
-                                    ${item.shiny ? '<span class="badge badge-shiny">✨ SHINY</span>' : ''}
-                                    ${item.mystery ? '<span class="badge badge-mystery">❓ MYSTERY</span>' : ''}
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                    <div class="order-actions">
-                        ${order.status !== 'Pending' ? `<button class="btn-small" onclick="updateStatus('${order.id}', 'Pending')" style="background: #ff6b6b;">⏳ Pending</button>` : ''}
-                        ${order.status !== 'Printing' ? `<button class="btn-small" onclick="updateStatus('${order.id}', 'Printing')" style="background: #feca57; color: #333;">🖨️ Printing</button>` : ''}
-                        ${order.status !== 'Completed' ? `<button class="btn-small" onclick="completeOrder('${order.id}')" style="background: #48dbfb; color: #333;">✅ Complete</button>` : ''}
-                    </div>
-                </div>
-            `;
+            return `<div class="order-card ${statusClass}"><div class="order-header"><span class="order-id">#${order.id}</span><span class="order-status status-${statusClass}">${order.status || 'Pending'}</span></div><div class="order-items">${order.items.map(item => `<div class="item-row"><div class="pokeball ${item.pokeball} ${item.shiny ? 'shiny' : ''}"><div class="pokeball-center"></div></div><div class="item-details"><div class="item-name">${item.name}</div><div class="item-filament">${item.filament}</div></div><div class="badges">${item.shiny ? '<span class="badge badge-shiny">✨ SHINY</span>' : ''}${item.mystery ? '<span class="badge badge-mystery">❓ MYSTERY</span>' : ''}</div></div>`).join('')}</div><div class="order-actions">${order.status !== 'Pending' ? `<button class="btn-small" onclick="updateStatus('${order.id}', 'Pending')" style="background: #ff6b6b;">⏳ Pending</button>` : ''}${order.status !== 'Printing' ? `<button class="btn-small" onclick="updateStatus('${order.id}', 'Printing')" style="background: #feca57; color: #333;">🖨️ Printing</button>` : ''}${order.status !== 'Completed' ? `<button class="btn-small" onclick="completeOrder('${order.id}')" style="background: #48dbfb; color: #333;">✅ Complete</button>` : ''}</div></div>`;
         }
-
-        function toggleCustomer(customer) {
-            const safeId = customer.replace(/\s+/g, '-').replace(/'/g, '');
-            const el = document.getElementById(`customer-${safeId}`);
-            if (el) el.classList.toggle('expanded');
-        }
-
-        async function updateStatus(orderId, status) {
-            const order = orders.find(o => o.id === orderId);
-            if (order) {
-                order.status = status;
-                await pushToGoogleSheets(order);
-                groupOrdersByCustomer();
-                renderOrders();
-                updateStats();
-            }
-        }
-
+        function toggleCustomer(customer) { const safeId = customer.replace(/\s+/g, '-').replace(/'/g, ''); const el = document.getElementById(`customer-${safeId}`); if (el) el.classList.toggle('expanded'); }
+        async function updateStatus(orderId, status) { const order = orders.find(o => o.id === orderId); if (order) { order.status = status; await pushToGoogleSheets(order); groupOrdersByCustomer(); renderOrders(); updateStats(); } }
         async function completeOrder(orderId) {
             const order = orders.find(o => o.id === orderId);
-            if (order) {
-                order.items.forEach(item => {
-                    if (item.filament) {
-                        subtractFilament(item.filament, 50);
-                    }
-                });
-
-                order.status = 'Completed';
-                await pushToGoogleSheets(order);
-                groupOrdersByCustomer();
-                renderOrders();
-                updateStats();
-
-                showSyncStatus(`✅ Order ${orderId} completed! Filament deducted.`, 'success');
-            }
+            if (order) { order.items.forEach(item => { if (item.filament) subtractFilament(item.filament, 50); }); order.status = 'Completed'; await pushToGoogleSheets(order); groupOrdersByCustomer(); renderOrders(); updateStats(); showSyncStatus(`✅ Order ${orderId} completed! Filament deducted.`, 'success'); }
         }
-
-        async function pushToGoogleSheets(order) {
-            try {
-                await fetch(WEB_APP_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(order)
-                });
-            } catch (e) {
-                console.log('Push to sheets (no-cors mode)');
-            }
-        }
-
-        // New Order
-        function openNewOrderModal() {
-            document.getElementById('newOrderModal').classList.add('active');
-        }
-
+        async function pushToGoogleSheets(order) { try { await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(order) }); } catch (e) { console.log('Push to sheets (no-cors mode)'); } }
+        function addFilament(color, amount) { if (!filaments[color]) filaments[color] = { amount: 0, color: generateColorHex(color) }; filaments[color].amount += amount; saveFilaments(); renderFilaments(); }
+        function subtractFilament(color, amount) { if (filaments[color]) { filaments[color].amount = Math.max(0, filaments[color].amount - amount); saveFilaments(); renderFilaments(); } }
+        function openNewOrderModal() { updateFilamentDropdowns(); document.getElementById('newOrderModal').classList.add('active'); }
         function addItemField() {
-            const container = document.getElementById('itemsContainer');
-            const itemNum = container.children.length + 1;
-
-            const div = document.createElement('div');
-            div.className = 'form-group item-entry';
-            div.innerHTML = `
-                <label>Item ${itemNum}</label>
-                <input type="text" class="item-name" placeholder="Pokemon/Item name" required>
-                <select class="item-filament" style="margin-top: 5px;">
-                    <option value="">Select Filament Color</option>
-                    <option value="Red">Red</option>
-                    <option value="Blue">Blue</option>
-                    <option value="Green">Green</option>
-                    <option value="Yellow">Yellow</option>
-                    <option value="Black">Black</option>
-                    <option value="White">White</option>
-                    <option value="Purple">Purple</option>
-                    <option value="Orange">Orange</option>
-                    <option value="Pink">Pink</option>
-                    <option value="Gray">Gray</option>
-                </select>
-                <label style="margin-top: 5px;">
-                    <input type="checkbox" class="item-shiny"> Shiny
-                </label>
-                <label>
-                    <input type="checkbox" class="item-mystery"> Mystery
-                </label>
-            `;
+            const container = document.getElementById('itemsContainer'), itemNum = container.children.length + 1;
+            const colors = Object.keys(filaments).sort(); let options = '<option value="">Select Filament Color</option>';
+            colors.forEach(color => { options += `<option value="${color}">${color}</option>`; });
+            const div = document.createElement('div'); div.className = 'form-group item-entry';
+            div.innerHTML = `<label>Item ${itemNum}</label><input type="text" class="item-name" placeholder="Pokemon/Item name" required><select class="item-filament" style="margin-top: 5px;">${options}</select><label style="margin-top: 5px;"><input type="checkbox" class="item-shiny"> Shiny</label><label><input type="checkbox" class="item-mystery"> Mystery</label>`;
             container.appendChild(div);
         }
-
         document.getElementById('newOrderForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-
-            const customer = document.getElementById('customerName').value;
-            const orderId = document.getElementById('orderId').value || `ORD-${Date.now()}`;
-
-            const items = [];
-            document.querySelectorAll('.item-entry').forEach(entry => {
-                const name = entry.querySelector('.item-name').value;
-                const filament = entry.querySelector('.item-filament').value;
-                const shiny = entry.querySelector('.item-shiny').checked;
-                const mystery = entry.querySelector('.item-mystery').checked;
-
-                if (name) {
-                    items.push({ name, filament, shiny, mystery, pokeball: 'normal' });
-                }
-            });
-
-            const newOrder = {
-                id: orderId,
-                customer,
-                status: 'Pending',
-                items,
-                date: new Date().toISOString().split('T')[0]
-            };
-
-            orders.push(newOrder);
-            await pushToGoogleSheets(newOrder);
-
-            groupOrdersByCustomer();
-            renderOrders();
-            updateStats();
-
-            closeModal('newOrderModal');
-            document.getElementById('newOrderForm').reset();
-
-            showSyncStatus('✅ Order created successfully!', 'success');
+            const customer = document.getElementById('customerName').value, orderId = document.getElementById('orderId').value || `ORD-${Date.now()}`;
+            const items = []; document.querySelectorAll('.item-entry').forEach(entry => { const name = entry.querySelector('.item-name').value, filament = entry.querySelector('.item-filament').value, shiny = entry.querySelector('.item-shiny').checked, mystery = entry.querySelector('.item-mystery').checked; if (name) items.push({ name, filament, shiny, mystery, pokeball: 'normal' }); });
+            const newOrder = { id: orderId, customer, status: 'Pending', items, date: new Date().toISOString().split('T')[0] };
+            orders.push(newOrder); await pushToGoogleSheets(newOrder); groupOrdersByCustomer(); renderOrders(); updateStats(); closeModal('newOrderModal'); document.getElementById('newOrderForm').reset(); showSyncStatus('✅ Order created successfully!', 'success');
         });
-
-        // Filament Modal
-        function openFilamentModal() {
-            renderFilaments();
-            document.getElementById('filamentModal').classList.add('active');
-        }
-
+        function openFilamentModal() { renderFilaments(); document.getElementById('filamentModal').classList.add('active'); }
         function renderFilaments() {
             const container = document.getElementById('filamentContainer');
-
-            let html = '';
-            Object.keys(filaments).sort().forEach(color => {
-                const filament = filaments[color];
-                const isLow = filament.amount <= 200;
-
-                html += `
-                    <div class="filament-card ${isLow ? 'low-stock' : ''}">
-                        <div class="filament-color" style="background: ${filament.color}"></div>
-                        <div class="filament-name">${color}</div>
-                        <div class="filament-amount">${filament.amount}g</div>
-                        <div class="filament-actions">
-                            <button class="btn-tiny btn-success" onclick="addFilament('${color}', 1000)">+1000g</button>
-                            <button class="btn-tiny" onclick="subtractFilament('${color}', 50)" style="background: #ff6b6b;">-50g</button>
-                        </div>
-                    </div>
-                `;
-            });
-
+            if (Object.keys(filaments).length === 0) { container.innerHTML = '<div style="text-align: center; padding: 40px; color: #a0a0a0;"><p>No filament colors loaded yet.</p><p style="margin-top: 10px;">Click "🎨 Sync N3D Colors" to load colors from your N3D API data.</p></div>'; return; }
+            let html = ''; Object.keys(filaments).sort().forEach(color => { const filament = filaments[color], isLow = filament.amount <= 200; html += `<div class="filament-card ${isLow ? 'low-stock' : ''}"><div class="filament-color" style="background: ${filament.color}"></div><div class="filament-name">${color}</div><div class="filament-amount">${filament.amount}g</div><div class="filament-actions"><button class="btn-tiny btn-success" onclick="addFilament('${color}', 1000)">+1000g</button><button class="btn-tiny" onclick="subtractFilament('${color}', 50)" style="background: #ff6b6b;">-50g</button></div></div>`; });
             container.innerHTML = html;
         }
-
-        // Shopping Modal
-        function openShoppingModal() {
-            renderShoppingList();
-            document.getElementById('shoppingModal').classList.add('active');
-        }
-
+        function openShoppingModal() { renderShoppingList(); document.getElementById('shoppingModal').classList.add('active'); }
         function renderShoppingList() {
-            const list = document.getElementById('shoppingList');
-            const lowStock = Object.keys(filaments).filter(color => filaments[color].amount <= 200);
-
-            if (lowStock.length === 0) {
-                list.innerHTML = '<li style="text-align: center; color: #a0a0a0;">🎉 All filaments well stocked!</li>';
-                return;
-            }
-
-            list.innerHTML = lowStock.map(color => `
-                <li class="shopping-item">
-                    <span style="display: flex; align-items: center; gap: 10px;">
-                        <div style="width: 20px; height: 20px; border-radius: 50%; background: ${filaments[color].color}; border: 2px solid #fff;"></div>
-                        ${color}
-                    </span>
-                    <span style="color: #ff6b6b; font-weight: bold;">${filaments[color].amount}g remaining</span>
-                </li>
-            `).join('');
+            const list = document.getElementById('shoppingList'), lowStock = Object.keys(filaments).filter(color => filaments[color].amount <= 200);
+            if (lowStock.length === 0) { list.innerHTML = '<li style="text-align: center; color: #a0a0a0;">🎉 All filaments well stocked!</li>'; return; }
+            list.innerHTML = lowStock.map(color => `<li class="shopping-item"><span style="display: flex; align-items: center; gap: 10px;"><div style="width: 20px; height: 20px; border-radius: 50%; background: ${filaments[color].color}; border: 2px solid #fff;"></div>${color}</span><span style="color: #ff6b6b; font-weight: bold;">${filaments[color].amount}g remaining</span></li>`).join('');
         }
-
-        // Stats
         function updateStats() {
-            const pending = orders.filter(o => o.status === 'Pending').length;
-            const printing = orders.filter(o => o.status === 'Printing').length;
-            const completed = orders.filter(o => o.status === 'Completed').length;
-            const filamentColors = Object.keys(filaments).length;
-            const lowStock = Object.keys(filaments).filter(c => filaments[c].amount <= 200).length;
-            const shopping = lowStock;
-
-            document.getElementById('pendingCount').textContent = pending;
-            document.getElementById('printingCount').textContent = printing;
-            document.getElementById('completedCount').textContent = completed;
-            document.getElementById('filamentCount').textContent = filamentColors;
-            document.getElementById('lowStockCount').textContent = lowStock;
-            document.getElementById('shoppingCount').textContent = shopping;
+            const pending = orders.filter(o => o.status === 'Pending').length, printing = orders.filter(o => o.status === 'Printing').length, completed = orders.filter(o => o.status === 'Completed').length;
+            const filamentColors = Object.keys(filaments).length, lowStock = Object.keys(filaments).filter(c => filaments[c].amount <= 200).length, shopping = lowStock;
+            document.getElementById('pendingCount').textContent = pending; document.getElementById('printingCount').textContent = printing; document.getElementById('completedCount').textContent = completed;
+            document.getElementById('filamentCount').textContent = filamentColors; document.getElementById('lowStockCount').textContent = lowStock; document.getElementById('shoppingCount').textContent = shopping;
         }
-
-        // Utilities
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-        }
-
-        function showSyncStatus(message, type) {
-            const el = document.getElementById('syncStatus');
-            el.textContent = message;
-            el.className = `sync-status ${type}`;
-
-            if (type !== 'info') {
-                setTimeout(() => {
-                    el.style.display = 'none';
-                }, 5000);
-            }
-        }
-
-        // Close modals on outside click
-        window.onclick = (e) => {
-            if (e.target.classList.contains('modal')) {
-                e.target.classList.remove('active');
-            }
-        };
+        function closeModal(modalId) { document.getElementById(modalId).classList.remove('active'); }
+        function showSyncStatus(message, type) { const el = document.getElementById('syncStatus'); el.textContent = message; el.className = `sync-status ${type}`; if (type !== 'info') setTimeout(() => { el.style.display = 'none'; }, 5000); }
+        window.onclick = (e) => { if (e.target.classList.contains('modal')) e.target.classList.remove('active'); };
     </script>
 </body>
 </html>
