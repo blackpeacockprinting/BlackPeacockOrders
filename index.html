@@ -542,7 +542,7 @@
     <script>
         // Google Sheets Configuration
         const GOOGLE_SHEETS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSk8BdvDMwzoPI2A5X863_8OAXKaSWs5a-aijyX7qMJRWFDoquKJs3gM20wcS-ggas_UuGjU8mCmz1V/pub?gid=1413466324&single=true&output=csv';
-        const GOOGLE_SHEETS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwZJsAvVAn3Nzp3B7st9bQgOOTEZy8tz3uR6QMjOTbRfikIqR_R4rcuNan9FHYE5hXi2g/exec';
+        const GOOGLE_SHEETS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz12TJjO8EKX5WH0AJhRPMMiQEvIjKn4Vy4ZJVkBh-RmJwbP-3l7s5KwcIQu65cEZSy9A/exec';
 
         // Recipe database
         let RECIPES = [];
@@ -1066,54 +1066,7 @@
             }).join('');
         }
 
-        function renderOrderCard(order) {
-            const shinyBadge = order.isShiny ? '<span class="badge shiny">✨ SHINY</span>' : '';
-            const mysteryBadge = order.isMystery ? '<span class="badge mystery">❓ MYSTERY</span>' : '';
-
-            let pokeballClass = 'pokeball-preview';
-            if (order.isMystery) {
-                pokeballClass += ' mystery';
-            } else if (order.isShiny) {
-                pokeballClass += ' golden';
-            }
-
-            const shinyButtonClass = order.isShiny ? 'btn-shiny active' : 'btn-shiny';
-            const shinyButtonText = order.isShiny ? '✨ Shiny!' : 'Make Shiny';
-
-            return `
-                <div class="order-card ${order.source}-source">
-                    <div class="order-header" onclick="toggleOrderDetails('${order.id}')">
-                        <div class="order-main">
-                            <div class="${pokeballClass}"></div>
-                            <div class="design-info">
-                                <h4>${order.design.name} ${shinyBadge} ${mysteryBadge} <span class="source-badge ${order.source}">${order.source}</span></h4>
-                                <div class="order-meta">${new Date(order.date).toLocaleDateString()}</div>
-                            </div>
-                        </div>
-                        <div style="display: flex; gap: 0.5rem; align-items: center;">
-                            <span class="badge ${order.status}">${order.status}</span>
-                            <span class="badge ${order.payment}">${order.payment}</span>
-                            <span class="price-tag">${formatCurrency(order.price)}</span>
-                        </div>
-                    </div>
-                    <div class="order-details" id="details-${order.id}">
-                        <div class="details-grid">
-                            <div class="detail-section">
-                                <h4>Materials</h4>
-                                <div class="materials-list">
-                                    ${order.design.colors ? order.design.colors.map(c => `
-                                        <div class="material-item">
-                                            <span>${c.color}</span>
-                                            <span>${c.grams}g</span>
-                                        </div>
-                                    `).join('') : '<div class="material-item"><span>Standard materials</span></div>'}
-                                </div>
-                            </div>
-                            <div class="detail-section">
-                                <h4>Cost Breakdown</h4>
-                                <div class="cost-breakdown">
-                                    <div class="cost-row"><span>Price</span><span>${formatCurrency(order.price)}</span></div>
-                                    <div class="cost-row"><span>Filament</span><span>-${formatCurrency(order.design.filamentCost)}</span></div>
+                                            <div class="cost-row"><span>Filament</span><span>-${formatCurrency(order.design.filamentCost)}</span></div>
                                     <div class="cost-row profit"><span>Profit</span><span>${formatCurrency(order.design.profit)}</span></div>
                                 </div>
                             </div>
@@ -1157,6 +1110,18 @@
         function updateStatus(orderId, status) {
             const order = orders.find(o => o.id === orderId);
             if (order) {
+                // If marking as completed, check and subtract filament
+                if (status === 'completed' && order.status !== 'completed') {
+                    const check = checkFilamentForOrder(order);
+                    if (!check.ok) {
+                        if (!confirm('WARNING: Not enough filament!\n\n' + check.warnings.join('\n') + '\n\nComplete anyway?')) {
+                            return;
+                        }
+                    }
+                    subtractFilamentForOrder(order);
+                    showNotification('Filament subtracted from inventory', 'success');
+                }
+
                 order.status = status;
                 renderOrders();
                 updateStats();
@@ -1190,6 +1155,106 @@
             document.getElementById('stat-profit').textContent = formatCurrency(profit);
         }
 
+        function updateFilamentStats() {
+            const colorCount = Object.keys(filamentInventory).length;
+            const lowCount = Object.values(filamentInventory).filter(g => g <= LOW_THRESHOLD).length;
+
+            document.getElementById('stat-filament').textContent = colorCount;
+            document.getElementById('stat-low').textContent = lowCount;
+            document.getElementById('stat-shopping').textContent = lowCount;
+        }
+
+        function renderFilamentGrid() {
+            const grid = document.getElementById('filamentGrid');
+            const colors = Object.keys(filamentInventory).sort();
+
+            grid.innerHTML = colors.map(color => {
+                const grams = filamentInventory[color];
+                let statusClass = 'good';
+                let statusText = 'Good';
+
+                if (grams <= LOW_THRESHOLD) {
+                    statusClass = 'critical';
+                    statusText = 'LOW!';
+                } else if (grams <= WARNING_THRESHOLD) {
+                    statusClass = 'warning';
+                    statusText = 'Low';
+                }
+
+                const percentage = Math.min(100, (grams / 1000) * 100);
+
+                return `
+                    <div class="filament-card ${statusClass}">
+                        <div class="filament-header">
+                            <span class="filament-name">${color}</span>
+                            <span class="filament-status ${statusClass}">${statusText}</span>
+                        </div>
+                        <div class="filament-grams">${grams}g</div>
+                        <div class="filament-bar">
+                            <div class="filament-bar-fill ${statusClass}" style="width: ${percentage}%"></div>
+                        </div>
+                        <div class="filament-actions">
+                            <button class="btn btn-small btn-success" onclick="addFilament('${color}', 1000)">+1000g</button>
+                            <button class="btn btn-small" onclick="adjustFilament('${color}')">Adjust</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function addFilament(color, amount) {
+            filamentInventory[color] = (filamentInventory[color] || 0) + amount;
+            renderFilamentGrid();
+            updateFilamentStats();
+            showNotification(`Added ${amount}g to ${color}`, 'success');
+        }
+
+        function adjustFilament(color) {
+            const newAmount = prompt(`Enter new amount for ${color} (current: ${filamentInventory[color]}g):`, filamentInventory[color]);
+            if (newAmount !== null && !isNaN(newAmount)) {
+                filamentInventory[color] = Math.max(0, parseInt(newAmount));
+                renderFilamentGrid();
+                updateFilamentStats();
+                showNotification(`${color} updated to ${filamentInventory[color]}g`, 'success');
+            }
+        }
+
+        function renderShoppingList() {
+            const list = document.getElementById('shoppingList');
+            const lowColors = Object.entries(filamentInventory)
+                .filter(([color, grams]) => grams <= LOW_THRESHOLD)
+                .sort((a, b) => a[1] - b[1]);
+
+            if (lowColors.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-shopping">
+                        <h3>🎉 All Stocked Up!</h3>
+                        <p>No colors need restocking.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = lowColors.map(([color, grams]) => `
+                <div class="shopping-item">
+                    <div class="shopping-item-info">
+                        <h4>${color}</h4>
+                        <p>Only ${grams}g remaining (threshold: ${LOW_THRESHOLD}g)</p>
+                    </div>
+                    <div class="shopping-item-actions">
+                        <button class="btn btn-success" onclick="buyFilament('${color}')">Mark Purchased</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function buyFilament(color) {
+            addFilament(color, 1000);
+            renderShoppingList();
+            updateFilamentStats();
+            showNotification(`✅ ${color} marked as purchased (+1000g)`, 'success');
+        }
+
         function filterOrders() {
             renderOrders();
         }
@@ -1208,12 +1273,12 @@
         }
 
         function exportData() {
-            const dataStr = JSON.stringify(orders, null, 2);
+            const dataStr = JSON.stringify({ orders, filament: filamentInventory }, null, 2);
             const blob = new Blob([dataStr], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `pokeprint-orders-${new Date().toISOString().split('T')[0]}.json`;
+            a.download = `pokeprint-data-${new Date().toISOString().split('T')[0]}.json`;
             a.click();
         }
     </script>
