@@ -1,80 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poke Print Tracker</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
+    <title>PokePrint Tracker</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.gspreadsheet.com/integration.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background-color: #f2f2f2; }
+    </style>
+    <script>
+        // Google Sheets integration to fetch the order data
+        function fetchOrders() {
+            // Code to integrate with Google Sheets API and fetch order data
+        }
+
+        // Function to track filament inventory
+        function trackInventory() {
+            // Code to manage filament inventory
+        }
+
+        // Function to load Pokemon recipes
+        function loadRecipes() {
+            // Code to retrieve and display Pokemon recipes
+        }
+
+        // Function to group customers
+        function groupCustomers() {
+            // Code for customer grouping based on their order patterns
+        }
+
+        // Function for full order management
+        function manageOrders() {
+            // Code to manage orders including updates and tracking
+        }
+
+        $(document).ready(function() {
+            fetchOrders();
+            trackInventory();
+            loadRecipes();
+            groupCustomers();
+            manageOrders();
+        });
+    </script>
 </head>
 <body>
-    <header>
-        <h1>Poke Print Tracker</h1>
-    </header>
-    <main>
-        <section id="active-orders">
-            <h2>Active Orders</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Customer Name</th>
-                        <th>Order ID</th>
-                        <th>Pokemon Recipe</th>
-                        <th>Quantity</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Active orders will be populated here -->
-                </tbody>
-            </table>
-        </section>
-        <section id="inventory-management">
-            <h2>Inventory Management</h2>
-            <button id="restock-button">Restock Item</button>
-            <div id="restock-modal" class="modal">
-                <form id="restock-form">
-                    <label for="item-name">Item Name:</label>
-                    <input type="text" id="item-name" required>
-                    <label for="item-quantity">Quantity:</label>
-                    <input type="number" id="item-quantity" required>
-                    <button type="submit">Submit</button>
-                </form>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Item Name</th>
-                        <th>Current Stock</th>
-                        <th>Restock Level</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Inventory items will be populated here -->
-                </tbody>
-            </table>
-        </section>
-        <section id="order-management">
-            <h2>Order Management</h2>
-            <button id="import-orders">Import Orders</button>
-            <button id="export-orders">Export Orders</button>
-            <div id="order-modal" class="modal">
-                <form id="order-form">
-                    <label for="customer-name">Customer Name:</label>
-                    <input type="text" id="customer-name" required>
-                    <label for="order-id">Order ID:</label>
-                    <input type="text" id="order-id" required>
-                    <label for="pokemon-recipe">Pokemon Recipe:</label>
-                    <input type="text" id="pokemon-recipe" required>
-                    <label for="quantity">Quantity:</label>
-                    <input type="number" id="quantity" required>
-                    <button type="submit">Add Order</button>
-                </form>
-            </div>
-        </section>
-    </main>
-    <footer>
-        <p>© 2026 Black Peacock Printing</p>
-    </footer>
+    <h1>PokePrint Tracker</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Pokemon</th>
+                <th>Customer Name</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="orderTable">
+            <!-- Orders will be dynamically populated here -->
+        </tbody>
+    </table>
 </body>
 </html>
