@@ -7,77 +7,96 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            min-height: 100vh; color: #fff; padding: 20px;
+            min-height: 100vh; color: #fff; padding: 15px; padding-bottom: 100px;
         }
-        .header { text-align: center; margin-bottom: 30px; }
-        .header h1 { font-size: 2.5em; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin-bottom: 10px; }
-        .header p { color: #a0a0a0; }
+        .header { text-align: center; margin-bottom: 20px; }
+        .header h1 { font-size: 1.8em; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin-bottom: 5px; }
+        .header p { color: #a0a0a0; font-size: 0.9em; }
         .stats-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px; margin-bottom: 30px; max-width: 1200px; margin-left: auto; margin-right: auto;
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 10px; margin-bottom: 20px; max-width: 600px; margin-left: auto; margin-right: auto;
         }
         .stat-card {
             background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);
-            border-radius: 15px; padding: 20px; text-align: center;
+            border-radius: 12px; padding: 12px 8px; text-align: center;
             border: 1px solid rgba(255,255,255,0.2); transition: transform 0.3s;
         }
-        .stat-card:hover { transform: translateY(-5px); }
-        .stat-card.pending { border-top: 4px solid #ff6b6b; }
-        .stat-card.printing { border-top: 4px solid #feca57; }
-        .stat-card.completed { border-top: 4px solid #48dbfb; }
-        .stat-card.filament { border-top: 4px solid #ff9ff3; }
-        .stat-card.low-stock { border-top: 4px solid #ff6348; }
-        .stat-card.shopping { border-top: 4px solid #54a0ff; }
-        .stat-number { font-size: 2em; font-weight: bold; margin-bottom: 5px; }
-        .stat-label { font-size: 0.9em; color: #a0a0a0; }
-        .actions { display: flex; gap: 10px; justify-content: center; margin-bottom: 30px; flex-wrap: wrap; }
+        .stat-card:active { transform: scale(0.95); }
+        .stat-card.pending { border-top: 3px solid #ff6b6b; }
+        .stat-card.printing { border-top: 3px solid #feca57; }
+        .stat-card.completed { border-top: 3px solid #48dbfb; }
+        .stat-card.filament { border-top: 3px solid #ff9ff3; }
+        .stat-card.low-stock { border-top: 3px solid #ff6348; }
+        .stat-card.shopping { border-top: 3px solid #54a0ff; }
+        .stat-number { font-size: 1.6em; font-weight: bold; margin-bottom: 3px; }
+        .stat-label { font-size: 0.7em; color: #a0a0a0; text-transform: uppercase; }
+        .actions { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
         .btn {
-            padding: 12px 24px; border: none; border-radius: 25px; cursor: pointer;
-            font-size: 1em; transition: all 0.3s; display: flex; align-items: center; gap: 8px;
+            padding: 10px 16px; border: none; border-radius: 20px; cursor: pointer;
+            font-size: 0.85em; transition: all 0.3s; display: flex; align-items: center; gap: 6px;
+            font-weight: 600; touch-action: manipulation;
         }
         .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
         .btn-success { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; }
         .btn-warning { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; }
         .btn-info { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; }
-        .btn:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        .customer-section { max-width: 1200px; margin: 0 auto 20px; background: rgba(255,255,255,0.05); border-radius: 15px; overflow: hidden; }
+        .btn:active { transform: scale(0.95); }
+        .customer-section {
+            max-width: 600px; margin: 0 auto 15px;
+            background: rgba(255,255,255,0.05); border-radius: 15px; overflow: hidden;
+        }
         .customer-header {
-            background: rgba(255,255,255,0.1); padding: 15px 20px; cursor: pointer;
-            display: flex; justify-content: space-between; align-items: center; transition: background 0.3s;
+            background: rgba(255,255,255,0.1); padding: 15px;
+            cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+            transition: background 0.3s; user-select: none;
         }
-        .customer-header:hover { background: rgba(255,255,255,0.15); }
-        .customer-name { font-size: 1.3em; font-weight: bold; display: flex; align-items: center; gap: 10px; }
-        .customer-stats { display: flex; gap: 15px; font-size: 0.9em; color: #a0a0a0; }
-        .customer-orders { padding: 20px; display: none; }
-        .customer-orders.expanded { display: block; }
+        .customer-header:active { background: rgba(255,255,255,0.15); }
+        .customer-name { font-size: 1.1em; font-weight: bold; display: flex; align-items: center; gap: 8px; }
+        .customer-stats { display: flex; gap: 12px; font-size: 0.8em; color: #a0a0a0; }
+        .customer-orders { display: none; }
+        .customer-orders.expanded { display: block; padding: 10px; }
         .order-card {
-            background: rgba(255,255,255,0.08); border-radius: 10px; padding: 15px;
-            margin-bottom: 15px; border-left: 4px solid #667eea; transition: all 0.3s;
+            background: rgba(255,255,255,0.08); border-radius: 12px; padding: 12px;
+            margin-bottom: 12px; border-left: 4px solid #667eea;
         }
-        .order-card:hover { background: rgba(255,255,255,0.12); transform: translateX(5px); }
         .order-card.pending { border-left-color: #ff6b6b; }
         .order-card.printing { border-left-color: #feca57; }
         .order-card.completed { border-left-color: #48dbfb; }
-        .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .order-id { font-weight: bold; color: #667eea; }
-        .order-status { padding: 4px 12px; border-radius: 12px; font-size: 0.8em; font-weight: bold; }
+        .order-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 10px; cursor: pointer; user-select: none;
+        }
+        .order-id { font-weight: bold; color: #667eea; font-size: 0.95em; }
+        .order-status {
+            padding: 4px 10px; border-radius: 10px; font-size: 0.75em;
+            font-weight: bold; text-transform: uppercase;
+        }
         .status-pending { background: #ff6b6b; }
         .status-printing { background: #feca57; color: #333; }
         .status-completed { background: #48dbfb; color: #333; }
-        .order-items { margin: 10px 0; }
-        .item-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .item-row:last-child { border-bottom: none; }
-        .pokeball {
-            width: 24px; height: 24px; border-radius: 50%; position: relative;
-            overflow: hidden; border: 2px solid #333; flex-shrink: 0;
+        .order-items { margin-top: 10px; }
+        .item-row {
+            display: flex; align-items: center; gap: 10px; padding: 10px;
+            background: rgba(255,255,255,0.05); border-radius: 10px;
+            margin-bottom: 8px; cursor: pointer; transition: all 0.3s;
+            touch-action: manipulation;
         }
+        .item-row:active { background: rgba(255,255,255,0.1); }
+        .item-row.expanded { background: rgba(255,255,255,0.12); }
+        .pokeball {
+            width: 32px; height: 32px; border-radius: 50%; position: relative;
+            overflow: hidden; border: 2px solid #333; flex-shrink: 0;
+            transition: transform 0.3s;
+        }
+        .pokeball:active { transform: scale(1.1); }
         .pokeball::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 50%; background: #ff0000; }
         .pokeball::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 50%; background: #fff; }
         .pokeball-center {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 8px; height: 8px; background: #fff; border: 2px solid #333; border-radius: 50%; z-index: 1;
+            width: 10px; height: 10px; background: #fff; border: 2px solid #333;
+            border-radius: 50%; z-index: 1;
         }
         .pokeball.great { border-color: #4169e1; }
         .pokeball.great::before { background: #4169e1; }
@@ -85,57 +104,119 @@
         .pokeball.ultra::before { background: #ffd700; }
         .pokeball.master { border-color: #800080; }
         .pokeball.master::before { background: #800080; }
-        .pokeball.shiny { border-color: #ffd700; box-shadow: 0 0 10px #ffd700; }
-        .pokeball.shiny::before { background: linear-gradient(135deg, #ffd700, #ffed4e); }
-        .item-details { flex: 1; }
-        .item-name { font-weight: 500; }
-        .item-filament { font-size: 0.8em; color: #a0a0a0; }
-        .badges { display: flex; gap: 5px; }
-        .badge { padding: 2px 8px; border-radius: 10px; font-size: 0.7em; font-weight: bold; }
-        .badge-shiny { background: linear-gradient(135deg, #ffd700, #ffed4e); color: #333; }
+        .pokeball.shiny {
+            border-color: #ffd700; box-shadow: 0 0 15px #ffd700, inset 0 0 10px rgba(255,215,0,0.3);
+            animation: shimmer 2s infinite;
+        }
+        @keyframes shimmer {
+            0%, 100% { box-shadow: 0 0 15px #ffd700, inset 0 0 10px rgba(255,215,0,0.3); }
+            50% { box-shadow: 0 0 25px #ffed4e, inset 0 0 15px rgba(255,237,78,0.5); }
+        }
+        .pokeball.shiny::before { background: linear-gradient(135deg, #ffd700, #ffed4e, #ffd700); }
+        .item-details { flex: 1; min-width: 0; }
+        .item-name { font-weight: 600; font-size: 0.95em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .item-price { font-size: 0.85em; color: #48dbfb; font-weight: bold; }
+        .badges { display: flex; gap: 5px; flex-shrink: 0; }
+        .badge {
+            padding: 3px 8px; border-radius: 8px; font-size: 0.65em;
+            font-weight: bold; text-transform: uppercase;
+        }
+        .badge-shiny {
+            background: linear-gradient(135deg, #ffd700, #ffed4e); color: #333;
+            box-shadow: 0 2px 8px rgba(255,215,0,0.4);
+        }
         .badge-mystery { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
-        .order-actions { display: flex; gap: 10px; margin-top: 10px; }
-        .btn-small { padding: 6px 12px; font-size: 0.8em; border: none; border-radius: 15px; cursor: pointer; transition: all 0.3s; }
+        .item-expanded {
+            display: none; padding: 15px; background: rgba(0,0,0,0.2);
+            border-radius: 10px; margin-top: 10px;
+        }
+        .item-expanded.visible { display: block; }
+        .filament-info {
+            display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;
+        }
+        .filament-tag {
+            display: flex; align-items: center; gap: 6px;
+            background: rgba(255,255,255,0.1); padding: 6px 10px;
+            border-radius: 15px; font-size: 0.8em;
+        }
+        .filament-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff; }
+        .item-stats {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+            margin-bottom: 12px;
+        }
+        .stat-box {
+            background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;
+            text-align: center;
+        }
+        .stat-box-label { font-size: 0.7em; color: #a0a0a0; text-transform: uppercase; margin-bottom: 4px; }
+        .stat-box-value { font-size: 1.1em; font-weight: bold; color: #48dbfb; }
+        .stat-box-value.profit { color: #38ef7d; }
+        .stat-box-value.cost { color: #ff6b6b; }
+        .item-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .item-btn {
+            flex: 1; min-width: 80px; padding: 10px; border: none;
+            border-radius: 10px; font-size: 0.8em; font-weight: 600;
+            cursor: pointer; transition: all 0.3s; touch-action: manipulation;
+        }
+        .item-btn:active { transform: scale(0.95); }
+        .item-btn.pending { background: #ff6b6b; color: white; }
+        .item-btn.printing { background: #feca57; color: #333; }
+        .item-btn.completed { background: #48dbfb; color: #333; }
+        .item-btn.shiny {
+            background: linear-gradient(135deg, #ffd700, #ffed4e); color: #333;
+        }
+        .item-btn.shiny.active { box-shadow: 0 0 15px rgba(255,215,0,0.6); }
+        .item-btn.mystery { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px;
+            background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center;
+            align-items: flex-end; padding: 0;
         }
         .modal.active { display: flex; }
         .modal-content {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 20px;
-            padding: 30px; max-width: 900px; width: 100%; max-height: 80vh; overflow-y: auto;
-            border: 1px solid rgba(255,255,255,0.2);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px 20px 0 0; padding: 25px; width: 100%;
+            max-height: 85vh; overflow-y: auto; border-top: 1px solid rgba(255,255,255,0.2);
         }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .modal-title { font-size: 1.5em; display: flex; align-items: center; gap: 10px; }
-        .close-btn { background: none; border: none; color: #fff; font-size: 1.5em; cursor: pointer; }
+        .modal-title { font-size: 1.3em; display: flex; align-items: center; gap: 10px; }
+        .close-btn { background: none; border: none; color: #fff; font-size: 1.8em; cursor: pointer; padding: 5px; }
         .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; color: #a0a0a0; }
+        .form-group label { display: block; margin-bottom: 6px; color: #a0a0a0; font-size: 0.9em; }
         .form-group input, .form-group select {
-            width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 8px; background: rgba(255,255,255,0.1); color: #fff; font-size: 1em;
+            width: 100%; padding: 12px; border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px; background: rgba(255,255,255,0.1); color: #fff;
+            font-size: 1em; -webkit-appearance: none;
         }
-        .filament-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+        .filament-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         .filament-card {
-            background: rgba(255,255,255,0.1); border-radius: 10px; padding: 15px;
+            background: rgba(255,255,255,0.1); border-radius: 12px; padding: 15px;
             text-align: center; border: 2px solid transparent; transition: all 0.3s;
         }
-        .filament-card:hover { border-color: #667eea; transform: scale(1.02); }
-        .filament-card.low-stock { border-color: #ff6348; background: rgba(255,99,71,0.1); }
-        .filament-color { width: 50px; height: 50px; border-radius: 50%; margin: 0 auto 10px; border: 3px solid #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-        .filament-name { font-weight: bold; margin-bottom: 5px; font-size: 0.95em; }
-        .filament-amount { font-size: 1.4em; color: #48dbfb; margin-bottom: 10px; font-weight: bold; }
-        .filament-actions { display: flex; gap: 5px; justify-content: center; }
-        .btn-tiny { padding: 6px 12px; font-size: 0.8em; border: none; border-radius: 15px; cursor: pointer; font-weight: bold; }
+        .filament-card.low-stock { border-color: #ff6348; background: rgba(255,99,71,0.15); }
+        .filament-color { width: 45px; height: 45px; border-radius: 50%; margin: 0 auto 8px; border: 3px solid #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        .filament-name { font-weight: 600; font-size: 0.85em; margin-bottom: 4px; }
+        .filament-amount { font-size: 1.2em; color: #48dbfb; font-weight: bold; margin-bottom: 8px; }
+        .filament-actions { display: flex; gap: 6px; justify-content: center; }
+        .btn-tiny { padding: 6px 12px; font-size: 0.75em; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; }
         .shopping-list { list-style: none; }
-        .shopping-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(255,99,71,0.1); border-radius: 8px; margin-bottom: 8px; border-left: 4px solid #ff6348; }
+        .shopping-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px; background: rgba(255,99,71,0.1);
+            border-radius: 10px; margin-bottom: 8px; border-left: 4px solid #ff6348;
+        }
+        .sync-status {
+            position: fixed; top: 10px; left: 50%; transform: translateX(-50%);
+            padding: 12px 20px; border-radius: 25px; font-size: 0.9em;
+            z-index: 2000; display: none; max-width: 90%; text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .sync-status.success { background: rgba(72,219,251,0.95); color: #1a1a2e; display: block; }
+        .sync-status.error { background: rgba(255,107,107,0.95); color: white; display: block; }
+        .sync-status.info { background: rgba(102,126,234,0.95); color: white; display: block; }
         .loading { text-align: center; padding: 40px; color: #a0a0a0; }
-        .spinner { width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1); border-top-color: #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
+        .spinner { width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1); border-top-color: #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .sync-status { text-align: center; padding: 10px; margin-bottom: 20px; border-radius: 10px; display: none; }
-        .sync-status.success { background: rgba(72,219,251,0.2); border: 1px solid #48dbfb; display: block; }
-        .sync-status.error { background: rgba(255,107,107,0.2); border: 1px solid #ff6b6b; display: block; }
-        .sync-status.info { background: rgba(102,126,234,0.2); border: 1px solid #667eea; display: block; }
     </style>
 </head>
 <body>
@@ -148,18 +229,18 @@
         <div class="stat-card pending"><div class="stat-number" id="pendingCount">0</div><div class="stat-label">Pending</div></div>
         <div class="stat-card printing"><div class="stat-number" id="printingCount">0</div><div class="stat-label">Printing</div></div>
         <div class="stat-card completed"><div class="stat-number" id="completedCount">0</div><div class="stat-label">Completed</div></div>
-        <div class="stat-card filament"><div class="stat-number" id="filamentCount">0</div><div class="stat-label">Filament Colors</div></div>
+        <div class="stat-card filament"><div class="stat-number" id="filamentCount">0</div><div class="stat-label">Colors</div></div>
         <div class="stat-card low-stock"><div class="stat-number" id="lowStockCount">0</div><div class="stat-label">Low Stock</div></div>
-        <div class="stat-card shopping"><div class="stat-number" id="shoppingCount">0</div><div class="stat-label">Shopping List</div></div>
+        <div class="stat-card shopping"><div class="stat-number" id="shoppingCount">0</div><div class="stat-label">Shopping</div></div>
     </div>
     <div class="actions">
-        <button class="btn btn-primary" onclick="syncOrders()">🔄 Sync Orders</button>
-        <button class="btn btn-success" onclick="openNewOrderModal()">➕ New Order</button>
+        <button class="btn btn-primary" onclick="syncOrders()">🔄 Sync</button>
+        <button class="btn btn-success" onclick="openNewOrderModal()">➕ Order</button>
         <button class="btn btn-warning" onclick="openFilamentModal()">🧵 Filament</button>
-        <button class="btn btn-info" onclick="openShoppingModal()">🛒 Shopping</button>
-        <button class="btn btn-primary" onclick="syncN3DFilaments()">🎨 Sync N3D Colors</button>
+        <button class="btn btn-info" onclick="openShoppingModal()">🛒 Shop</button>
+        <button class="btn btn-primary" onclick="syncN3DFilaments()">🎨 N3D</button>
     </div>
-    <div id="ordersContainer"><div class="loading"><div class="spinner"></div><p>Loading orders from Google Sheets...</p></div></div>
+    <div id="ordersContainer"><div class="loading"><div class="spinner"></div><p>Loading orders...</p></div></div>
     <div id="newOrderModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -169,28 +250,32 @@
             <form id="newOrderForm">
                 <div class="form-group">
                     <label>Customer Name</label>
-                    <input type="text" id="customerName" required>
+                    <input type="text" id="customerName" required placeholder="Enter customer name">
                 </div>
                 <div class="form-group">
-                    <label>Order ID</label>
-                    <input type="text" id="orderId" placeholder="e.g., ORD-001">
+                    <label>Order ID (optional)</label>
+                    <input type="text" id="orderId" placeholder="Auto-generated if blank">
                 </div>
                 <div id="itemsContainer">
                     <div class="form-group item-entry">
                         <label>Item 1</label>
-                        <input type="text" class="item-name" placeholder="Pokemon/Item name" required>
-                        <select class="item-filament" style="margin-top: 5px;">
-                            <option value="">Select Filament Color</option>
+                        <input type="text" class="item-name" placeholder="Pokemon name" required>
+                        <input type="number" class="item-price" placeholder="Price ($)" style="margin-top: 8px;">
+                        <input type="number" class="item-qty" placeholder="Qty" value="1" style="margin-top: 8px;">
+                        <select class="item-filament" style="margin-top: 8px;">
+                            <option value="">Select Filament</option>
                         </select>
-                        <label style="margin-top: 5px;">
-                            <input type="checkbox" class="item-shiny"> Shiny
+                        <label style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
+                            <input type="checkbox" class="item-shiny" style="width: auto;"> 
+                            <span>✨ Shiny</span>
                         </label>
-                        <label>
-                            <input type="checkbox" class="item-mystery"> Mystery
+                        <label style="margin-top: 5px; display: flex; align-items: center; gap: 8px;">
+                            <input type="checkbox" class="item-mystery" style="width: auto;">
+                            <span>❓ Mystery</span>
                         </label>
                     </div>
                 </div>
-                <button type="button" class="btn btn-info" onclick="addItemField()" style="margin-bottom: 15px;">➕ Add Item</button>
+                <button type="button" class="btn btn-info" onclick="addItemField()" style="width: 100%; margin-bottom: 15px;">➕ Add Another Item</button>
                 <button type="submit" class="btn btn-success" style="width: 100%;">Create Order</button>
             </form>
         </div>
@@ -198,7 +283,7 @@
     <div id="filamentModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title">🧵 Filament Inventory (N3D Colors)</div>
+                <div class="modal-title">🧵 Filament Inventory</div>
                 <button class="close-btn" onclick="closeModal('filamentModal')">&times;</button>
             </div>
             <div id="filamentContainer" class="filament-grid"></div>
@@ -217,7 +302,8 @@
         const PUBLISHED_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSk8BdvDMwzoPI2A5X863_8OAXKaSWs5a-aijyX7qMJRWFDoquKJs3gM20wcS-ggas_UuGjU8mCmz1V/pub?gid=1413466324&single=true&output=csv';
         const N3D_DESIGNS_URL = 'https://raw.githubusercontent.com/blackpeacockprinting/BlackPeacockOrders/main/data/n3d-designs.json';
         const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxYb6EcK1jZHkrgYw-Ha3rUcDzV6v6O2DxtqD0eC5zE0i7NhXhO8pD6V9q0W1v2x3y4z5/exec';
-        let orders = [], filaments = {}, customers = [], n3dDesigns = [];
+        const FILAMENT_COST_PER_GRAM = 0.012;
+        let orders = [], filaments = {}, customers = {}, n3dDesigns = [], n3dDataMap = {};
         document.addEventListener('DOMContentLoaded', () => { loadFilaments(); syncOrders(); });
         function loadFilaments() {
             const saved = localStorage.getItem('pokeprint_filaments');
@@ -226,32 +312,61 @@
         }
         function saveFilaments() { localStorage.setItem('pokeprint_filaments', JSON.stringify(filaments)); updateStats(); updateFilamentDropdowns(); }
         async function syncN3DFilaments() {
-            showSyncStatus('Fetching N3D filament colors...', 'info');
+            showSyncStatus('Fetching N3D data...', 'info');
             try {
                 const response = await fetch(N3D_DESIGNS_URL);
                 if (!response.ok) throw new Error('Failed to fetch N3D designs');
                 n3dDesigns = await response.json();
+                n3dDataMap = {};
+                n3dDesigns.forEach(design => {
+                    if (design.name) {
+                        const key = design.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+                        n3dDataMap[key] = design;
+                    }
+                });
                 const uniqueColors = new Set();
-                n3dDesigns.forEach(design => { if (design.colors && Array.isArray(design.colors)) { design.colors.forEach(c => { if (c.color) uniqueColors.add(c.color); }); } });
+                n3dDesigns.forEach(design => {
+                    if (design.colors && Array.isArray(design.colors)) {
+                        design.colors.forEach(c => { if (c.color) uniqueColors.add(c.color); });
+                    }
+                });
                 const colorList = Array.from(uniqueColors).sort();
                 let addedCount = 0;
-                colorList.forEach(colorName => { if (!filaments[colorName]) { filaments[colorName] = { amount: 1000, color: generateColorHex(colorName) }; addedCount++; } });
+                colorList.forEach(colorName => {
+                    if (!filaments[colorName]) {
+                        filaments[colorName] = { amount: 1000, color: generateColorHex(colorName) };
+                        addedCount++;
+                    }
+                });
                 saveFilaments();
-                if (addedCount > 0) showSyncStatus(`✅ Added ${addedCount} N3D filament colors! Total: ${colorList.length} colors`, 'success');
-                else showSyncStatus(`✅ All ${colorList.length} N3D colors already loaded`, 'success');
+                if (addedCount > 0) showSyncStatus(`✅ Added ${addedCount} N3D colors! Total: ${colorList.length}`, 'success');
+                else showSyncStatus(`✅ All ${colorList.length} N3D colors loaded`, 'success');
                 if (document.getElementById('filamentModal').classList.contains('active')) renderFilaments();
-            } catch (error) { showSyncStatus('❌ Failed to fetch N3D colors: ' + error.message, 'error'); }
+            } catch (error) { showSyncStatus('❌ Failed: ' + error.message, 'error'); }
         }
         function generateColorHex(colorName) {
-            const colorMap = { 'Ivory White': '#FFFFF0', 'Charcoal Black': '#36454F', 'Scarlet Red': '#FF2400', 'Marine Blue': '#0077BE', 'Lilac Purple': '#C8A2C8', 'Sakura Pink': '#FFB7C5', 'Turquoise': '#40E0D0', 'Mandarin Orange': '#F37A48', 'Sunflower Yellow': '#FFC512', 'Grass Green': '#7CFC00', 'Ice Blue': '#B0E0E6', 'Sky Blue': '#87CEEB', 'Ash Gray': '#B2BEB5', 'Dark Gray': '#A9A9A9', 'Light Gray': '#D3D3D3', 'Nardo Gray': '#686A6C', 'Desert Tan': '#C2B280', 'Caramel': '#FFD59A', 'Latte Brown': '#C5A582', 'Dark Brown': '#654321', 'Bone White': '#E3DAC9', 'Beige': '#F5F5DC', 'Hot Pink': '#FF69B4', 'Purple': '#800080', 'Indigo Purple': '#4B0082', 'Gold': '#FFD700', 'Silver': '#C0C0C0', 'Bambu Green': '#8FBC8F', 'Apple Green': '#8DB600', 'Lemon Yellow': '#FFF44F', 'Mistletoe Green': '#3B7A57', 'Dark Green': '#006400', 'Dark Blue': '#00008B', 'Cobalt Blue': '#0047AB', 'Blue Grey': '#6699CC', 'Blue': '#0000FF', 'Red': '#FF0000', 'Yellow': '#FFFF00', 'Orange': '#FFA500', 'Pink': '#FFC0CB', 'Green': '#008000', 'Cyan': '#00FFFF', 'Magenta': '#FF00FF', 'Plum': '#DDA0DD', 'Terracotta': '#E2725B', 'Dark Red': '#8B0000', 'Navy': '#000080', 'Teal': '#008080', 'Olive': '#808000', 'Maroon': '#800000', 'Lime': '#00FF00', 'Aqua': '#00FFFF', 'Coral': '#FF7F50', 'Crimson': '#DC143C', 'Fire Brick': '#B22222', 'Forest Green': '#228B22', 'Golden Rod': '#DAA520', 'Indian Red': '#CD5C5C', 'Medium Blue': '#0000CD', 'Medium Purple': '#9370DB', 'Midnight Blue': '#191970', 'Olive Drab': '#6B8E23', 'Orange Red': '#FF4500', 'Pale Green': '#98FB98', 'Pale Violet Red': '#DB7093', 'Peru': '#CD853F', 'Royal Blue': '#4169E1', 'Saddle Brown': '#8B4513', 'Salmon': '#FA8072', 'Sandy Brown': '#F4A460', 'Sea Green': '#2E8B57', 'Sienna': '#A0522D', 'Slate Blue': '#6A5ACD', 'Slate Gray': '#708090', 'Spring Green': '#00FF7F', 'Steel Blue': '#4682B4', 'Tan': '#D2B48C', 'Thistle': '#D8BFD8', 'Tomato': '#FF6347', 'Violet': '#EE82EE', 'Wheat': '#F5DEB3', 'Yellow Green': '#9ACD32' };
+            const colorMap = { 'Ivory White': '#FFFFF0', 'Charcoal Black': '#36454F', 'Scarlet Red': '#FF2400', 'Marine Blue': '#0077BE', 'Lilac Purple': '#C8A2C8', 'Sakura Pink': '#FFB7C5', 'Turquoise': '#40E0D0', 'Mandarin Orange': '#F37A48', 'Sunflower Yellow': '#FFC512', 'Grass Green': '#7CFC00', 'Ice Blue': '#B0E0E6', 'Sky Blue': '#87CEEB', 'Ash Gray': '#B2BEB5', 'Dark Gray': '#A9A9A9', 'Light Gray': '#D3D3D3', 'Nardo Gray': '#686A6C', 'Desert Tan': '#C2B280', 'Caramel': '#FFD59A', 'Latte Brown': '#C5A582', 'Dark Brown': '#654321', 'Bone White': '#E3DAC9', 'Beige': '#F5F5DC', 'Hot Pink': '#FF69B4', 'Purple': '#800080', 'Indigo Purple': '#4B0082', 'Gold': '#FFD700', 'Silver': '#C0C0C0', 'Bambu Green': '#8FBC8F', 'Apple Green': '#8DB600', 'Lemon Yellow': '#FFF44F', 'Mistletoe Green': '#3B7A57', 'Dark Green': '#006400', 'Dark Blue': '#00008B', 'Cobalt Blue': '#0047AB', 'Blue Grey': '#6699CC', 'Blue': '#0000FF', 'Red': '#FF0000', 'Yellow': '#FFFF00', 'Orange': '#FFA500', 'Pink': '#FFC0CB', 'Green': '#008000', 'Cyan': '#00FFFF', 'Magenta': '#FF00FF', 'Black': '#000000', 'White': '#FFFFFF', 'Gray': '#808080' };
             if (colorMap[colorName]) return colorMap[colorName];
-            for (const [key, value] of Object.entries(colorMap)) { if (colorName.toLowerCase().includes(key.toLowerCase()) || key.toLowerCase().includes(colorName.toLowerCase())) return value; }
-            let hash = 0; for (let i = 0; i < colorName.length; i++) { hash = colorName.charCodeAt(i) + ((hash << 5) - hash); }
-            const c = (hash & 0x00FFFFFF).toString(16).toUpperCase(); return '#' + '00000'.substring(0, 6 - c.length) + c;
+            for (const [key, value] of Object.entries(colorMap)) {
+                if (colorName.toLowerCase().includes(key.toLowerCase()) || key.toLowerCase().includes(colorName.toLowerCase())) return value;
+            }
+            let hash = 0;
+            for (let i = 0; i < colorName.length; i++) { hash = colorName.charCodeAt(i) + ((hash << 5) - hash); }
+            const c = (hash & 0x00FFFFFF).toString(16).toUpperCase();
+            return '#' + '00000'.substring(0, 6 - c.length) + c;
         }
         function updateFilamentDropdowns() {
             const dropdowns = document.querySelectorAll('.item-filament'), colors = Object.keys(filaments).sort();
-            dropdowns.forEach(dropdown => { const currentValue = dropdown.value; dropdown.innerHTML = '<option value="">Select Filament Color</option>'; colors.forEach(color => { const option = document.createElement('option'); option.value = color; option.textContent = color; dropdown.appendChild(option); }); if (currentValue) dropdown.value = currentValue; });
+            dropdowns.forEach(dropdown => {
+                const currentValue = dropdown.value;
+                dropdown.innerHTML = '<option value="">Select Filament</option>';
+                colors.forEach(color => { const option = document.createElement('option'); option.value = color; option.textContent = color; dropdown.appendChild(option); });
+                if (currentValue) dropdown.value = currentValue;
+            });
+        }
+        function getN3DData(itemName) {
+            const key = itemName.toLowerCase().replace(/[^a-z0-9]/g, '');
+            return n3dDataMap[key] || null;
         }
         function parseCSV(csvText) {
             const rows = []; let currentRow = []; let currentCell = ''; let insideQuotes = false; let i = 0;
@@ -280,24 +395,42 @@
                 const customer = order['Customer'] || order['Customer Name'] || order['Name'] || 'Unknown';
                 const status = order['Status'] || order['Order Status'] || 'Pending';
                 const orderDetails = order['Order Details'] || order['Items'] || order['Details'] || '';
-                if (orderId && customer) orders.push({ id: orderId, customer: customer, status: status, items: parseItems(orderDetails), date: order['Date'] || order['Timestamp'] || new Date().toISOString().split('T')[0] });
+                const items = parseOrderDetails(orderDetails);
+                if (orderId && customer) orders.push({ id: orderId, customer: customer, status: status, items: items, date: order['Date'] || order['Timestamp'] || new Date().toISOString().split('T')[0] });
             }
             return orders;
         }
-        function parseItems(itemsText) {
-            if (!itemsText) return [];
-            const items = [], lines = itemsText.split(/[;\n]/);
+        function parseOrderDetails(detailsText) {
+            if (!detailsText) return [];
+            const items = [];
+            const lines = detailsText.split(/[;\n]/);
             lines.forEach(line => {
                 line = line.trim(); if (!line) return;
                 const shiny = line.toLowerCase().includes('shiny') || line.includes('✨');
                 const mystery = line.toLowerCase().includes('mystery') || line.includes('❓');
-                let name = line.replace(/shiny|mystery|✨|❓/gi, '').trim();
-                let filament = 'Ivory White';
-                const knownColors = Object.keys(filaments).length > 0 ? Object.keys(filaments) : [];
-                for (const color of knownColors) { if (line.toLowerCase().includes(color.toLowerCase())) { filament = color; break; } }
-                items.push({ name: name, filament: filament, shiny: shiny, mystery: mystery, pokeball: shiny ? 'shiny' : 'normal' });
+                let cleanLine = line.replace(/shiny|mystery|✨|❓/gi, '').trim();
+                let name = cleanLine, price = 0, qty = 1;
+                const priceMatch = cleanLine.match(/\$(\d+\.?\d*)/);
+                if (priceMatch) { price = parseFloat(priceMatch[1]); cleanLine = cleanLine.replace(priceMatch[0], '').trim(); }
+                const qtyMatch = cleanLine.match(/\(x(\d+)\)/i) || cleanLine.match(/x(\d+)/i);
+                if (qtyMatch) { qty = parseInt(qtyMatch[1]); cleanLine = cleanLine.replace(qtyMatch[0], '').trim(); }
+                name = cleanLine.replace(/[-\s]*$/, '').trim();
+                const n3dData = getN3DData(name);
+                let filamentColors = [];
+                if (n3dData && n3dData.colors) {
+                    filamentColors = n3dData.colors.map(c => ({ color: c.color, grams: c.weight || 50 }));
+                } else {
+                    filamentColors = [{ color: 'Ivory White', grams: 50 }];
+                }
+                items.push({ id: Date.now() + Math.random(), name: name, price: price, qty: qty, shiny: shiny, mystery: mystery, status: 'Pending', filamentColors: filamentColors, pokeball: shiny ? 'shiny' : 'normal' });
             });
             return items;
+        }
+        function calculateItemProfit(item) {
+            const totalGrams = item.filamentColors.reduce((sum, fc) => sum + (fc.grams * item.qty), 0);
+            const filamentCost = totalGrams * FILAMENT_COST_PER_GRAM;
+            const revenue = item.price * item.qty;
+            return { totalGrams, filamentCost, revenue, profit: revenue - filamentCost };
         }
         async function syncOrders() {
             showSyncStatus('Syncing orders...', 'info');
@@ -315,7 +448,19 @@
                 if (saved) { orders = JSON.parse(saved); groupOrdersByCustomer(); renderOrders(); }
             }
         }
-        function groupOrdersByCustomer() { customers = {}; orders.forEach(order => { const customerName = order.customer || 'Unknown'; if (!customers[customerName]) customers[customerName] = []; customers[customerName].push(order); }); }
+        function groupOrdersByCustomer() {
+            customers = {};
+            orders.forEach(order => {
+                const customerName = order.customer || 'Unknown';
+                if (!customers[customerName]) customers[customerName] = [];
+                customers[customerName].push(order);
+            });
+        }
+        function getOrderStatusFromItems(items) {
+            if (items.every(i => i.status === 'Completed')) return 'Completed';
+            if (items.some(i => i.status === 'Printing')) return 'Printing';
+            return 'Pending';
+        }
         function renderOrders() {
             const container = document.getElementById('ordersContainer');
             if (Object.keys(customers).length === 0) { container.innerHTML = '<div class="loading"><p>No orders to display</p></div>'; return; }
@@ -325,60 +470,145 @@
                 const pendingCount = customerOrders.filter(o => o.status === 'Pending').length;
                 const printingCount = customerOrders.filter(o => o.status === 'Printing').length;
                 const completedCount = customerOrders.filter(o => o.status === 'Completed').length;
-                html += `<div class="customer-section"><div class="customer-header" onclick="toggleCustomer('${customer.replace(/'/g, "\\'")}')"><div class="customer-name">👤 ${customer}</div><div class="customer-stats"><span>📝 ${customerOrders.length} orders</span>${pendingCount > 0 ? `<span style="color: #ff6b6b">⏳ ${pendingCount}</span>` : ''}${printingCount > 0 ? `<span style="color: #feca57">🖨️ ${printingCount}</span>` : ''}${completedCount > 0 ? `<span style="color: #48dbfb">✅ ${completedCount}</span>` : ''}</div></div><div class="customer-orders expanded" id="customer-${customer.replace(/\s+/g, '-').replace(/'/g, '')}">${customerOrders.map(order => renderOrderCard(order)).join('')}</div></div>`;
+                html += `<div class="customer-section"><div class="customer-header" onclick="toggleCustomer('${customer.replace(/'/g, "\\'")}')"><div class="customer-name">👤 ${customer}</div><div class="customer-stats"><span>📝 ${customerOrders.length}</span>${pendingCount > 0 ? `<span style="color: #ff6b6b">⏳${pendingCount}</span>` : ''}${printingCount > 0 ? `<span style="color: #feca57">🖨️${printingCount}</span>` : ''}${completedCount > 0 ? `<span style="color: #48dbfb">✅${completedCount}</span>` : ''}</div></div><div class="customer-orders expanded" id="customer-${customer.replace(/\s+/g, '-').replace(/'/g, '')}">${customerOrders.map(order => renderOrderCard(order)).join('')}</div></div>`;
             });
             container.innerHTML = html;
         }
         function renderOrderCard(order) {
             const statusClass = (order.status || 'pending').toLowerCase();
-            return `<div class="order-card ${statusClass}"><div class="order-header"><span class="order-id">#${order.id}</span><span class="order-status status-${statusClass}">${order.status || 'Pending'}</span></div><div class="order-items">${order.items.map(item => `<div class="item-row"><div class="pokeball ${item.pokeball} ${item.shiny ? 'shiny' : ''}"><div class="pokeball-center"></div></div><div class="item-details"><div class="item-name">${item.name}</div><div class="item-filament">${item.filament}</div></div><div class="badges">${item.shiny ? '<span class="badge badge-shiny">✨ SHINY</span>' : ''}${item.mystery ? '<span class="badge badge-mystery">❓ MYSTERY</span>' : ''}</div></div>`).join('')}</div><div class="order-actions">${order.status !== 'Pending' ? `<button class="btn-small" onclick="updateStatus('${order.id}', 'Pending')" style="background: #ff6b6b;">⏳ Pending</button>` : ''}${order.status !== 'Printing' ? `<button class="btn-small" onclick="updateStatus('${order.id}', 'Printing')" style="background: #feca57; color: #333;">🖨️ Printing</button>` : ''}${order.status !== 'Completed' ? `<button class="btn-small" onclick="completeOrder('${order.id}')" style="background: #48dbfb; color: #333;">✅ Complete</button>` : ''}</div></div>`;
+            return `<div class="order-card ${statusClass}"><div class="order-header" onclick="event.stopPropagation(); toggleOrder('${order.id}')"><span class="order-id">#${order.id}</span><span class="order-status status-${statusClass}">${order.status || 'Pending'}</span></div><div class="order-items" id="order-items-${order.id}">${order.items.map((item, idx) => renderItemRow(order.id, item, idx)).join('')}</div></div>`;
         }
-        function toggleCustomer(customer) { const safeId = customer.replace(/\s+/g, '-').replace(/'/g, ''); const el = document.getElementById(`customer-${safeId}`); if (el) el.classList.toggle('expanded'); }
-        async function updateStatus(orderId, status) { const order = orders.find(o => o.id === orderId); if (order) { order.status = status; await pushToGoogleSheets(order); groupOrdersByCustomer(); renderOrders(); updateStats(); } }
-        async function completeOrder(orderId) {
+        function renderItemRow(orderId, item, idx) {
+            const profit = calculateItemProfit(item);
+            return `<div class="item-row" id="item-${orderId}-${idx}" onclick="toggleItem('${orderId}', ${idx})"><div class="pokeball ${item.pokeball} ${item.shiny ? 'shiny' : ''}"><div class="pokeball-center"></div></div><div class="item-details"><div class="item-name">${item.name} ${item.qty > 1 ? `(x${item.qty})` : ''}</div><div class="item-price">$${item.price.toFixed(2)} ${item.status !== 'Pending' ? '• ' + item.status : ''}</div></div><div class="badges">${item.shiny ? '<span class="badge badge-shiny">✨</span>' : ''}${item.mystery ? '<span class="badge badge-mystery">❓</span>' : ''}</div></div><div class="item-expanded" id="item-expanded-${orderId}-${idx}"><div class="filament-info">${item.filamentColors.map(fc => `<div class="filament-tag"><div class="filament-dot" style="background: ${filaments[fc.color]?.color || generateColorHex(fc.color)}"></div>${fc.color}: ${fc.grams * item.qty}g</div>`).join('')}</div><div class="item-stats"><div class="stat-box"><div class="stat-box-label">Total Grams</div><div class="stat-box-value">${profit.totalGrams}g</div></div><div class="stat-box"><div class="stat-box-label">Filament Cost</div><div class="stat-box-value cost">$${profit.filamentCost.toFixed(2)}</div></div><div class="stat-box"><div class="stat-box-label">Revenue</div><div class="stat-box-value">$${profit.revenue.toFixed(2)}</div></div><div class="stat-box"><div class="stat-box-label">Profit</div><div class="stat-box-value profit">$${profit.profit.toFixed(2)}</div></div></div><div class="item-actions"><button class="item-btn ${item.status === 'Pending' ? 'pending' : ''}" onclick="event.stopPropagation(); updateItemStatus('${orderId}', ${idx}, 'Pending')">⏳ Pending</button><button class="item-btn ${item.status === 'Printing' ? 'printing' : ''}" onclick="event.stopPropagation(); updateItemStatus('${orderId}', ${idx}, 'Printing')">🖨️ Printing</button><button class="item-btn ${item.status === 'Completed' ? 'completed' : ''}" onclick="event.stopPropagation(); updateItemStatus('${orderId}', ${idx}, 'Completed')">✅ Complete</button><button class="item-btn shiny ${item.shiny ? 'active' : ''}" onclick="event.stopPropagation(); toggleItemShiny('${orderId}', ${idx})">✨ Shiny</button><button class="item-btn mystery ${item.mystery ? 'active' : ''}" onclick="event.stopPropagation(); toggleItemMystery('${orderId}', ${idx})">❓ Mystery</button></div></div>`;
+        }
+        function toggleCustomer(customer) {
+            const safeId = customer.replace(/\s+/g, '-').replace(/'/g, '');
+            const el = document.getElementById(`customer-${safeId}`);
+            if (el) el.classList.toggle('expanded');
+        }
+        function toggleOrder(orderId) {
+            const el = document.getElementById(`order-items-${orderId}`);
+            if (el) el.classList.toggle('expanded');
+        }
+        function toggleItem(orderId, idx) {
+            const row = document.getElementById(`item-${orderId}-${idx}`);
+            const expanded = document.getElementById(`item-expanded-${orderId}-${idx}`);
+            if (row && expanded) {
+                row.classList.toggle('expanded');
+                expanded.classList.toggle('visible');
+            }
+        }
+        function updateItemStatus(orderId, idx, status) {
             const order = orders.find(o => o.id === orderId);
-            if (order) { order.items.forEach(item => { if (item.filament) subtractFilament(item.filament, 50); }); order.status = 'Completed'; await pushToGoogleSheets(order); groupOrdersByCustomer(); renderOrders(); updateStats(); showSyncStatus(`✅ Order ${orderId} completed! Filament deducted.`, 'success'); }
+            if (!order || !order.items[idx]) return;
+            order.items[idx].status = status;
+            if (status === 'Completed') {
+                const totalGrams = order.items[idx].filamentColors.reduce((sum, fc) => sum + (fc.grams * order.items[idx].qty), 0);
+                order.items[idx].filamentColors.forEach(fc => {
+                    if (filaments[fc.color]) subtractFilament(fc.color, fc.grams * order.items[idx].qty);
+                });
+            }
+            order.status = getOrderStatusFromItems(order.items);
+            saveOrders(); groupOrdersByCustomer(); renderOrders(); updateStats();
+            showSyncStatus(`✅ Item marked ${status}`, 'success');
         }
-        async function pushToGoogleSheets(order) { try { await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(order) }); } catch (e) { console.log('Push to sheets (no-cors mode)'); } }
-        function addFilament(color, amount) { if (!filaments[color]) filaments[color] = { amount: 0, color: generateColorHex(color) }; filaments[color].amount += amount; saveFilaments(); renderFilaments(); }
-        function subtractFilament(color, amount) { if (filaments[color]) { filaments[color].amount = Math.max(0, filaments[color].amount - amount); saveFilaments(); renderFilaments(); } }
+        function toggleItemShiny(orderId, idx) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order || !order.items[idx]) return;
+            order.items[idx].shiny = !order.items[idx].shiny;
+            order.items[idx].pokeball = order.items[idx].shiny ? 'shiny' : 'normal';
+            saveOrders(); renderOrders();
+        }
+        function toggleItemMystery(orderId, idx) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order || !order.items[idx]) return;
+            order.items[idx].mystery = !order.items[idx].mystery;
+            saveOrders(); renderOrders();
+        }
+        function saveOrders() { localStorage.setItem('pokeprint_orders', JSON.stringify(orders)); }
+        async function pushToGoogleSheets(order) {
+            try { await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(order) }); } catch (e) {}
+        }
+        function addFilament(color, amount) {
+            if (!filaments[color]) filaments[color] = { amount: 0, color: generateColorHex(color) };
+            filaments[color].amount += amount; saveFilaments(); renderFilaments();
+        }
+        function subtractFilament(color, amount) {
+            if (filaments[color]) { filaments[color].amount = Math.max(0, filaments[color].amount - amount); saveFilaments(); renderFilaments(); }
+        }
         function openNewOrderModal() { updateFilamentDropdowns(); document.getElementById('newOrderModal').classList.add('active'); }
         function addItemField() {
-            const container = document.getElementById('itemsContainer'), itemNum = container.children.length + 1;
-            const colors = Object.keys(filaments).sort(); let options = '<option value="">Select Filament Color</option>';
+            const container = document.getElementById('itemsContainer');
+            const itemNum = container.children.length + 1;
+            const colors = Object.keys(filaments).sort();
+            let options = '<option value="">Select Filament</option>';
             colors.forEach(color => { options += `<option value="${color}">${color}</option>`; });
             const div = document.createElement('div'); div.className = 'form-group item-entry';
-            div.innerHTML = `<label>Item ${itemNum}</label><input type="text" class="item-name" placeholder="Pokemon/Item name" required><select class="item-filament" style="margin-top: 5px;">${options}</select><label style="margin-top: 5px;"><input type="checkbox" class="item-shiny"> Shiny</label><label><input type="checkbox" class="item-mystery"> Mystery</label>`;
+            div.innerHTML = `<label>Item ${itemNum}</label><input type="text" class="item-name" placeholder="Pokemon name" required><input type="number" class="item-price" placeholder="Price ($)" style="margin-top: 8px;"><input type="number" class="item-qty" placeholder="Qty" value="1" style="margin-top: 8px;"><select class="item-filament" style="margin-top: 8px;">${options}</select><label style="margin-top: 10px; display: flex; align-items: center; gap: 8px;"><input type="checkbox" class="item-shiny" style="width: auto;"><span>✨ Shiny</span></label><label style="margin-top: 5px; display: flex; align-items: center; gap: 8px;"><input type="checkbox" class="item-mystery" style="width: auto;"><span>❓ Mystery</span></label>`;
             container.appendChild(div);
         }
         document.getElementById('newOrderForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const customer = document.getElementById('customerName').value, orderId = document.getElementById('orderId').value || `ORD-${Date.now()}`;
-            const items = []; document.querySelectorAll('.item-entry').forEach(entry => { const name = entry.querySelector('.item-name').value, filament = entry.querySelector('.item-filament').value, shiny = entry.querySelector('.item-shiny').checked, mystery = entry.querySelector('.item-mystery').checked; if (name) items.push({ name, filament, shiny, mystery, pokeball: 'normal' }); });
+            const customer = document.getElementById('customerName').value;
+            const orderId = document.getElementById('orderId').value || `ORD-${Date.now()}`;
+            const items = [];
+            document.querySelectorAll('.item-entry').forEach(entry => {
+                const name = entry.querySelector('.item-name').value;
+                const price = parseFloat(entry.querySelector('.item-price').value) || 0;
+                const qty = parseInt(entry.querySelector('.item-qty').value) || 1;
+                const shiny = entry.querySelector('.item-shiny').checked;
+                const mystery = entry.querySelector('.item-mystery').checked;
+                if (name) {
+                    const n3dData = getN3DData(name);
+                    let filamentColors = [];
+                    if (n3dData && n3dData.colors) filamentColors = n3dData.colors.map(c => ({ color: c.color, grams: c.weight || 50 }));
+                    else filamentColors = [{ color: 'Ivory White', grams: 50 }];
+                    items.push({ id: Date.now() + Math.random(), name, price, qty, shiny, mystery, status: 'Pending', filamentColors, pokeball: shiny ? 'shiny' : 'normal' });
+                }
+            });
             const newOrder = { id: orderId, customer, status: 'Pending', items, date: new Date().toISOString().split('T')[0] };
-            orders.push(newOrder); await pushToGoogleSheets(newOrder); groupOrdersByCustomer(); renderOrders(); updateStats(); closeModal('newOrderModal'); document.getElementById('newOrderForm').reset(); showSyncStatus('✅ Order created successfully!', 'success');
+            orders.push(newOrder); await pushToGoogleSheets(newOrder); saveOrders(); groupOrdersByCustomer(); renderOrders(); updateStats();
+            closeModal('newOrderModal'); document.getElementById('newOrderForm').reset();
+            showSyncStatus('✅ Order created!', 'success');
         });
         function openFilamentModal() { renderFilaments(); document.getElementById('filamentModal').classList.add('active'); }
         function renderFilaments() {
             const container = document.getElementById('filamentContainer');
-            if (Object.keys(filaments).length === 0) { container.innerHTML = '<div style="text-align: center; padding: 40px; color: #a0a0a0;"><p>No filament colors loaded yet.</p><p style="margin-top: 10px;">Click "🎨 Sync N3D Colors" to load colors from your N3D API data.</p></div>'; return; }
-            let html = ''; Object.keys(filaments).sort().forEach(color => { const filament = filaments[color], isLow = filament.amount <= 200; html += `<div class="filament-card ${isLow ? 'low-stock' : ''}"><div class="filament-color" style="background: ${filament.color}"></div><div class="filament-name">${color}</div><div class="filament-amount">${filament.amount}g</div><div class="filament-actions"><button class="btn-tiny btn-success" onclick="addFilament('${color}', 1000)">+1000g</button><button class="btn-tiny" onclick="subtractFilament('${color}', 50)" style="background: #ff6b6b;">-50g</button></div></div>`; });
+            if (Object.keys(filaments).length === 0) { container.innerHTML = '<div style="text-align: center; padding: 40px; color: #a0a0a0;"><p>No filament colors loaded.</p><p style="margin-top: 10px;">Tap "🎨 N3D" to load colors.</p></div>'; return; }
+            let html = '';
+            Object.keys(filaments).sort().forEach(color => {
+                const filament = filaments[color], isLow = filament.amount <= 200;
+                html += `<div class="filament-card ${isLow ? 'low-stock' : ''}"><div class="filament-color" style="background: ${filament.color}"></div><div class="filament-name">${color}</div><div class="filament-amount">${filament.amount}g</div><div class="filament-actions"><button class="btn-tiny btn-success" onclick="addFilament('${color}', 1000)">+1000g</button><button class="btn-tiny" onclick="subtractFilament('${color}', 50)" style="background: #ff6b6b;">-50g</button></div></div>`;
+            });
             container.innerHTML = html;
         }
         function openShoppingModal() { renderShoppingList(); document.getElementById('shoppingModal').classList.add('active'); }
         function renderShoppingList() {
-            const list = document.getElementById('shoppingList'), lowStock = Object.keys(filaments).filter(color => filaments[color].amount <= 200);
-            if (lowStock.length === 0) { list.innerHTML = '<li style="text-align: center; color: #a0a0a0;">🎉 All filaments well stocked!</li>'; return; }
-            list.innerHTML = lowStock.map(color => `<li class="shopping-item"><span style="display: flex; align-items: center; gap: 10px;"><div style="width: 20px; height: 20px; border-radius: 50%; background: ${filaments[color].color}; border: 2px solid #fff;"></div>${color}</span><span style="color: #ff6b6b; font-weight: bold;">${filaments[color].amount}g remaining</span></li>`).join('');
+            const list = document.getElementById('shoppingList');
+            const lowStock = Object.keys(filaments).filter(color => filaments[color].amount <= 200);
+            if (lowStock.length === 0) { list.innerHTML = '<li style="text-align: center; color: #a0a0a0;">🎉 All stocked!</li>'; return; }
+            list.innerHTML = lowStock.map(color => `<li class="shopping-item"><span style="display: flex; align-items: center; gap: 10px;"><div style="width: 20px; height: 20px; border-radius: 50%; background: ${filaments[color].color}; border: 2px solid #fff;"></div>${color}</span><span style="color: #ff6b6b; font-weight: bold;">${filaments[color].amount}g</span></li>`).join('');
         }
         function updateStats() {
-            const pending = orders.filter(o => o.status === 'Pending').length, printing = orders.filter(o => o.status === 'Printing').length, completed = orders.filter(o => o.status === 'Completed').length;
-            const filamentColors = Object.keys(filaments).length, lowStock = Object.keys(filaments).filter(c => filaments[c].amount <= 200).length, shopping = lowStock;
-            document.getElementById('pendingCount').textContent = pending; document.getElementById('printingCount').textContent = printing; document.getElementById('completedCount').textContent = completed;
-            document.getElementById('filamentCount').textContent = filamentColors; document.getElementById('lowStockCount').textContent = lowStock; document.getElementById('shoppingCount').textContent = shopping;
+            const pending = orders.filter(o => o.status === 'Pending').length;
+            const printing = orders.filter(o => o.status === 'Printing').length;
+            const completed = orders.filter(o => o.status === 'Completed').length;
+            const filamentColors = Object.keys(filaments).length;
+            const lowStock = Object.keys(filaments).filter(c => filaments[c].amount <= 200).length;
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('printingCount').textContent = printing;
+            document.getElementById('completedCount').textContent = completed;
+            document.getElementById('filamentCount').textContent = filamentColors;
+            document.getElementById('lowStockCount').textContent = lowStock;
+            document.getElementById('shoppingCount').textContent = lowStock;
         }
         function closeModal(modalId) { document.getElementById(modalId).classList.remove('active'); }
-        function showSyncStatus(message, type) { const el = document.getElementById('syncStatus'); el.textContent = message; el.className = `sync-status ${type}`; if (type !== 'info') setTimeout(() => { el.style.display = 'none'; }, 5000); }
+        function showSyncStatus(message, type) {
+            const el = document.getElementById('syncStatus');
+            el.textContent = message; el.className = `sync-status ${type}`;
+            if (type !== 'info') setTimeout(() => { el.style.display = 'none'; }, 3000);
+        }
         window.onclick = (e) => { if (e.target.classList.contains('modal')) e.target.classList.remove('active'); };
     </script>
 </body>
