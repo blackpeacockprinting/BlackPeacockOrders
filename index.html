@@ -55,6 +55,8 @@
         .btn-primary:hover { background: var(--primary-dark); }
         .btn-success { background: var(--success); color: white; border-color: var(--success); }
         .btn-warning { background: var(--warning); color: white; border-color: var(--warning); }
+        .btn-info { background: var(--info); color: white; border-color: var(--info); }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
         .search-box { flex: 1; min-width: 200px; position: relative; }
         .search-box input {
             width: 100%; padding: 0.6rem 1rem; background: var(--surface);
@@ -62,6 +64,13 @@
             color: var(--text); font-size: 0.9rem;
         }
         select.btn { width: auto; min-width: 150px; }
+        .sync-status {
+            font-size: 0.8rem; color: var(--text-muted); margin-left: auto;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .sync-status.syncing { color: var(--info); }
+        .sync-status.success { color: var(--success); }
+        .sync-status.error { color: var(--danger); }
         .tabs {
             display: flex; gap: 0.5rem; margin-bottom: 1rem;
             border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;
@@ -122,6 +131,8 @@
             overflow: hidden; transition: all 0.3s;
         }
         .order-card:hover { border-color: var(--primary); }
+        .order-card.sheets-source { border-left: 3px solid var(--info); }
+        .order-card.local-source { border-left: 3px solid var(--success); }
         .order-header {
             padding: 0.875rem 1rem; display: flex; justify-content: space-between;
             align-items: center; flex-wrap: wrap; gap: 0.75rem; cursor: pointer;
@@ -144,6 +155,13 @@
         }
         .design-info h4 { font-size: 1rem; margin-bottom: 0.15rem; }
         .order-meta { color: var(--text-muted); font-size: 0.8rem; }
+        .source-badge {
+            font-size: 0.65rem; padding: 0.15rem 0.4rem; border-radius: 4px;
+            background: var(--surface-light); color: var(--text-muted);
+            margin-left: 0.5rem;
+        }
+        .source-badge.sheets { background: rgba(59, 130, 246, 0.2); color: var(--info); }
+        .source-badge.local { background: rgba(16, 185, 129, 0.2); color: var(--success); }
         .badges { display: flex; gap: 0.4rem; flex-wrap: wrap; }
         .badge {
             padding: 0.25rem 0.6rem; border-radius: 20px; font-size: 0.7rem;
@@ -239,184 +257,464 @@
             h1 { font-size: 1.4rem; }
             .customer-stats { display: none; }
             .customer-header { padding: 0.875rem 1rem; }
+            .sync-status { width: 100%; margin-top: 0.5rem; justify-content: flex-start; }
         }
     </style>
+<base target="_blank">
 </head>
 <body>
     <div class="container">
         <header>
             <h1>⚡ PokePrint Tracker</h1>
-            <button class="btn btn-primary" onclick="refreshOrders()">🔄 Refresh</button>
+            <button class="btn btn-primary" onclick="openOrderModal()">+ New Order</button>
         </header>
 
         <div class="stats-grid">
             <div class="stat-card pending">
-                <div class="stat-label">Total Orders</div>
-                <div class="stat-value" id="stat-total">0</div>
+                <div class="stat-label">Pending</div>
+                <div class="stat-value" id="stat-pending">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Printing</div>
+                <div class="stat-value" id="stat-printing">0</div>
+            </div>
+            <div class="stat-card paid">
+                <div class="stat-label">Completed</div>
+                <div class="stat-value" id="stat-completed">0</div>
             </div>
             <div class="stat-card revenue">
-                <div class="stat-label">Total Revenue</div>
+                <div class="stat-label">Revenue</div>
                 <div class="stat-value" id="stat-revenue">$0</div>
+            </div>
+            <div class="stat-card profit">
+                <div class="stat-label">Profit</div>
+                <div class="stat-value" id="stat-profit">$0</div>
+            </div>
+            <div class="stat-card" style="border-left-color: var(--danger);">
+                <div class="stat-label">Resell</div>
+                <div class="stat-value" id="stat-resell">0</div>
             </div>
         </div>
 
         <div class="controls">
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Search customers..." onkeyup="filterOrders()">
+                <input type="text" id="searchInput" placeholder="Search customers or designs..." onkeyup="filterOrders()">
             </div>
+            <select id="filterStatus" onchange="filterOrders()" class="btn">
+                <option value="">All Status</option>
+                <option value="pending">Pending</option>
+                <option value="printing">Printing</option>
+                <option value="completed">Completed</option>
+                <option value="delivered">Delivered</option>
+                <option value="resell">Resell</option>
+            </select>
+            <button class="btn btn-info" onclick="syncWithGoogleSheets()" id="syncBtn">
+                🔄 Sync Sheets
+            </button>
+            <button class="btn" onclick="exportData()">📤 Export</button>
+            <div class="sync-status" id="syncStatus"></div>
         </div>
 
-        <div id="orders-container">
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('active')">Active Orders</button>
+            <button class="tab" onclick="showTab('resell')">Resell Inventory</button>
+        </div>
+
+        <div id="activeOrders" class="orders-container">
             <div class="loading-state">Loading orders from Google Sheets...</div>
+        </div>
+        <div id="resellOrders" class="orders-container hidden"></div>
+    </div>
+
+    <!-- New Order Modal -->
+    <div class="modal-overlay" id="orderModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>New Order</h2>
+                <button class="btn-close" onclick="closeModal('orderModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Customer Name</label>
+                    <input type="text" id="customerName" placeholder="e.g., John Smith">
+                </div>
+                <div class="form-group">
+                    <label>Search Design</label>
+                    <input type="text" id="designSearch" placeholder="Type to search..." oninput="searchDesigns(this.value)">
+                    <div class="design-selector" id="designSelector"></div>
+                </div>
+                <div id="selectedRecipe" class="recipe-preview hidden">
+                    <h4>Selected Design</h4>
+                    <div id="recipeDetails"></div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label>Price ($)</label>
+                        <input type="number" id="orderPrice" step="0.01" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Filament Cost ($)</label>
+                        <input type="number" id="filamentCost" step="0.01" readonly>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="orderStatus">
+                            <option value="pending">Pending</option>
+                            <option value="printing">Printing</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Payment</label>
+                        <select id="paymentStatus">
+                            <option value="unpaid">Unpaid</option>
+                            <option value="paid-cash">Cash</option>
+                            <option value="paid-zelle">Zelle</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Notes (Optional)</label>
+                    <input type="text" id="orderNotes" placeholder="Any special instructions...">
+                </div>
+            </div>
+            <div class="modal-body" style="border-top: 1px solid var(--border); display: flex; gap: 0.75rem; justify-content: flex-end;">
+                <button class="btn" onclick="closeModal('orderModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveOrder()">Save Order</button>
+            </div>
         </div>
     </div>
 
     <script>
-        // Google Sheets Configuration
-        const CONFIG = {
-            API_KEY: 'AIzaSyDWZGMkES7zQGGPp9o2pJK9aez_tSBktQw',
-            SHEET_ID: '1mfRlr9EaR-XVMEf3W0LaJEEUQ9uS9llLsWTr0jz88ng',
-            SHEET_NAME: 'Form Responses 1'
-        };
 
+        // Google Sheets Configuration
+        const GOOGLE_SHEETS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSk8BdvDMwzoPI2A5X863_8OAXKaSWs5a-aijyX7qMJRWFDoquKJs3gM20wcS-ggas_UuGjU8mCmz1V/pub?gid=1413466324&single=true&output=csv';
+        const GOOGLE_SHEETS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwZJsAvVAn3Nzp3B7st9bQgOOTEZy8tz3uR6QMjOTbRfikIqR_R4rcuNan9FHYE5hXi2g/exec';
+
+        // Recipe database - will load from JSON
+        let RECIPES = [];
+
+        // Orders storage
         let orders = [];
-        let groupedOrders = {};
+        let currentCustomer = null;
+        let selectedRecipe = null;
+
+        // Hardcoded fallback recipes
+        const HARDCODED_RECIPES = [
+            {"name": "Pikachu", "price": 8.0, "filamentCost": 1.03, "profit": 6.97, "colors": [{"color": "Lemon Yellow", "grams": 64.03}, {"color": "Charcoal Black", "grams": 16.14}], "totalGrams": 86.09},
+            {"name": "Bulbasaur", "price": 8.0, "filamentCost": 0.82, "profit": 7.18, "colors": [{"color": "Ice Blue", "grams": 50.1}, {"color": "Charcoal Black", "grams": 15.1}], "totalGrams": 68.05},
+            {"name": "Charmander", "price": 8.0, "filamentCost": 1.1, "profit": 6.9, "colors": [{"color": "Mandarin Orange", "grams": 61.56}, {"color": "Charcoal Black", "grams": 14.85}], "totalGrams": 91.56},
+            {"name": "Squirtle", "price": 8.0, "filamentCost": 0.82, "profit": 7.18, "colors": [{"color": "Desert Tan", "grams": 27}, {"color": "Charcoal Black", "grams": 15}], "totalGrams": 68}
+        ];
 
         // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchOrdersFromSheets();
-        });
+        document.addEventListener('DOMContentLoaded', init);
 
-        // Fetch orders from Google Sheets
-        async function fetchOrdersFromSheets() {
-            const container = document.getElementById('orders-container');
-            container.innerHTML = '<div class="loading-state">Loading orders from Google Sheets...</div>';
-            
+        async function init() {
+            await loadDesigns();
+            // Auto-sync with Google Sheets on page load
+            await syncWithGoogleSheets();
+        }
+
+        // Load designs from JSON
+        async function loadDesigns() {
             try {
-                const url = `https://sheets.googleapis.com/v4/spreadsheets/${CONFIG.SHEET_ID}/values/${encodeURIComponent(CONFIG.SHEET_NAME)}?key=${CONFIG.API_KEY}`;
-                
-                const response = await fetch(url);
-                const data = await response.json();
-                
-                if (data.error) {
-                    container.innerHTML = `<div class="error-state">Error: ${data.error.message}</div>`;
-                    return;
-                }
-                
-                const rows = data.values;
-                if (!rows || rows.length < 2) {
-                    container.innerHTML = '<div class="empty-state">No orders found in Google Sheets.</div>';
-                    return;
-                }
-                
-                // Parse headers and data
-                const headers = rows[0];
-                orders = rows.slice(1).map((row, index) => {
-                    const order = {};
-                    headers.forEach((header, i) => {
-                        order[header] = row[i] || '';
-                    });
-                    order.rowNumber = index + 2; // Keep track of row number
-                    return order;
-                });
-                
-                // Group by customer name
-                groupOrdersByCustomer();
-                
-                // Render
-                renderOrders();
-                updateStats();
-                
+                const response = await fetch('data/n3d-designs.json');
+                if (!response.ok) throw new Error('Designs file not found');
+                RECIPES = await response.json();
+                console.log(`Loaded ${RECIPES.length} designs`);
             } catch (error) {
-                container.innerHTML = `<div class="error-state">Failed to load orders: ${error.message}</div>`;
+                console.error('Failed to load designs:', error);
+                RECIPES = HARDCODED_RECIPES;
             }
         }
 
-        // Group orders by customer name
-        function groupOrdersByCustomer() {
-            groupedOrders = {};
-            orders.forEach(order => {
-                const name = order['Name'] || 'Unknown';
-                if (!groupedOrders[name]) {
-                    groupedOrders[name] = [];
-                }
-                groupedOrders[name].push(order);
-            });
+        // Sync with Google Sheets (Bidirectional)
+        async function syncWithGoogleSheets() {
+            const statusEl = document.getElementById('syncStatus');
+            const btn = document.getElementById('syncBtn');
+
+            statusEl.textContent = '🔄 Syncing...';
+            statusEl.className = 'sync-status syncing';
+            btn.disabled = true;
+
+            try {
+                // Push local orders TO Google Sheets
+                await pushOrdersToSheets();
+
+                // Pull orders FROM Google Sheets (replaces local)
+                await pullOrdersFromSheets();
+
+                statusEl.textContent = '✅ Synced';
+                statusEl.className = 'sync-status success';
+                showNotification('Orders synced with Google Sheets', 'success');
+
+            } catch (error) {
+                console.error('Sync failed:', error);
+                statusEl.textContent = '❌ Sync failed';
+                statusEl.className = 'sync-status error';
+            } finally {
+                btn.disabled = false;
+                setTimeout(() => {
+                    statusEl.textContent = '';
+                    statusEl.className = 'sync-status';
+                }, 3000);
+            }
         }
 
-        // Get initials from name
+        // Push local orders to Google Sheets
+        async function pushOrdersToSheets() {
+            try {
+                await fetch(GOOGLE_SHEETS_WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'pushOrders', orders: orders.filter(o => o.source === 'local') })
+                });
+            } catch (error) {
+                console.warn('Push failed:', error);
+            }
+        }
+
+        // Pull orders from Google Sheets
+        async function pullOrdersFromSheets() {
+            const response = await fetch(GOOGLE_SHEETS_URL + '&t=' + Date.now());
+            if (!response.ok) throw new Error('Failed to fetch');
+
+            const csvText = await response.text();
+            const sheetOrders = parseCSVOrders(csvText);
+
+            // Keep local orders, add sheet orders
+            const localOrders = orders.filter(o => o.source === 'local');
+            orders = [...sheetOrders, ...localOrders];
+
+            renderOrders();
+            updateStats();
+        }
+
+        // Parse CSV from Google Sheets
+        function parseCSVOrders(csvText) {
+            const lines = csvText.trim().split('\n');
+            const parsedOrders = [];
+            let currentCustomer = null;
+
+            for (const line of lines) {
+                const trimmed = line.trim();
+                if (!trimmed) {
+                    currentCustomer = null;
+                    continue;
+                }
+
+                if (!trimmed.includes('$') && !trimmed.match(/\(x\d+\)/)) {
+                    currentCustomer = trimmed;
+                    continue;
+                }
+
+                if (currentCustomer && trimmed.includes('$')) {
+                    const match = trimmed.match(/(.+?)\s*(?:\(x(\d+)\))?\s*-\s*\$(\d+\.?\d*)/);
+                    if (match) {
+                        const designName = match[1].trim();
+                        const quantity = parseInt(match[2]) || 1;
+                        const price = parseFloat(match[3]);
+
+                        const recipe = RECIPES.find(r => 
+                            r.name.toLowerCase() === designName.toLowerCase()
+                        ) || { name: designName, price: price, filamentCost: price * 0.15, profit: price * 0.85, colors: [], totalGrams: 50 };
+
+                        for (let i = 0; i < quantity; i++) {
+                            parsedOrders.push({
+                                id: 'sheets_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                                customer: currentCustomer,
+                                design: recipe,
+                                price: price / quantity,
+                                status: 'pending',
+                                payment: 'unpaid',
+                                notes: '',
+                                source: 'sheets',
+                                date: new Date().toISOString()
+                            });
+                        }
+                    }
+                }
+            }
+            return parsedOrders;
+        }
+
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const banner = document.createElement('div');
+            banner.style.cssText = `
+                position: fixed; top: 20px; right: 20px;
+                background: ${type === 'success' ? '#10b981' : '#3b82f6'};
+                color: white; padding: 1rem 1.5rem; border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 10000;
+                font-weight: 600; max-width: 400px;
+                animation: slideIn 0.3s ease;
+            `;
+            banner.innerHTML = message + ' <button onclick="this.parentElement.remove()" style="margin-left:10px;background:none;border:none;color:white;cursor:pointer;font-size:1.2rem;">×</button>';
+            document.body.appendChild(banner);
+            setTimeout(() => banner.remove(), 10000);
+        }
+
+        // Modal functions
+        function openOrderModal() {
+            document.getElementById('orderModal').classList.add('active');
+            document.getElementById('customerName').focus();
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            resetOrderForm();
+        }
+
+        function resetOrderForm() {
+            document.getElementById('customerName').value = '';
+            document.getElementById('designSearch').value = '';
+            document.getElementById('designSelector').innerHTML = '';
+            document.getElementById('selectedRecipe').classList.add('hidden');
+            document.getElementById('orderNotes').value = '';
+            selectedRecipe = null;
+        }
+
+        // Search designs
+        function searchDesigns(query) {
+            const selector = document.getElementById('designSelector');
+            if (!query) {
+                selector.innerHTML = '';
+                return;
+            }
+
+            const matches = RECIPES.filter(r => 
+                r.name.toLowerCase().includes(query.toLowerCase())
+            ).slice(0, 10);
+
+            selector.innerHTML = matches.map(r => `
+                <div class="design-option" onclick="selectDesign('${r.name}')">${r.name} - $${r.price}</div>
+            `).join('');
+        }
+
+        // Select design
+        function selectDesign(name) {
+            selectedRecipe = RECIPES.find(r => r.name === name);
+            if (!selectedRecipe) return;
+
+            document.getElementById('orderPrice').value = selectedRecipe.price;
+            document.getElementById('filamentCost').value = selectedRecipe.filamentCost.toFixed(2);
+            document.getElementById('recipeDetails').innerHTML = `
+                <strong>${selectedRecipe.name}</strong><br>
+                Total: ${selectedRecipe.totalGrams}g<br>
+                Profit: $${selectedRecipe.profit.toFixed(2)}
+            `;
+            document.getElementById('selectedRecipe').classList.remove('hidden');
+            document.getElementById('designSelector').innerHTML = '';
+        }
+
+        // Save order
+        function saveOrder() {
+            const customer = document.getElementById('customerName').value.trim();
+            const status = document.getElementById('orderStatus').value;
+            const payment = document.getElementById('paymentStatus').value;
+            const notes = document.getElementById('orderNotes').value.trim();
+
+            if (!customer) {
+                alert('Please enter customer name');
+                return;
+            }
+            if (!selectedRecipe) {
+                alert('Please select a design');
+                return;
+            }
+
+            const order = {
+                id: 'local_' + Date.now(),
+                customer: customer,
+                design: selectedRecipe,
+                price: selectedRecipe.price,
+                status: status,
+                payment: payment,
+                notes: notes,
+                source: 'local',
+                date: new Date().toISOString()
+            };
+
+            orders.push(order);
+            pushOrdersToSheets().catch(err => console.warn('Sync failed:', err));
+
+            closeModal('orderModal');
+            renderOrders();
+            updateStats();
+            showNotification('Order saved!', 'success');
+        }
+
+        // Get initials
         function getInitials(name) {
             return name.split(' ').map(n => n[0]).join('').toUpperCase().substr(0, 2);
         }
 
         // Format currency
         function formatCurrency(amount) {
-            const num = parseFloat(amount);
-            return '$' + (isNaN(num) ? '0.00' : num.toFixed(2));
+            return '$' + parseFloat(amount).toFixed(2);
         }
 
-        // Parse order details to extract items
-        function parseOrderDetails(details) {
-            if (!details) return [];
-            
-            // Split by common delimiters and clean up
-            const items = details.split(/[\n,;]/)
-                .map(item => item.trim())
-                .filter(item => item.length > 0);
-            
-            return items;
+        // Group orders by customer
+        function groupOrdersByCustomer(ordersList) {
+            const grouped = {};
+            ordersList.forEach(order => {
+                if (!grouped[order.customer]) {
+                    grouped[order.customer] = [];
+                }
+                grouped[order.customer].push(order);
+            });
+            return grouped;
         }
 
-        // Render all orders
+        // Render orders
         function renderOrders() {
             const search = document.getElementById('searchInput').value.toLowerCase();
-            const container = document.getElementById('orders-container');
-            
-            // Filter customers by search
-            const customerNames = Object.keys(groupedOrders).filter(name => 
-                name.toLowerCase().includes(search)
-            );
-            
-            if (customerNames.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div style="font-size: 3rem; margin-bottom: 1rem;">📦</div>
-                        <h3>No orders found</h3>
-                        <p>Try a different search term</p>
-                    </div>
-                `;
+            const statusFilter = document.getElementById('filterStatus').value;
+            const container = document.getElementById('activeOrders');
+
+            // Filter orders
+            let filtered = orders.filter(o => o.status !== 'resell');
+            if (search) {
+                filtered = filtered.filter(o => 
+                    o.customer.toLowerCase().includes(search) ||
+                    o.design.name.toLowerCase().includes(search)
+                );
+            }
+            if (statusFilter) {
+                filtered = filtered.filter(o => o.status === statusFilter);
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="empty-state">No orders found</div>';
                 return;
             }
-            
-            container.innerHTML = customerNames.map(customerName => {
-                const customerOrders = groupedOrders[customerName];
-                const totalValue = customerOrders.reduce((sum, o) => {
-                    const total = parseFloat(o['Order Total']) || 0;
-                    return sum + total;
-                }, 0);
-                const itemCount = customerOrders.length;
-                const initials = getInitials(customerName);
-                const safeId = customerName.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '');
-                
-                // Get latest order date
-                const latestDate = customerOrders[0]['Timestamp'] || '';
-                
+
+            const grouped = groupOrdersByCustomer(filtered);
+
+            container.innerHTML = Object.keys(grouped).map(customer => {
+                const customerOrders = grouped[customer];
+                const totalValue = customerOrders.reduce((sum, o) => sum + o.price, 0);
+                const safeId = customer.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '');
+
                 return `
                     <div class="customer-group">
-                        <div class="customer-header" id="header-${safeId}" onclick="toggleCustomer('${safeId}')">
+                        <div class="customer-header" onclick="toggleCustomer('${safeId}')">
                             <div class="customer-info-main">
-                                <div class="customer-avatar">${initials}</div>
+                                <div class="customer-avatar">${getInitials(customer)}</div>
                                 <div class="customer-name-section">
-                                    <h3>${customerName}</h3>
-                                    <div class="customer-meta">${itemCount} order${itemCount !== 1 ? 's' : ''} • ${latestDate}</div>
+                                    <h3>${customer}</h3>
+                                    <div class="customer-meta">${customerOrders.length} orders</div>
                                 </div>
                             </div>
                             <div class="customer-stats">
                                 <div class="customer-stat">
                                     <div class="customer-stat-value">${formatCurrency(totalValue)}</div>
-                                    <div class="customer-stat-label">Total</div>
                                 </div>
-                                <div class="expand-icon" id="icon-${safeId}">▼</div>
+                                <div class="expand-icon">▼</div>
                             </div>
                         </div>
                         <div class="customer-orders" id="orders-${safeId}">
@@ -429,79 +727,109 @@
             }).join('');
         }
 
-        // Render individual order card
+        // Render order card
         function renderOrderCard(order) {
-            const items = parseOrderDetails(order['Order Details']);
-            const contactMethod = order['Preferred Contact Method'] || '';
-            const phone = order['Phone Number (If non-KR number please specify preferred platform i.e. Whatsapp)'] || '';
-            const email = order['Email'] || '';
-            
             return `
-                <div class="order-card">
-                    <div class="order-header" onclick="toggleDetails('${order.rowNumber}')">
+                <div class="order-card ${order.source}-source">
+                    <div class="order-header" onclick="toggleOrderDetails('${order.id}')">
                         <div class="order-main">
                             <div class="pokeball-preview"></div>
                             <div class="design-info">
-                                <h4>${items.length > 0 ? items[0] : 'Order'}</h4>
-                                <div class="order-meta">${order['Timestamp'] || 'No date'} • ${items.length} item${items.length !== 1 ? 's' : ''}</div>
+                                <h4>${order.design.name} <span class="source-badge ${order.source}">${order.source}</span></h4>
+                                <div class="order-meta">${new Date(order.date).toLocaleDateString()}</div>
                             </div>
                         </div>
-                        <div class="price-tag">${formatCurrency(order['Order Total'])}</div>
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <span class="badge ${order.status}">${order.status}</span>
+                            <span class="badge ${order.payment}">${order.payment}</span>
+                            <span class="price-tag">${formatCurrency(order.price)}</span>
+                        </div>
                     </div>
-                    <div class="order-details" id="details-${order.rowNumber}">
+                    <div class="order-details" id="details-${order.id}">
                         <div class="details-grid">
                             <div class="detail-section">
-                                <h4>📧 Contact Info</h4>
+                                <h4>Materials</h4>
                                 <div class="materials-list">
-                                    ${email ? `<div class="material-item"><span>Email</span><span>${email}</span></div>` : ''}
-                                    ${phone ? `<div class="material-item"><span>Phone</span><span>${phone}</span></div>` : ''}
-                                    ${contactMethod ? `<div class="material-item"><span>Preferred</span><span class="badge paid-cash">${contactMethod}</span></div>` : ''}
+                                    ${order.design.colors ? order.design.colors.map(c => `
+                                        <div class="material-item">
+                                            <span>${c.color}</span>
+                                            <span>${c.grams}g</span>
+                                        </div>
+                                    `).join('') : '<div class="material-item"><span>Standard materials</span></div>'}
                                 </div>
                             </div>
                             <div class="detail-section">
-                                <h4>🛒 Order Items</h4>
-                                <div class="materials-list">
-                                    ${items.map(item => `
-                                        <div class="material-item">
-                                            <span>${item}</span>
-                                        </div>
-                                    `).join('') || '<div class="material-item"><span>No items listed</span></div>'}
+                                <h4>Cost Breakdown</h4>
+                                <div class="cost-breakdown">
+                                    <div class="cost-row"><span>Price</span><span>${formatCurrency(order.price)}</span></div>
+                                    <div class="cost-row"><span>Filament</span><span>-${formatCurrency(order.design.filamentCost)}</span></div>
+                                    <div class="cost-row profit"><span>Profit</span><span>${formatCurrency(order.design.profit)}</span></div>
                                 </div>
                             </div>
+                        </div>
+                        ${order.notes ? `<div style="margin-top: 0.75rem; padding: 0.5rem; background: var(--surface); border-radius: 6px; font-size: 0.85rem;"><strong>Notes:</strong> ${order.notes}</div>` : ''}
+                        <div class="actions-row">
+                            <button class="btn btn-small" onclick="updateStatus('${order.id}', 'pending')">Pending</button>
+                            <button class="btn btn-small" onclick="updateStatus('${order.id}', 'printing')">Printing</button>
+                            <button class="btn btn-small btn-success" onclick="updateStatus('${order.id}', 'completed')">Completed</button>
+                            <button class="btn btn-small btn-warning" onclick="updatePayment('${order.id}', 'paid-cash')">Cash</button>
+                            <button class="btn btn-small btn-warning" onclick="updatePayment('${order.id}', 'paid-zelle')">Zelle</button>
                         </div>
                     </div>
                 </div>
             `;
         }
 
-        // Toggle customer collapse
+        // Toggle customer
         function toggleCustomer(safeId) {
             const ordersDiv = document.getElementById(`orders-${safeId}`);
-            const iconDiv = document.getElementById(`icon-${safeId}`);
-            const headerDiv = document.getElementById(`header-${safeId}`);
-
             ordersDiv.classList.toggle('collapsed');
-            iconDiv.classList.toggle('collapsed');
-            headerDiv.classList.toggle('collapsed');
         }
 
         // Toggle order details
-        function toggleDetails(rowNumber) {
+        function toggleOrderDetails(orderId) {
             event.stopPropagation();
-            const details = document.getElementById(`details-${rowNumber}`);
+            const details = document.getElementById(`details-${orderId}`);
             details.classList.toggle('expanded');
+        }
+
+        // Update status
+        function updateStatus(orderId, status) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                order.status = status;
+                renderOrders();
+                updateStats();
+                pushOrdersToSheets().catch(err => console.warn('Sync failed:', err));
+            }
+        }
+
+        // Update payment
+        function updatePayment(orderId, payment) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                order.payment = payment;
+                renderOrders();
+                updateStats();
+                pushOrdersToSheets().catch(err => console.warn('Sync failed:', err));
+            }
         }
 
         // Update stats
         function updateStats() {
-            const totalOrders = orders.length;
-            const totalRevenue = orders.reduce((sum, o) => {
-                const total = parseFloat(o['Order Total']) || 0;
-                return sum + total;
-            }, 0);
-            
-            document.getElementById('stat-total').textContent = totalOrders;
-            document.getElementById('stat-revenue').textContent = formatCurrency(totalRevenue);
+            const pending = orders.filter(o => o.status === 'pending').length;
+            const printing = orders.filter(o => o.status === 'printing').length;
+            const completed = orders.filter(o => o.status === 'completed').length;
+            const resell = orders.filter(o => o.status === 'resell').length;
+            const revenue = orders.reduce((sum, o) => sum + o.price, 0);
+            const profit = orders.reduce((sum, o) => sum + o.design.profit, 0);
+
+            document.getElementById('stat-pending').textContent = pending;
+            document.getElementById('stat-printing').textContent = printing;
+            document.getElementById('stat-completed').textContent = completed;
+            document.getElementById('stat-resell').textContent = resell;
+            document.getElementById('stat-revenue').textContent = formatCurrency(revenue);
+            document.getElementById('stat-profit').textContent = formatCurrency(profit);
         }
 
         // Filter orders
@@ -509,9 +837,29 @@
             renderOrders();
         }
 
-        // Refresh orders
-        function refreshOrders() {
-            fetchOrdersFromSheets();
+        // Show tab
+        function showTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (tab === 'active') {
+                document.getElementById('activeOrders').classList.remove('hidden');
+                document.getElementById('resellOrders').classList.add('hidden');
+            } else {
+                document.getElementById('activeOrders').classList.add('hidden');
+                document.getElementById('resellOrders').classList.remove('hidden');
+            }
+        }
+
+        // Export data
+        function exportData() {
+            const dataStr = JSON.stringify(orders, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `pokeprint-orders-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
         }
     </script>
 </body>
