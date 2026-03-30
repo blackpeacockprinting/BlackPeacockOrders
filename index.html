@@ -56,6 +56,29 @@
         .btn-success { background: var(--success); color: white; border-color: var(--success); }
         .btn-warning { background: var(--warning); color: white; border-color: var(--warning); }
         .btn-info { background: var(--info); color: white; border-color: var(--info); }
+        .btn-shiny { 
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%); 
+            color: #000; 
+            border-color: #ffd700;
+            font-weight: 700;
+        }
+        .btn-shiny:hover {
+            background: linear-gradient(135deg, #ffed4e 0%, #ffd700 50%, #ffed4e 100%);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+        .btn-shiny.active {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffd700 50%, #ff6b6b 100%);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        }
+        .btn-mystery {
+            background: linear-gradient(135deg, #8a2be2 0%, #ff00ff 100%);
+            color: white;
+            border-color: #8a2be2;
+        }
+        .btn-mystery:hover {
+            background: linear-gradient(135deg, #9a3bf2 0%, #ff20ff 100%);
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+        }
         .btn:disabled { opacity: 0.6; cursor: not-allowed; }
         .search-box { flex: 1; min-width: 200px; position: relative; }
         .search-box input {
@@ -146,6 +169,10 @@
         }
         .pokeball-preview.golden {
             background: linear-gradient(to bottom, #ffd700 50%, #ffffff 50%);
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.5);
+        }
+        .pokeball-preview.mystery {
+            background: linear-gradient(135deg, #8a2be2 0%, #ff00ff 50%, #8a2be2 100%);
         }
         .pokeball-preview::after {
             content: ''; position: absolute; width: 14px; height: 14px;
@@ -155,6 +182,16 @@
         .pokeball-preview::before {
             content: ''; position: absolute; width: 100%; height: 5px;
             background: #333; top: 50%; transform: translateY(-50%); z-index: 1;
+        }
+        .pokeball-preview.mystery::after {
+            content: '?'; 
+            background: transparent; 
+            border: none; 
+            color: white; 
+            font-weight: bold; 
+            font-size: 18px;
+            text-align: center;
+            line-height: 14px;
         }
         .design-info h4 { font-size: 1rem; margin-bottom: 0.15rem; }
         .order-meta { color: var(--text-muted); font-size: 0.8rem; }
@@ -179,6 +216,7 @@
         .badge.paid-cash { background: rgba(16, 185, 129, 0.2); color: var(--success); }
         .badge.paid-zelle { background: rgba(99, 102, 241, 0.2); color: var(--primary); }
         .badge.shiny { background: rgba(255, 215, 0, 0.2); color: #ffd700; border: 1px solid #ffd700; }
+        .badge.mystery { background: rgba(138, 43, 226, 0.2); color: #ff00ff; border: 1px solid #ff00ff; }
         .price-tag { font-size: 1.1rem; font-weight: 700; color: var(--success); }
         .order-details {
             padding: 0 1rem; max-height: 0; overflow: hidden;
@@ -273,6 +311,61 @@
             height: 20px;
             cursor: pointer;
         }
+        .mystery-option {
+            background: rgba(138, 43, 226, 0.1);
+            border: 2px solid #8a2be2;
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .mystery-option:hover {
+            background: rgba(138, 43, 226, 0.2);
+        }
+        .mystery-option.selected {
+            background: rgba(138, 43, 226, 0.3);
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.3);
+        }
+        .mystery-option label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            margin: 0;
+            font-weight: 600;
+            color: #ff00ff;
+        }
+        .mystery-option input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        .quick-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .quick-action-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .quick-action-btn:hover {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+        .quick-action-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
         .empty-state { text-align: center; padding: 3rem 2rem; color: var(--text-muted); }
         .loading-state { text-align: center; padding: 3rem; color: var(--text-muted); }
         .error-state { text-align: center; padding: 3rem; color: var(--danger); }
@@ -285,6 +378,7 @@
             .sync-status { width: 100%; margin-top: 0.5rem; justify-content: flex-start; }
         }
     </style>
+<base target="_blank">
 <base target="_blank">
 </head>
 <body>
@@ -363,18 +457,39 @@
                     <label>Customer Name</label>
                     <input type="text" id="customerName" placeholder="e.g., John Smith">
                 </div>
+
+                <!-- Quick Action Buttons -->
                 <div class="form-group">
+                    <label>Quick Select</label>
+                    <div class="quick-actions">
+                        <button class="quick-action-btn" onclick="selectMysteryBall()">❓ Mystery Ball ($6)</button>
+                    </div>
+                </div>
+
+                <div class="form-group" id="designSearchGroup">
                     <label>Search Design</label>
                     <input type="text" id="designSearch" placeholder="Type to search..." oninput="searchDesigns(this.value)">
                     <div class="design-selector" id="designSelector"></div>
                 </div>
+
                 <div id="selectedRecipe" class="recipe-preview hidden">
                     <h4>Selected Design</h4>
                     <div id="recipeDetails"></div>
                 </div>
 
+                <!-- Mystery Ball Option -->
+                <div class="mystery-option hidden" id="mysteryOption">
+                    <label>
+                        <input type="checkbox" id="isMystery" onchange="toggleMystery()">
+                        <span>❓ Mystery Pokéball - $6.00</span>
+                    </label>
+                    <small style="color: var(--text-muted); display: block; margin-top: 0.25rem; margin-left: 2rem;">
+                        Random surprise design! Customer doesn't know what they'll get.
+                    </small>
+                </div>
+
                 <!-- Shiny Option -->
-                <div class="shiny-option" id="shinyOption" style="display: none;">
+                <div class="shiny-option hidden" id="shinyOption">
                     <label>
                         <input type="checkbox" id="isShiny">
                         <span>✨ Make it SHINY (Golden)</span>
@@ -433,6 +548,18 @@
         let RECIPES = [];
         let orders = [];
         let selectedRecipe = null;
+        let isMysterySelected = false;
+
+        // Mystery Ball Recipe
+        const MYSTERY_RECIPE = {
+            name: "Mystery Pokéball",
+            price: 6.0,
+            filamentCost: 1.0,
+            profit: 5.0,
+            colors: [{color: "Random", grams: 50}],
+            totalGrams: 50,
+            isMystery: true
+        };
 
         // Hardcoded fallback recipes
         const HARDCODED_RECIPES = [
@@ -613,6 +740,27 @@
                     const trimmed = item.trim();
                     if (!trimmed) continue;
 
+                    // Check for Mystery Ball
+                    if (trimmed.toLowerCase().includes('mystery')) {
+                        const mysteryMatch = trimmed.match(/Mystery Pokéball.*?\$([0-9.]+)/i);
+                        const price = mysteryMatch ? parseFloat(mysteryMatch[1]) : 6.0;
+
+                        parsedOrders.push({
+                            id: 'sheets_' + timestamp.replace(/[^a-zA-Z0-9]/g, '') + '_mystery_' + Math.random().toString(36).substr(2, 5),
+                            customer: customerName.trim(),
+                            design: { ...MYSTERY_RECIPE, price: price },
+                            price: price,
+                            status: 'pending',
+                            payment: 'unpaid',
+                            notes: `Email: ${email}, Phone: ${phone}, Contact: ${contactMethod}`,
+                            source: 'sheets',
+                            date: timestamp,
+                            isShiny: false,
+                            isMystery: true
+                        });
+                        continue;
+                    }
+
                     // Parse: "Pikachu (x1) - $8.00" or "Gyarados (x2) - $16.00"
                     const match = trimmed.match(/^(.+?)\s*\(x(\d+)\)\s*-\s*\$([0-9.]+)$/);
 
@@ -718,10 +866,54 @@
             document.getElementById('designSearch').value = '';
             document.getElementById('designSelector').innerHTML = '';
             document.getElementById('selectedRecipe').classList.add('hidden');
-            document.getElementById('shinyOption').style.display = 'none';
+            document.getElementById('shinyOption').classList.add('hidden');
+            document.getElementById('mysteryOption').classList.add('hidden');
+            document.getElementById('designSearchGroup').classList.remove('hidden');
             document.getElementById('isShiny').checked = false;
+            document.getElementById('isMystery').checked = false;
             document.getElementById('orderNotes').value = '';
+            document.getElementById('orderPrice').value = '';
+            document.getElementById('filamentCost').value = '';
             selectedRecipe = null;
+            isMysterySelected = false;
+        }
+
+        function selectMysteryBall() {
+            isMysterySelected = true;
+            selectedRecipe = MYSTERY_RECIPE;
+
+            // Hide design search
+            document.getElementById('designSearchGroup').classList.add('hidden');
+            document.getElementById('designSelector').innerHTML = '';
+
+            // Show mystery option selected
+            document.getElementById('mysteryOption').classList.remove('hidden');
+            document.getElementById('mysteryOption').classList.add('selected');
+            document.getElementById('isMystery').checked = true;
+
+            // Show recipe preview
+            document.getElementById('selectedRecipe').classList.remove('hidden');
+            document.getElementById('recipeDetails').innerHTML = `
+                <strong>❓ Mystery Pokéball</strong><br>
+                Surprise random design!<br>
+                Price: $6.00
+            `;
+
+            // Set price fields
+            document.getElementById('orderPrice').value = '6.00';
+            document.getElementById('filamentCost').value = '1.00';
+
+            // Show shiny option too (mystery can be shiny!)
+            document.getElementById('shinyOption').classList.remove('hidden');
+            document.getElementById('shinyOption').style.display = 'block';
+        }
+
+        function toggleMystery() {
+            const isChecked = document.getElementById('isMystery').checked;
+            if (!isChecked) {
+                // Uncheck - reset to normal
+                resetOrderForm();
+            }
         }
 
         function searchDesigns(query) {
@@ -752,8 +944,13 @@
                 Profit: $${selectedRecipe.profit.toFixed(2)}
             `;
             document.getElementById('selectedRecipe').classList.remove('hidden');
+            document.getElementById('shinyOption').classList.remove('hidden');
             document.getElementById('shinyOption').style.display = 'block';
             document.getElementById('designSelector').innerHTML = '';
+
+            // Hide mystery option when regular design selected
+            document.getElementById('mysteryOption').classList.add('hidden');
+            isMysterySelected = false;
         }
 
         function saveOrder() {
@@ -768,7 +965,7 @@
                 return;
             }
             if (!selectedRecipe) {
-                alert('Please select a design');
+                alert('Please select a design or Mystery Ball');
                 return;
             }
 
@@ -782,7 +979,8 @@
                 notes: notes,
                 source: 'local',
                 date: new Date().toISOString(),
-                isShiny: isShiny
+                isShiny: isShiny,
+                isMystery: isMysterySelected || selectedRecipe.isMystery || false
             };
 
             orders.push(order);
@@ -870,7 +1068,17 @@
 
         function renderOrderCard(order) {
             const shinyBadge = order.isShiny ? '<span class="badge shiny">✨ SHINY</span>' : '';
-            const pokeballClass = order.isShiny ? 'pokeball-preview golden' : 'pokeball-preview';
+            const mysteryBadge = order.isMystery ? '<span class="badge mystery">❓ MYSTERY</span>' : '';
+
+            let pokeballClass = 'pokeball-preview';
+            if (order.isMystery) {
+                pokeballClass += ' mystery';
+            } else if (order.isShiny) {
+                pokeballClass += ' golden';
+            }
+
+            const shinyButtonClass = order.isShiny ? 'btn-shiny active' : 'btn-shiny';
+            const shinyButtonText = order.isShiny ? '✨ Shiny!' : 'Make Shiny';
 
             return `
                 <div class="order-card ${order.source}-source">
@@ -878,7 +1086,7 @@
                         <div class="order-main">
                             <div class="${pokeballClass}"></div>
                             <div class="design-info">
-                                <h4>${order.design.name} ${shinyBadge} <span class="source-badge ${order.source}">${order.source}</span></h4>
+                                <h4>${order.design.name} ${shinyBadge} ${mysteryBadge} <span class="source-badge ${order.source}">${order.source}</span></h4>
                                 <div class="order-meta">${new Date(order.date).toLocaleDateString()}</div>
                             </div>
                         </div>
@@ -912,6 +1120,7 @@
                         </div>
                         ${order.notes ? `<div style="margin-top: 0.75rem; padding: 0.5rem; background: var(--surface); border-radius: 6px; font-size: 0.85rem;"><strong>Notes:</strong> ${order.notes}</div>` : ''}
                         <div class="actions-row">
+                            <button class="btn btn-small ${shinyButtonClass}" onclick="toggleShiny('${order.id}')">${shinyButtonText}</button>
                             <button class="btn btn-small" onclick="updateStatus('${order.id}', 'pending')">Pending</button>
                             <button class="btn btn-small" onclick="updateStatus('${order.id}', 'printing')">Printing</button>
                             <button class="btn btn-small btn-success" onclick="updateStatus('${order.id}', 'completed')">Completed</button>
@@ -932,6 +1141,17 @@
             event.stopPropagation();
             const details = document.getElementById(`details-${orderId}`);
             details.classList.toggle('expanded');
+        }
+
+        function toggleShiny(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                order.isShiny = !order.isShiny;
+                renderOrders();
+                updateStats();
+                pushOrdersToSheets().catch(err => console.warn('Sync failed:', err));
+                showNotification(order.isShiny ? '✨ Order marked as SHINY!' : 'Order is no longer shiny', 'success');
+            }
         }
 
         function updateStatus(orderId, status) {
