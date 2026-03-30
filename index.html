@@ -144,6 +144,9 @@
             overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             flex-shrink: 0; background: linear-gradient(to bottom, #ef4444 50%, #ffffff 50%);
         }
+        .pokeball-preview.golden {
+            background: linear-gradient(to bottom, #ffd700 50%, #ffffff 50%);
+        }
         .pokeball-preview::after {
             content: ''; position: absolute; width: 14px; height: 14px;
             background: white; border: 3px solid #333; border-radius: 50%;
@@ -175,6 +178,7 @@
         .badge.unpaid { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
         .badge.paid-cash { background: rgba(16, 185, 129, 0.2); color: var(--success); }
         .badge.paid-zelle { background: rgba(99, 102, 241, 0.2); color: var(--primary); }
+        .badge.shiny { background: rgba(255, 215, 0, 0.2); color: #ffd700; border: 1px solid #ffd700; }
         .price-tag { font-size: 1.1rem; font-weight: 700; color: var(--success); }
         .order-details {
             padding: 0 1rem; max-height: 0; overflow: hidden;
@@ -248,6 +252,27 @@
         .design-option.selected { background: var(--primary); }
         .recipe-preview { background: var(--bg); padding: 1rem; border-radius: 8px; margin-top: 1rem; }
         .recipe-preview h4 { color: var(--text-muted); font-size: 0.8rem; margin-bottom: 0.5rem; }
+        .shiny-option {
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid #ffd700;
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin: 1rem 0;
+        }
+        .shiny-option label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            margin: 0;
+            font-weight: 600;
+            color: #ffd700;
+        }
+        .shiny-option input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
         .empty-state { text-align: center; padding: 3rem 2rem; color: var(--text-muted); }
         .loading-state { text-align: center; padding: 3rem; color: var(--text-muted); }
         .error-state { text-align: center; padding: 3rem; color: var(--danger); }
@@ -347,6 +372,18 @@
                     <h4>Selected Design</h4>
                     <div id="recipeDetails"></div>
                 </div>
+
+                <!-- Shiny Option -->
+                <div class="shiny-option" id="shinyOption" style="display: none;">
+                    <label>
+                        <input type="checkbox" id="isShiny">
+                        <span>✨ Make it SHINY (Golden)</span>
+                    </label>
+                    <small style="color: var(--text-muted); display: block; margin-top: 0.25rem; margin-left: 2rem;">
+                        Check this to print a gold-colored version
+                    </small>
+                </div>
+
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                     <div class="form-group">
                         <label>Price ($)</label>
@@ -388,17 +425,13 @@
     </div>
 
     <script>
-
         // Google Sheets Configuration
         const GOOGLE_SHEETS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSk8BdvDMwzoPI2A5X863_8OAXKaSWs5a-aijyX7qMJRWFDoquKJs3gM20wcS-ggas_UuGjU8mCmz1V/pub?gid=1413466324&single=true&output=csv';
         const GOOGLE_SHEETS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwZJsAvVAn3Nzp3B7st9bQgOOTEZy8tz3uR6QMjOTbRfikIqR_R4rcuNan9FHYE5hXi2g/exec';
 
-        // Recipe database - will load from JSON
+        // Recipe database
         let RECIPES = [];
-
-        // Orders storage
         let orders = [];
-        let currentCustomer = null;
         let selectedRecipe = null;
 
         // Hardcoded fallback recipes
@@ -409,29 +442,23 @@
             {"name": "Squirtle", "price": 8.0, "filamentCost": 0.82, "profit": 7.18, "colors": [{"color": "Desert Tan", "grams": 27}, {"color": "Charcoal Black", "grams": 15}], "totalGrams": 68}
         ];
 
-        // Initialize
         document.addEventListener('DOMContentLoaded', init);
 
         async function init() {
             await loadDesigns();
-            // Auto-sync with Google Sheets on page load
             await syncWithGoogleSheets();
         }
 
-        // Load designs from JSON
         async function loadDesigns() {
             try {
                 const response = await fetch('data/n3d-designs.json');
                 if (!response.ok) throw new Error('Designs file not found');
                 RECIPES = await response.json();
-                console.log(`Loaded ${RECIPES.length} designs`);
             } catch (error) {
-                console.error('Failed to load designs:', error);
                 RECIPES = HARDCODED_RECIPES;
             }
         }
 
-        // Sync with Google Sheets (Bidirectional)
         async function syncWithGoogleSheets() {
             const statusEl = document.getElementById('syncStatus');
             const btn = document.getElementById('syncBtn');
@@ -441,15 +468,11 @@
             btn.disabled = true;
 
             try {
-                // Push local orders TO Google Sheets
                 await pushOrdersToSheets();
-
-                // Pull orders FROM Google Sheets (replaces local)
                 await pullOrdersFromSheets();
 
                 statusEl.textContent = '✅ Synced';
                 statusEl.className = 'sync-status success';
-                showNotification('Orders synced with Google Sheets', 'success');
 
             } catch (error) {
                 console.error('Sync failed:', error);
@@ -464,7 +487,6 @@
             }
         }
 
-        // Push local orders to Google Sheets
         async function pushOrdersToSheets() {
             try {
                 await fetch(GOOGLE_SHEETS_WEB_APP_URL, {
@@ -478,7 +500,6 @@
             }
         }
 
-        // Pull orders from Google Sheets
         async function pullOrdersFromSheets() {
             const response = await fetch(GOOGLE_SHEETS_URL + '&t=' + Date.now());
             if (!response.ok) throw new Error('Failed to fetch');
@@ -486,7 +507,6 @@
             const csvText = await response.text();
             const sheetOrders = parseCSVOrders(csvText);
 
-            // Keep local orders, add sheet orders
             const localOrders = orders.filter(o => o.source === 'local');
             orders = [...sheetOrders, ...localOrders];
 
@@ -494,7 +514,6 @@
             updateStats();
         }
 
-        // Parse CSV from Google Sheets
         function parseCSVOrders(csvText) {
             const lines = csvText.trim().split('\n');
             const parsedOrders = [];
@@ -507,11 +526,21 @@
                     continue;
                 }
 
+                // Check if this is a customer name line (no $ sign, no x quantity)
                 if (!trimmed.includes('$') && !trimmed.match(/\(x\d+\)/)) {
-                    currentCustomer = trimmed;
+                    // Extract just the name from CSV format
+                    // Format: "Timestamp,Name,Email,Phone,Contact,OrderDetails"
+                    const parts = trimmed.split(',');
+                    if (parts.length >= 2) {
+                        // Name is usually the second column
+                        currentCustomer = parts[1].trim();
+                    } else {
+                        currentCustomer = trimmed;
+                    }
                     continue;
                 }
 
+                // Parse order line: "Design Name (xQty) - $Price"
                 if (currentCustomer && trimmed.includes('$')) {
                     const match = trimmed.match(/(.+?)\s*(?:\(x(\d+)\))?\s*-\s*\$(\d+\.?\d*)/);
                     if (match) {
@@ -533,7 +562,8 @@
                                 payment: 'unpaid',
                                 notes: '',
                                 source: 'sheets',
-                                date: new Date().toISOString()
+                                date: new Date().toISOString(),
+                                isShiny: false
                             });
                         }
                     }
@@ -542,23 +572,20 @@
             return parsedOrders;
         }
 
-        // Show notification
-        function showNotification(message, type = 'info') {
+        function showNotification(message, type) {
             const banner = document.createElement('div');
             banner.style.cssText = `
                 position: fixed; top: 20px; right: 20px;
                 background: ${type === 'success' ? '#10b981' : '#3b82f6'};
                 color: white; padding: 1rem 1.5rem; border-radius: 8px;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 10000;
-                font-weight: 600; max-width: 400px;
-                animation: slideIn 0.3s ease;
+                font-weight: 600;
             `;
-            banner.innerHTML = message + ' <button onclick="this.parentElement.remove()" style="margin-left:10px;background:none;border:none;color:white;cursor:pointer;font-size:1.2rem;">×</button>';
+            banner.textContent = message;
             document.body.appendChild(banner);
-            setTimeout(() => banner.remove(), 10000);
+            setTimeout(() => banner.remove(), 5000);
         }
 
-        // Modal functions
         function openOrderModal() {
             document.getElementById('orderModal').classList.add('active');
             document.getElementById('customerName').focus();
@@ -574,11 +601,12 @@
             document.getElementById('designSearch').value = '';
             document.getElementById('designSelector').innerHTML = '';
             document.getElementById('selectedRecipe').classList.add('hidden');
+            document.getElementById('shinyOption').style.display = 'none';
+            document.getElementById('isShiny').checked = false;
             document.getElementById('orderNotes').value = '';
             selectedRecipe = null;
         }
 
-        // Search designs
         function searchDesigns(query) {
             const selector = document.getElementById('designSelector');
             if (!query) {
@@ -595,7 +623,6 @@
             `).join('');
         }
 
-        // Select design
         function selectDesign(name) {
             selectedRecipe = RECIPES.find(r => r.name === name);
             if (!selectedRecipe) return;
@@ -608,15 +635,16 @@
                 Profit: $${selectedRecipe.profit.toFixed(2)}
             `;
             document.getElementById('selectedRecipe').classList.remove('hidden');
+            document.getElementById('shinyOption').style.display = 'block';
             document.getElementById('designSelector').innerHTML = '';
         }
 
-        // Save order
         function saveOrder() {
             const customer = document.getElementById('customerName').value.trim();
             const status = document.getElementById('orderStatus').value;
             const payment = document.getElementById('paymentStatus').value;
             const notes = document.getElementById('orderNotes').value.trim();
+            const isShiny = document.getElementById('isShiny').checked;
 
             if (!customer) {
                 alert('Please enter customer name');
@@ -636,7 +664,8 @@
                 payment: payment,
                 notes: notes,
                 source: 'local',
-                date: new Date().toISOString()
+                date: new Date().toISOString(),
+                isShiny: isShiny
             };
 
             orders.push(order);
@@ -648,17 +677,14 @@
             showNotification('Order saved!', 'success');
         }
 
-        // Get initials
         function getInitials(name) {
             return name.split(' ').map(n => n[0]).join('').toUpperCase().substr(0, 2);
         }
 
-        // Format currency
         function formatCurrency(amount) {
             return '$' + parseFloat(amount).toFixed(2);
         }
 
-        // Group orders by customer
         function groupOrdersByCustomer(ordersList) {
             const grouped = {};
             ordersList.forEach(order => {
@@ -670,13 +696,11 @@
             return grouped;
         }
 
-        // Render orders
         function renderOrders() {
             const search = document.getElementById('searchInput').value.toLowerCase();
             const statusFilter = document.getElementById('filterStatus').value;
             const container = document.getElementById('activeOrders');
 
-            // Filter orders
             let filtered = orders.filter(o => o.status !== 'resell');
             if (search) {
                 filtered = filtered.filter(o => 
@@ -727,15 +751,17 @@
             }).join('');
         }
 
-        // Render order card
         function renderOrderCard(order) {
+            const shinyBadge = order.isShiny ? '<span class="badge shiny">✨ SHINY</span>' : '';
+            const pokeballClass = order.isShiny ? 'pokeball-preview golden' : 'pokeball-preview';
+
             return `
                 <div class="order-card ${order.source}-source">
                     <div class="order-header" onclick="toggleOrderDetails('${order.id}')">
                         <div class="order-main">
-                            <div class="pokeball-preview"></div>
+                            <div class="${pokeballClass}"></div>
                             <div class="design-info">
-                                <h4>${order.design.name} <span class="source-badge ${order.source}">${order.source}</span></h4>
+                                <h4>${order.design.name} ${shinyBadge} <span class="source-badge ${order.source}">${order.source}</span></h4>
                                 <div class="order-meta">${new Date(order.date).toLocaleDateString()}</div>
                             </div>
                         </div>
@@ -780,20 +806,17 @@
             `;
         }
 
-        // Toggle customer
         function toggleCustomer(safeId) {
             const ordersDiv = document.getElementById(`orders-${safeId}`);
             ordersDiv.classList.toggle('collapsed');
         }
 
-        // Toggle order details
         function toggleOrderDetails(orderId) {
             event.stopPropagation();
             const details = document.getElementById(`details-${orderId}`);
             details.classList.toggle('expanded');
         }
 
-        // Update status
         function updateStatus(orderId, status) {
             const order = orders.find(o => o.id === orderId);
             if (order) {
@@ -804,7 +827,6 @@
             }
         }
 
-        // Update payment
         function updatePayment(orderId, payment) {
             const order = orders.find(o => o.id === orderId);
             if (order) {
@@ -815,7 +837,6 @@
             }
         }
 
-        // Update stats
         function updateStats() {
             const pending = orders.filter(o => o.status === 'pending').length;
             const printing = orders.filter(o => o.status === 'printing').length;
@@ -832,12 +853,10 @@
             document.getElementById('stat-profit').textContent = formatCurrency(profit);
         }
 
-        // Filter orders
         function filterOrders() {
             renderOrders();
         }
 
-        // Show tab
         function showTab(tab) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             event.target.classList.add('active');
@@ -851,7 +870,6 @@
             }
         }
 
-        // Export data
         function exportData() {
             const dataStr = JSON.stringify(orders, null, 2);
             const blob = new Blob([dataStr], { type: 'application/json' });
