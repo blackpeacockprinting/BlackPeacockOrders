@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Tracker - Google Sheets</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a2e;
+            color: white;
+            padding: 20px;
+        }
+        h1 { 
+            text-align: center; 
+            margin-bottom: 30px;
+            color: #ffd700;
+        }
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #888;
+        }
+        .error {
+            background: #ff4444;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .order-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ffd700;
+        }
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+        .order-total {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .order-customer {
+            margin-bottom: 15px;
+        }
+        .order-customer strong {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: white;
+        }
+        .order-customer span {
+            display: block;
+            color: #aaa;
+            font-size: 0.9rem;
+            margin: 2px 0;
+        }
+        .contact-method {
+            display: inline-block !important;
+            background: #00aa00;
+            color: white !important;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem !important;
+            margin-top: 5px;
+        }
+        .order-details {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 10px;
+            white-space: pre-wrap;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        .refresh-btn {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 20px auto;
+            padding: 15px;
+            background: #00aa00;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .refresh-btn:hover {
+            background: #00cc00;
+        }
+    </style>
+</head>
+<body>
+    <h1>📋 PokePrint Orders</h1>
+    <button class="refresh-btn" onclick="loadOrders()">🔄 Refresh Orders</button>
+    <div id="orders-container">
+        <div class="loading">Loading orders...</div>
+    </div>
+
+    <script>
+        const CONFIG = {
+            API_KEY: 'AIzaSyDWZGMkES7zQGGPp9o2pJK9aez_tSBktQw',
+            SHEET_ID: '1mfRlr9EaR-XVMEf3W0LaJEEUQ9uS9llLsWTr0jz88ng',
+            SHEET_NAME: 'Sheet1'
+        };
+
+        async function loadOrders() {
+            const container = document.getElementById('orders-container');
+            container.innerHTML = '<div class="loading">Loading orders...</div>';
+            
+            try {
+                const url = `https://sheets.googleapis.com/v4/spreadsheets/${CONFIG.SHEET_ID}/values/${CONFIG.SHEET_NAME}?key=${CONFIG.API_KEY}`;
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.error) {
+                    container.innerHTML = `<div class="error">Error: ${data.error.message}</div>`;
+                    return;
+                }
+                
+                const rows = data.values;
+                if (!rows || rows.length < 2) {
+                    container.innerHTML = '<div class="loading">No orders found.</div>';
+                    return;
+                }
+                
+                // Skip header row, map data
+                const orders = rows.slice(1).map(row => ({
+                    timestamp: row[0] || '',
+                    name: row[1] || '',
+                    email: row[2] || '',
+                    phone: row[3] || '',
+                    contactMethod: row[4] || '',
+                    details: row[5] || '',
+                    total: row[6] || ''
+                }));
+                
+                // Reverse to show newest first
+                orders.reverse();
+                
+                container.innerHTML = orders.map(order => `
+                    <div class="order-card">
+                        <div class="order-header">
+                            <span>${order.timestamp}</span>
+                            <span class="order-total">$${order.total}</span>
+                        </div>
+                        <div class="order-customer">
+                            <strong>${order.name}</strong>
+                            <span>${order.email}</span>
+                            <span>${order.phone}</span>
+                            ${order.contactMethod ? `<span class="contact-method">${order.contactMethod}</span>` : ''}
+                        </div>
+                        <div class="order-details">${order.details}</div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                container.innerHTML = `<div class="error">Failed to load orders: ${error.message}</div>`;
+            }
+        }
+
+        // Load on page load
+        window.onload = loadOrders;
+    </script>
+</body>
+</html>
