@@ -5,284 +5,1196 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PokePrint Order Tracker</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --primary: #6366f1; --primary-dark: #4f46e5; --success: #10b981;
-            --warning: #f59e0b; --danger: #ef4444; --info: #3b82f6;
-            --bg: #0f172a; --surface: #1e293b; --surface-light: #334155;
-            --text: #f8fafc; --text-muted: #94a3b8; --border: #334155;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
+
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: var(--bg); color: var(--text); min-height: 100vh; padding: 1rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
         }
-        .container { max-width: 1400px; margin: 0 auto; }
-        header {
-            margin-bottom: 1.5rem; display: flex; justify-content: space-between;
-            align-items: center; flex-wrap: wrap; gap: 1rem;
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
         }
-        h1 {
-            font-size: 1.75rem;
-            background: linear-gradient(135deg, var(--primary) 0%, #a855f7 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text;
+
+        .header h1 {
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
         }
+
+        .header p {
+            color: #a0a0a0;
+        }
+
         .stats-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 0.75rem; margin-bottom: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
         }
+
         .stat-card {
-            background: var(--surface); padding: 1rem; border-radius: 10px;
-            border: 1px solid var(--border); border-left: 4px solid var(--primary);
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.3s;
         }
-        .stat-card.pending { border-left-color: var(--warning); }
-        .stat-card.paid { border-left-color: var(--success); }
-        .stat-card.revenue { border-left-color: var(--info); }
-        .stat-card.profit { border-left-color: #a855f7; }
-        .stat-card.filament { border-left-color: #f472b6; }
-        .stat-card.low { border-left-color: var(--danger); }
-        .stat-card.shopping { border-left-color: #8b5cf6; cursor: pointer; }
-        .stat-card.shopping:hover { background: rgba(139, 92, 246, 0.1); }
-        .stat-label { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
-        .stat-value { font-size: 1.5rem; font-weight: 700; margin-top: 0.25rem; }
-        .controls {
-            display: flex; gap: 0.75rem; margin-bottom: 1.5rem;
-            flex-wrap: wrap; align-items: center;
+
+        .stat-card:hover {
+            transform: translateY(-5px);
         }
+
+        .stat-card.pending { border-top: 4px solid #ff6b6b; }
+        .stat-card.printing { border-top: 4px solid #feca57; }
+        .stat-card.completed { border-top: 4px solid #48dbfb; }
+        .stat-card.filament { border-top: 4px solid #ff9ff3; }
+        .stat-card.low-stock { border-top: 4px solid #ff6348; }
+        .stat-card.shopping { border-top: 4px solid #54a0ff; }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #a0a0a0;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
         .btn {
-            padding: 0.6rem 1.2rem; border: none; border-radius: 8px; cursor: pointer;
-            font-weight: 600; transition: all 0.2s; display: inline-flex;
-            align-items: center; gap: 0.5rem; font-size: 0.9rem;
-            background: var(--surface); color: var(--text); border: 1px solid var(--border);
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .btn-primary { background: var(--primary); color: white; border-color: var(--primary); }
-        .btn-primary:hover { background: var(--primary-dark); }
-        .btn-success { background: var(--success); color: white; border-color: var(--success); }
-        .btn-warning { background: var(--warning); color: white; border-color: var(--warning); }
-        .btn-info { background: var(--info); color: white; border-color: var(--info); }
-        .btn-filament {
-            background: linear-gradient(135deg, #f472b6 0%, #ec4899 100%);
-            color: white; border-color: #ec4899;
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
         }
-        .btn-filament:hover {
-            background: linear-gradient(135deg, #f687b3 0%, #f472b6 100%);
-            box-shadow: 0 0 15px rgba(236, 72, 153, 0.4);
+
+        .btn-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
         }
-        .search-box { flex: 1; min-width: 200px; position: relative; }
-        .search-box input {
-            width: 100%; padding: 0.6rem 1rem; background: var(--surface);
-            border: 1px solid var(--border); border-radius: 8px;
-            color: var(--text); font-size: 0.9rem;
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
         }
-        .sync-status {
-            font-size: 0.8rem; color: var(--text-muted); margin-left: auto;
-            display: flex; align-items: center; gap: 0.5rem;
+
+        .btn-info {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
         }
-        .customer-group {
-            background: var(--surface); border-radius: 12px;
-            border: 1px solid var(--border); margin-bottom: 1rem;
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .customer-section {
+            max-width: 1200px;
+            margin: 0 auto 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
             overflow: hidden;
         }
-        .order-card {
-            background: var(--bg); border-radius: 10px; border: 1px solid var(--border);
-            overflow: hidden; transition: all 0.3s;
+
+        .customer-header {
+            background: rgba(255,255,255,0.1);
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
         }
+
+        .customer-header:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .customer-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .customer-stats {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9em;
+            color: #a0a0a0;
+        }
+
+        .customer-orders {
+            padding: 20px;
+            display: none;
+        }
+
+        .customer-orders.expanded {
+            display: block;
+        }
+
+        .order-card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s;
+        }
+
+        .order-card:hover {
+            background: rgba(255,255,255,0.12);
+            transform: translateX(5px);
+        }
+
+        .order-card.pending { border-left-color: #ff6b6b; }
+        .order-card.printing { border-left-color: #feca57; }
+        .order-card.completed { border-left-color: #48dbfb; }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .order-id {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .order-status {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .status-pending { background: #ff6b6b; }
+        .status-printing { background: #feca57; color: #333; }
+        .status-completed { background: #48dbfb; color: #333; }
+
+        .order-items {
+            margin: 10px 0;
+        }
+
+        .item-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .item-row:last-child {
+            border-bottom: none;
+        }
+
+        .pokeball {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #333;
+            flex-shrink: 0;
+        }
+
+        .pokeball::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: #ff0000;
+        }
+
+        .pokeball::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: #fff;
+        }
+
+        .pokeball-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border: 2px solid #333;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .pokeball.great {
+            border-color: #4169e1;
+        }
+        .pokeball.great::before { background: #4169e1; }
+
+        .pokeball.ultra {
+            border-color: #ffd700;
+        }
+        .pokeball.ultra::before { background: #ffd700; }
+
+        .pokeball.master {
+            border-color: #800080;
+        }
+        .pokeball.master::before { background: #800080; }
+
+        .pokeball.shiny {
+            border-color: #ffd700;
+            box-shadow: 0 0 10px #ffd700;
+        }
+        .pokeball.shiny::before { background: linear-gradient(135deg, #ffd700, #ffed4e); }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: 500;
+        }
+
+        .item-filament {
+            font-size: 0.8em;
+            color: #a0a0a0;
+        }
+
+        .badges {
+            display: flex;
+            gap: 5px;
+        }
+
+        .badge {
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7em;
+            font-weight: bold;
+        }
+
+        .badge-shiny {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #333;
+        }
+
+        .badge-mystery {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.8em;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #a0a0a0;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 1em;
+        }
+
         .filament-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1rem; margin-top: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
         }
+
         .filament-card {
-            background: var(--bg); border: 2px solid var(--border);
-            border-radius: 10px; padding: 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s;
         }
-        .filament-card.critical { border-color: var(--danger); }
-        .filament-bar {
-            height: 8px; background: var(--surface-light);
-            border-radius: 4px; overflow: hidden; margin: 0.5rem 0;
+
+        .filament-card:hover {
+            border-color: #667eea;
+            transform: scale(1.02);
         }
-        .filament-bar-fill { height: 100%; border-radius: 4px; }
-        .filament-bar-fill.critical { background: var(--danger); }
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.8); display: none;
-            align-items: center; justify-content: center; z-index: 1000; padding: 1rem;
+
+        .filament-card.low-stock {
+            border-color: #ff6348;
+            background: rgba(255,99,71,0.1);
         }
-        .modal-overlay.active { display: flex; }
-        .modal {
-            background: var(--surface); border-radius: 12px; width: 100%;
-            max-width: 700px; max-height: 90vh; overflow-y: auto;
-            border: 1px solid var(--border);
+
+        .filament-color {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            border: 3px solid #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
-        .hidden { display: none !important; }
+
+        .filament-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .filament-amount {
+            font-size: 1.2em;
+            color: #48dbfb;
+            margin-bottom: 10px;
+        }
+
+        .filament-actions {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+        }
+
+        .btn-tiny {
+            padding: 4px 8px;
+            font-size: 0.75em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .shopping-list {
+            list-style: none;
+        }
+
+        .shopping-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: rgba(255,99,71,0.1);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border-left: 4px solid #ff6348;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #a0a0a0;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .sync-status {
+            text-align: center;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .sync-status.success {
+            background: rgba(72,219,251,0.2);
+            border: 1px solid #48dbfb;
+            display: block;
+        }
+
+        .sync-status.error {
+            background: rgba(255,107,107,0.2);
+            border: 1px solid #ff6b6b;
+            display: block;
+        }
     </style>
 <base target="_blank">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>⚡ PokePrint Tracker</h1>
-            <button class="btn btn-primary" onclick="openOrderModal()">+ New Order</button>
-        </header>
+    <div class="header">
+        <h1>⚡ PokePrint Order Tracker</h1>
+        <p>Manage orders, track filament, catch 'em all!</p>
+    </div>
 
-        <div class="stats-grid">
-            <div class="stat-card pending">
-                <div class="stat-label">Pending</div>
-                <div class="stat-value" id="stat-pending">0</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Printing</div>
-                <div class="stat-value" id="stat-printing">0</div>
-            </div>
-            <div class="stat-card paid">
-                <div class="stat-label">Completed</div>
-                <div class="stat-value" id="stat-completed">0</div>
-            </div>
-            <div class="stat-card filament">
-                <div class="stat-label">Filament Colors</div>
-                <div class="stat-value" id="stat-filament">0</div>
-            </div>
-            <div class="stat-card low">
-                <div class="stat-label">Low Stock</div>
-                <div class="stat-value" id="stat-low">0</div>
-            </div>
-            <div class="stat-card shopping" onclick="openShoppingModal()">
-                <div class="stat-label">🛒 Shopping</div>
-                <div class="stat-value" id="stat-shopping">0</div>
-            </div>
+    <div id="syncStatus" class="sync-status"></div>
+
+    <div class="stats-grid">
+        <div class="stat-card pending">
+            <div class="stat-number" id="pendingCount">0</div>
+            <div class="stat-label">Pending</div>
         </div>
-
-        <div class="controls">
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Search..." onkeyup="filterOrders()">
-            </div>
-            <button class="btn btn-filament" onclick="openFilamentModal()">🧵 Filament</button>
-            <button class="btn btn-info" onclick="syncWithGoogleSheets()" id="syncBtn">🔄 Sync</button>
-            <div class="sync-status" id="syncStatus"></div>
+        <div class="stat-card printing">
+            <div class="stat-number" id="printingCount">0</div>
+            <div class="stat-label">Printing</div>
         </div>
-
-        <div id="activeOrders" class="orders-container">
-            <div class="loading-state">Loading...</div>
+        <div class="stat-card completed">
+            <div class="stat-number" id="completedCount">0</div>
+            <div class="stat-label">Completed</div>
+        </div>
+        <div class="stat-card filament">
+            <div class="stat-number" id="filamentCount">0</div>
+            <div class="stat-label">Filament Colors</div>
+        </div>
+        <div class="stat-card low-stock">
+            <div class="stat-number" id="lowStockCount">0</div>
+            <div class="stat-label">Low Stock</div>
+        </div>
+        <div class="stat-card shopping">
+            <div class="stat-number" id="shoppingCount">0</div>
+            <div class="stat-label">Shopping List</div>
         </div>
     </div>
 
-    <div class="modal-overlay" id="filamentModal">
-        <div class="modal">
+    <div class="actions">
+        <button class="btn btn-primary" onclick="syncOrders()">
+            🔄 Sync Orders
+        </button>
+        <button class="btn btn-success" onclick="openNewOrderModal()">
+            ➕ New Order
+        </button>
+        <button class="btn btn-warning" onclick="openFilamentModal()">
+            🧵 Filament
+        </button>
+        <button class="btn btn-info" onclick="openShoppingModal()">
+            🛒 Shopping
+        </button>
+    </div>
+
+    <div id="ordersContainer">
+        <div class="loading">
+            <div class="spinner"></div>
+            <p>Loading orders from Google Sheets...</p>
+        </div>
+    </div>
+
+    <!-- New Order Modal -->
+    <div id="newOrderModal" class="modal">
+        <div class="modal-content">
             <div class="modal-header">
-                <h2>🧵 Filament Inventory</h2>
-                <button class="btn-close" onclick="closeModal('filamentModal')">×</button>
+                <div class="modal-title">➕ New Order</div>
+                <button class="close-btn" onclick="closeModal('newOrderModal')">&times;</button>
             </div>
-            <div class="modal-body">
-                <div class="filament-grid" id="filamentGrid"></div>
+            <form id="newOrderForm">
+                <div class="form-group">
+                    <label>Customer Name</label>
+                    <input type="text" id="customerName" required>
+                </div>
+                <div class="form-group">
+                    <label>Order ID</label>
+                    <input type="text" id="orderId" placeholder="e.g., ORD-001">
+                </div>
+                <div id="itemsContainer">
+                    <div class="form-group item-entry">
+                        <label>Item 1</label>
+                        <input type="text" class="item-name" placeholder="Pokemon/Item name" required>
+                        <select class="item-filament" style="margin-top: 5px;">
+                            <option value="">Select Filament Color</option>
+                            <option value="Red">Red</option>
+                            <option value="Blue">Blue</option>
+                            <option value="Green">Green</option>
+                            <option value="Yellow">Yellow</option>
+                            <option value="Black">Black</option>
+                            <option value="White">White</option>
+                            <option value="Purple">Purple</option>
+                            <option value="Orange">Orange</option>
+                            <option value="Pink">Pink</option>
+                            <option value="Gray">Gray</option>
+                        </select>
+                        <label style="margin-top: 5px;">
+                            <input type="checkbox" class="item-shiny"> Shiny
+                        </label>
+                        <label>
+                            <input type="checkbox" class="item-mystery"> Mystery
+                        </label>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-info" onclick="addItemField()" style="margin-bottom: 15px;">
+                    ➕ Add Item
+                </button>
+                <button type="submit" class="btn btn-success" style="width: 100%;">
+                    Create Order
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Filament Modal -->
+    <div id="filamentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">🧵 Filament Inventory</div>
+                <button class="close-btn" onclick="closeModal('filamentModal')">&times;</button>
+            </div>
+            <div id="filamentContainer" class="filament-grid">
+                <!-- Filament cards loaded here -->
             </div>
         </div>
     </div>
 
-    <div class="modal-overlay" id="shoppingModal">
-        <div class="modal">
+    <!-- Shopping Modal -->
+    <div id="shoppingModal" class="modal">
+        <div class="modal-content">
             <div class="modal-header">
-                <h2>🛒 Shopping List</h2>
-                <button class="btn-close" onclick="closeModal('shoppingModal')">×</button>
+                <div class="modal-title">🛒 Shopping List</div>
+                <button class="close-btn" onclick="closeModal('shoppingModal')">&times;</button>
             </div>
-            <div class="modal-body">
-                <div id="shoppingList"></div>
-            </div>
+            <ul id="shoppingList" class="shopping-list">
+                <!-- Shopping items loaded here -->
+            </ul>
         </div>
     </div>
 
     <script>
-        const GOOGLE_SHEETS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz12TJjO8EKX5WH0AJhRPMMiQEvIjKn4Vy4ZJVkBh-RmJwbP-3l7s5KwcIQu65cEZSy9A/exec';
+        // YOUR PUBLISHED CSV URL - Form Responses 1
+        const PUBLISHED_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSk8BdvDMwzoPI2A5X863_8OAXKaSWs5a-aijyX7qMJRWFDoquKJs3gM20wcS-ggas_UuGjU8mCmz1V/pub?gid=1413466324&single=true&output=csv';
 
-        let filamentInventory = {};
-        const LOW_THRESHOLD = 200;
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxYb6EcK1jZHkrgYw-Ha3rUcDzV6v6O2DxtqD0eC5zE0i7NhXhO8pD6V9q0W1v2x3y4z5/exec';
 
+        // State
+        let orders = [];
+        let filaments = {};
+        let customers = {};
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFilaments();
+            syncOrders(); // Auto-sync on load now that we have the URL
+        });
+
+        // Filament Management
+        function loadFilaments() {
+            const saved = localStorage.getItem('pokeprint_filaments');
+            if (saved) {
+                filaments = JSON.parse(saved);
+            } else {
+                const defaultColors = ['Red', 'Blue', 'Green', 'Yellow', 'Black', 'White', 'Purple', 'Orange', 'Pink', 'Gray'];
+                defaultColors.forEach(color => {
+                    filaments[color] = { amount: 1000, color: getColorHex(color) };
+                });
+                saveFilaments();
+            }
+            updateStats();
+        }
+
+        function saveFilaments() {
+            localStorage.setItem('pokeprint_filaments', JSON.stringify(filaments));
+            updateStats();
+        }
+
+        function getColorHex(colorName) {
+            const colors = {
+                'Red': '#ff4757', 'Blue': '#3742fa', 'Green': '#2ed573',
+                'Yellow': '#ffa502', 'Black': '#2f3542', 'White': '#f1f2f6',
+                'Purple': '#8e44ad', 'Orange': '#e67e22', 'Pink': '#ff6b81',
+                'Gray': '#747d8c'
+            };
+            return colors[colorName] || '#747d8c';
+        }
+
+        function addFilament(color, amount) {
+            if (!filaments[color]) {
+                filaments[color] = { amount: 0, color: getColorHex(color) };
+            }
+            filaments[color].amount += amount;
+            saveFilaments();
+            renderFilaments();
+        }
+
+        function subtractFilament(color, amount) {
+            if (filaments[color]) {
+                filaments[color].amount = Math.max(0, filaments[color].amount - amount);
+                saveFilaments();
+                renderFilaments();
+            }
+        }
+
+        // PROPER CSV PARSER that handles multi-line cells
+        function parseCSV(csvText) {
+            const rows = [];
+            let currentRow = [];
+            let currentCell = '';
+            let insideQuotes = false;
+            let i = 0;
+
+            while (i < csvText.length) {
+                const char = csvText[i];
+                const nextChar = csvText[i + 1];
+
+                if (insideQuotes) {
+                    if (char === '"') {
+                        if (nextChar === '"') {
+                            currentCell += '"';
+                            i += 2;
+                            continue;
+                        } else {
+                            insideQuotes = false;
+                        }
+                    } else {
+                        currentCell += char;
+                    }
+                } else {
+                    if (char === '"') {
+                        insideQuotes = true;
+                    } else if (char === ',') {
+                        currentRow.push(currentCell.trim());
+                        currentCell = '';
+                    } else if (char === '\n' || char === '\r') {
+                        if (currentCell || currentRow.length > 0) {
+                            currentRow.push(currentCell.trim());
+                            rows.push(currentRow);
+                            currentRow = [];
+                            currentCell = '';
+                        }
+                        if (char === '\r' && nextChar === '\n') {
+                            i++;
+                        }
+                    } else {
+                        currentCell += char;
+                    }
+                }
+                i++;
+            }
+
+            if (currentCell || currentRow.length > 0) {
+                currentRow.push(currentCell.trim());
+                rows.push(currentRow);
+            }
+
+            if (rows.length === 0) return [];
+
+            const headers = rows[0].map(h => h.trim());
+            const orders = [];
+
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
+                if (row.length < 2) continue;
+
+                const order = {};
+                headers.forEach((header, index) => {
+                    order[header] = row[index] || '';
+                });
+
+                const orderId = order['Order ID'] || order['OrderID'] || order['ID'] || `ORD-${i}`;
+                const customer = order['Customer'] || order['Customer Name'] || order['Name'] || 'Unknown';
+                const status = order['Status'] || order['Order Status'] || 'Pending';
+                const orderDetails = order['Order Details'] || order['Items'] || order['Details'] || '';
+
+                if (orderId && customer) {
+                    orders.push({
+                        id: orderId,
+                        customer: customer,
+                        status: status,
+                        items: parseItems(orderDetails),
+                        date: order['Date'] || order['Timestamp'] || new Date().toISOString().split('T')[0]
+                    });
+                }
+            }
+
+            return orders;
+        }
+
+        function parseItems(itemsText) {
+            if (!itemsText) return [];
+
+            const items = [];
+            const lines = itemsText.split(/[;\n]/);
+
+            lines.forEach(line => {
+                line = line.trim();
+                if (!line) return;
+
+                const shiny = line.toLowerCase().includes('shiny') || line.includes('✨');
+                const mystery = line.toLowerCase().includes('mystery') || line.includes('❓');
+
+                let name = line.replace(/shiny|mystery|✨|❓/gi, '').trim();
+
+                let filament = 'White';
+                const colors = ['Red', 'Blue', 'Green', 'Yellow', 'Black', 'White', 'Purple', 'Orange', 'Pink', 'Gray'];
+                for (const color of colors) {
+                    if (line.toLowerCase().includes(color.toLowerCase())) {
+                        filament = color;
+                        break;
+                    }
+                }
+
+                items.push({
+                    name: name,
+                    filament: filament,
+                    shiny: shiny,
+                    mystery: mystery,
+                    pokeball: shiny ? 'shiny' : 'normal'
+                });
+            });
+
+            return items;
+        }
+
+        // Order Management
+        async function syncOrders() {
+            showSyncStatus('Syncing orders...', 'info');
+
+            try {
+                console.log('Fetching from:', PUBLISHED_CSV_URL);
+                const response = await fetch(PUBLISHED_CSV_URL);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const csvText = await response.text();
+                console.log('CSV received, length:', csvText.length);
+                console.log('First 500 chars:', csvText.substring(0, 500));
+
+                orders = parseCSV(csvText);
+
+                localStorage.setItem('pokeprint_orders', JSON.stringify(orders));
+
+                groupOrdersByCustomer();
+                renderOrders();
+                updateStats();
+
+                if (orders.length === 0) {
+                    showSyncStatus('⚠️ No orders found in sheet', 'error');
+                } else {
+                    showSyncStatus(`✅ Synced ${orders.length} orders`, 'success');
+                }
+            } catch (error) {
+                console.error('Sync error:', error);
+                showSyncStatus('❌ Sync failed: ' + error.message, 'error');
+
+                // Load from localStorage as fallback
+                const saved = localStorage.getItem('pokeprint_orders');
+                if (saved) {
+                    orders = JSON.parse(saved);
+                    groupOrdersByCustomer();
+                    renderOrders();
+                    showSyncStatus(`⚠️ Using cached data (${orders.length} orders)`, 'error');
+                }
+            }
+        }
+
+        function groupOrdersByCustomer() {
+            customers = {};
+            orders.forEach(order => {
+                const customerName = order.customer || 'Unknown';
+                if (!customers[customerName]) {
+                    customers[customerName] = [];
+                }
+                customers[customerName].push(order);
+            });
+        }
+
+        function renderOrders() {
+            const container = document.getElementById('ordersContainer');
+
+            if (Object.keys(customers).length === 0) {
+                container.innerHTML = '<div class="loading"><p>No orders to display</p></div>';
+                return;
+            }
+
+            let html = '';
+
+            Object.keys(customers).sort().forEach(customer => {
+                const customerOrders = customers[customer];
+                const pendingCount = customerOrders.filter(o => o.status === 'Pending').length;
+                const printingCount = customerOrders.filter(o => o.status === 'Printing').length;
+                const completedCount = customerOrders.filter(o => o.status === 'Completed').length;
+
+                html += `
+                    <div class="customer-section">
+                        <div class="customer-header" onclick="toggleCustomer('${customer.replace(/'/g, "\'")}')">
+                            <div class="customer-name">
+                                👤 ${customer}
+                            </div>
+                            <div class="customer-stats">
+                                <span>📝 ${customerOrders.length} orders</span>
+                                ${pendingCount > 0 ? `<span style="color: #ff6b6b">⏳ ${pendingCount}</span>` : ''}
+                                ${printingCount > 0 ? `<span style="color: #feca57">🖨️ ${printingCount}</span>` : ''}
+                                ${completedCount > 0 ? `<span style="color: #48dbfb">✅ ${completedCount}</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="customer-orders expanded" id="customer-${customer.replace(/\s+/g, '-').replace(/'/g, '')}">
+                            ${customerOrders.map(order => renderOrderCard(order)).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function renderOrderCard(order) {
+            const statusClass = (order.status || 'pending').toLowerCase();
+
+            return `
+                <div class="order-card ${statusClass}">
+                    <div class="order-header">
+                        <span class="order-id">#${order.id}</span>
+                        <span class="order-status status-${statusClass}">${order.status || 'Pending'}</span>
+                    </div>
+                    <div class="order-items">
+                        ${order.items.map(item => `
+                            <div class="item-row">
+                                <div class="pokeball ${item.pokeball} ${item.shiny ? 'shiny' : ''}">
+                                    <div class="pokeball-center"></div>
+                                </div>
+                                <div class="item-details">
+                                    <div class="item-name">${item.name}</div>
+                                    <div class="item-filament">${item.filament}</div>
+                                </div>
+                                <div class="badges">
+                                    ${item.shiny ? '<span class="badge badge-shiny">✨ SHINY</span>' : ''}
+                                    ${item.mystery ? '<span class="badge badge-mystery">❓ MYSTERY</span>' : ''}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="order-actions">
+                        ${order.status !== 'Pending' ? `<button class="btn-small" onclick="updateStatus('${order.id}', 'Pending')" style="background: #ff6b6b;">⏳ Pending</button>` : ''}
+                        ${order.status !== 'Printing' ? `<button class="btn-small" onclick="updateStatus('${order.id}', 'Printing')" style="background: #feca57; color: #333;">🖨️ Printing</button>` : ''}
+                        ${order.status !== 'Completed' ? `<button class="btn-small" onclick="completeOrder('${order.id}')" style="background: #48dbfb; color: #333;">✅ Complete</button>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function toggleCustomer(customer) {
+            const safeId = customer.replace(/\s+/g, '-').replace(/'/g, '');
+            const el = document.getElementById(`customer-${safeId}`);
+            if (el) el.classList.toggle('expanded');
+        }
+
+        async function updateStatus(orderId, status) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                order.status = status;
+                await pushToGoogleSheets(order);
+                groupOrdersByCustomer();
+                renderOrders();
+                updateStats();
+            }
+        }
+
+        async function completeOrder(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                order.items.forEach(item => {
+                    if (item.filament) {
+                        subtractFilament(item.filament, 50);
+                    }
+                });
+
+                order.status = 'Completed';
+                await pushToGoogleSheets(order);
+                groupOrdersByCustomer();
+                renderOrders();
+                updateStats();
+
+                showSyncStatus(`✅ Order ${orderId} completed! Filament deducted.`, 'success');
+            }
+        }
+
+        async function pushToGoogleSheets(order) {
+            try {
+                await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(order)
+                });
+            } catch (e) {
+                console.log('Push to sheets (no-cors mode)');
+            }
+        }
+
+        // New Order
+        function openNewOrderModal() {
+            document.getElementById('newOrderModal').classList.add('active');
+        }
+
+        function addItemField() {
+            const container = document.getElementById('itemsContainer');
+            const itemNum = container.children.length + 1;
+
+            const div = document.createElement('div');
+            div.className = 'form-group item-entry';
+            div.innerHTML = `
+                <label>Item ${itemNum}</label>
+                <input type="text" class="item-name" placeholder="Pokemon/Item name" required>
+                <select class="item-filament" style="margin-top: 5px;">
+                    <option value="">Select Filament Color</option>
+                    <option value="Red">Red</option>
+                    <option value="Blue">Blue</option>
+                    <option value="Green">Green</option>
+                    <option value="Yellow">Yellow</option>
+                    <option value="Black">Black</option>
+                    <option value="White">White</option>
+                    <option value="Purple">Purple</option>
+                    <option value="Orange">Orange</option>
+                    <option value="Pink">Pink</option>
+                    <option value="Gray">Gray</option>
+                </select>
+                <label style="margin-top: 5px;">
+                    <input type="checkbox" class="item-shiny"> Shiny
+                </label>
+                <label>
+                    <input type="checkbox" class="item-mystery"> Mystery
+                </label>
+            `;
+            container.appendChild(div);
+        }
+
+        document.getElementById('newOrderForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const customer = document.getElementById('customerName').value;
+            const orderId = document.getElementById('orderId').value || `ORD-${Date.now()}`;
+
+            const items = [];
+            document.querySelectorAll('.item-entry').forEach(entry => {
+                const name = entry.querySelector('.item-name').value;
+                const filament = entry.querySelector('.item-filament').value;
+                const shiny = entry.querySelector('.item-shiny').checked;
+                const mystery = entry.querySelector('.item-mystery').checked;
+
+                if (name) {
+                    items.push({ name, filament, shiny, mystery, pokeball: 'normal' });
+                }
+            });
+
+            const newOrder = {
+                id: orderId,
+                customer,
+                status: 'Pending',
+                items,
+                date: new Date().toISOString().split('T')[0]
+            };
+
+            orders.push(newOrder);
+            await pushToGoogleSheets(newOrder);
+
+            groupOrdersByCustomer();
+            renderOrders();
+            updateStats();
+
+            closeModal('newOrderModal');
+            document.getElementById('newOrderForm').reset();
+
+            showSyncStatus('✅ Order created successfully!', 'success');
+        });
+
+        // Filament Modal
         function openFilamentModal() {
-            renderFilamentGrid();
+            renderFilaments();
             document.getElementById('filamentModal').classList.add('active');
         }
 
+        function renderFilaments() {
+            const container = document.getElementById('filamentContainer');
+
+            let html = '';
+            Object.keys(filaments).sort().forEach(color => {
+                const filament = filaments[color];
+                const isLow = filament.amount <= 200;
+
+                html += `
+                    <div class="filament-card ${isLow ? 'low-stock' : ''}">
+                        <div class="filament-color" style="background: ${filament.color}"></div>
+                        <div class="filament-name">${color}</div>
+                        <div class="filament-amount">${filament.amount}g</div>
+                        <div class="filament-actions">
+                            <button class="btn-tiny btn-success" onclick="addFilament('${color}', 1000)">+1000g</button>
+                            <button class="btn-tiny" onclick="subtractFilament('${color}', 50)" style="background: #ff6b6b;">-50g</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Shopping Modal
         function openShoppingModal() {
             renderShoppingList();
             document.getElementById('shoppingModal').classList.add('active');
         }
 
-        function closeModal(id) {
-            document.getElementById(id).classList.remove('active');
-        }
-
-        function renderFilamentGrid() {
-            const grid = document.getElementById('filamentGrid');
-            const colors = Object.keys(filamentInventory).sort();
-
-            grid.innerHTML = colors.map(color => {
-                const grams = filamentInventory[color];
-                const isLow = grams <= LOW_THRESHOLD;
-                const statusClass = isLow ? 'critical' : 'good';
-                const percentage = Math.min(100, (grams / 1000) * 100);
-
-                return `
-                    <div class="filament-card ${statusClass}">
-                        <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">
-                            <strong>${color}</strong>
-                            <span style="color:${isLow?'#ef4444':'#10b981'};">${isLow?'LOW!':'OK'}</span>
-                        </div>
-                        <div style="font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;">${grams}g</div>
-                        <div class="filament-bar">
-                            <div class="filament-bar-fill ${statusClass}" style="width:${percentage}%;background:${isLow?'#ef4444':'#10b981'}"></div>
-                        </div>
-                        <button class="btn btn-success" style="width:100%;margin-top:0.5rem;" onclick="addFilament('${color}', 1000)">+1000g</button>
-                    </div>
-                `;
-            }).join('');
-        }
-
         function renderShoppingList() {
             const list = document.getElementById('shoppingList');
-            const lowColors = Object.entries(filamentInventory).filter(([c, g]) => g <= LOW_THRESHOLD);
+            const lowStock = Object.keys(filaments).filter(color => filaments[color].amount <= 200);
 
-            if (lowColors.length === 0) {
-                list.innerHTML = '<div style="text-align:center;padding:2rem;color:#10b981;">🎉 All stocked up!</div>';
+            if (lowStock.length === 0) {
+                list.innerHTML = '<li style="text-align: center; color: #a0a0a0;">🎉 All filaments well stocked!</li>';
                 return;
             }
 
-            list.innerHTML = lowColors.map(([color, grams]) => `
-                <div style="display:flex;justify-content:space-between;align-items:center;padding:1rem;background:var(--bg);border:2px solid #ef4444;border-radius:10px;margin-bottom:0.5rem;">
-                    <div>
-                        <strong>${color}</strong>
-                        <div style="color:var(--text-muted);font-size:0.85rem;">Only ${grams}g left</div>
-                    </div>
-                    <button class="btn btn-success" onclick="addFilament('${color}', 1000);renderShoppingList();">Mark Purchased</button>
-                </div>
+            list.innerHTML = lowStock.map(color => `
+                <li class="shopping-item">
+                    <span style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 20px; height: 20px; border-radius: 50%; background: ${filaments[color].color}; border: 2px solid #fff;"></div>
+                        ${color}
+                    </span>
+                    <span style="color: #ff6b6b; font-weight: bold;">${filaments[color].amount}g remaining</span>
+                </li>
             `).join('');
         }
 
-        function addFilament(color, amount) {
-            filamentInventory[color] = (filamentInventory[color] || 0) + amount;
-            updateFilamentStats();
-            renderFilamentGrid();
+        // Stats
+        function updateStats() {
+            const pending = orders.filter(o => o.status === 'Pending').length;
+            const printing = orders.filter(o => o.status === 'Printing').length;
+            const completed = orders.filter(o => o.status === 'Completed').length;
+            const filamentColors = Object.keys(filaments).length;
+            const lowStock = Object.keys(filaments).filter(c => filaments[c].amount <= 200).length;
+            const shopping = lowStock;
+
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('printingCount').textContent = printing;
+            document.getElementById('completedCount').textContent = completed;
+            document.getElementById('filamentCount').textContent = filamentColors;
+            document.getElementById('lowStockCount').textContent = lowStock;
+            document.getElementById('shoppingCount').textContent = shopping;
         }
 
-        function updateFilamentStats() {
-            const count = Object.keys(filamentInventory).length;
-            const low = Object.values(filamentInventory).filter(g => g <= LOW_THRESHOLD).length;
-            document.getElementById('stat-filament').textContent = count;
-            document.getElementById('stat-low').textContent = low;
-            document.getElementById('stat-shopping').textContent = low;
+        // Utilities
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
         }
 
-        // Initialize with sample data
-        function init() {
-            filamentInventory = {
-                "Lemon Yellow": 1000,
-                "Charcoal Black": 1000,
-                "Ice Blue": 1000,
-                "Mandarin Orange": 1000,
-                "Desert Tan": 1000
-            };
-            updateFilamentStats();
+        function showSyncStatus(message, type) {
+            const el = document.getElementById('syncStatus');
+            el.textContent = message;
+            el.className = `sync-status ${type}`;
+
+            if (type !== 'info') {
+                setTimeout(() => {
+                    el.style.display = 'none';
+                }, 5000);
+            }
         }
 
-        init();
+        // Close modals on outside click
+        window.onclick = (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('active');
+            }
+        };
     </script>
 </body>
 </html>
