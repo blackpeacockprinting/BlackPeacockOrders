@@ -1,215 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PokePrint Order Tracker</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --primary: #6366f1; --primary-dark: #4f46e5; --success: #10b981;
-            --warning: #f59e0b; --danger: #ef4444; --info: #3b82f6;
-            --bg: #0f172a; --surface: #1e293b; --surface-light: #334155;
-            --text: #f8fafc; --text-muted: #94a3b8; --border: #334155;
-        }
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: var(--bg); color: var(--text); min-height: 100vh; padding: 1rem;
-        }
-        .container { max-width: 1400px; margin: 0 auto; }
-        header {
-            margin-bottom: 1.5rem; display: flex; justify-content: space-between;
-            align-items: center; flex-wrap: wrap; gap: 1rem;
-        }
-        h1 {
-            font-size: 1.75rem;
-            background: linear-gradient(135deg, var(--primary) 0%, #a855f7 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .tabs {
-            display: flex; gap: 0.5rem; margin-bottom: 1rem;
-            border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;
-        }
-        .tab {
-            padding: 0.5rem 1rem; background: transparent; border: none;
-            color: var(--text-muted); cursor: pointer; font-weight: 600;
-            border-radius: 6px; transition: all 0.2s;
-        }
-        .tab.active { background: var(--surface); color: var(--text); }
-        
-        /* Inventory Styles */
-        .inventory-dashboard { padding: 1.5rem; }
-        .inventory-stats {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem; margin-bottom: 2rem;
-        }
-        .inventory-stat {
-            background: var(--surface); padding: 1.25rem; border-radius: 10px;
-            border-left: 4px solid var(--info); text-align: center;
-        }
-        .stat-label { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; }
-        .stat-value { font-size: 1.5rem; font-weight: 700; margin-top: 0.25rem; }
-        .inventory-table-wrapper {
-            background: var(--surface); border-radius: 12px; border: 1px solid var(--border);
-            overflow: hidden; margin-bottom: 2rem;
-        }
-        .inventory-table { width: 100%; border-collapse: collapse; }
-        .inventory-table th {
-            background: rgba(99, 102, 241, 0.1); padding: 1rem; text-align: left;
-            color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.75rem;
-        }
-        .inventory-table td { padding: 1rem; border-bottom: 1px solid var(--border); }
-        .stock-status {
-            display: inline-flex; padding: 0.4rem 0.8rem; border-radius: 20px;
-            font-size: 0.8rem; font-weight: 600;
-        }
-        .stock-status.ok { background: rgba(16, 185, 129, 0.2); color: var(--success); }
-        .stock-status.low { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
-        .restock-section {
-            background: var(--surface); border-radius: 12px; padding: 1.5rem;
-            border: 1px solid var(--border); margin-bottom: 2rem;
-        }
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; margin-bottom: 0.4rem; color: var(--text-muted); font-size: 0.85rem; }
-        .form-group input, .form-group select {
-            width: 100%; padding: 0.6rem 0.9rem; background: var(--bg);
-            border: 1px solid var(--border); border-radius: 6px; color: var(--text);
-        }
-        .btn {
-            padding: 0.6rem 1.2rem; border: none; border-radius: 8px; cursor: pointer;
-            font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem;
-        }
-        .btn-primary { background: var(--primary); color: white; }
-        .hidden { display: none !important; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <header>
-            <h1>⚡ PokePrint Tracker</h1>
-        </header>
-
-        <div class="tabs">
-            <button class="tab active" onclick="showTab('orders')">Orders</button>
-            <button class="tab" onclick="showTab('inventory')">📦 Inventory</button>
-        </div>
-
-        <!-- Inventory Tab -->
-        <div id="inventoryTab" class="inventory-dashboard hidden">
-            <h2>📦 Inventory Management</h2>
-            
-            <div class="inventory-stats">
-                <div class="inventory-stat">
-                    <div class="stat-label">Total Value</div>
-                    <div class="stat-value" id="total-value">$0.00</div>
-                </div>
-                <div class="inventory-stat">
-                    <div class="stat-label">Low Stock</div>
-                    <div class="stat-value" id="low-stock-count">0</div>
-                </div>
-                <div class="inventory-stat">
-                    <div class="stat-label">Total Grams</div>
-                    <div class="stat-value" id="total-grams">0g</div>
-                </div>
-            </div>
-
-            <div class="inventory-table-wrapper">
-                <table class="inventory-table">
-                    <thead>
-                        <tr>
-                            <th>Color</th>
-                            <th>Current (g)</th>
-                            <th>Used (g)</th>
-                            <th>Cost/g</th>
-                            <th>Value</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="inventoryTableBody"></tbody>
-                </table>
-            </div>
-
-            <div class="restock-section">
-                <h3>➕ Restock Filament</h3>
-                <form id="restock-form">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <div class="form-group">
-                            <label>Color:</label>
-                            <select id="restock-color" required></select>
-                        </div>
-                        <div class="form-group">
-                            <label>Amount (g):</label>
-                            <input type="number" id="restock-amount" min="0" step="0.1" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Cost/g ($):</label>
-                            <input type="number" id="restock-cost" min="0" step="0.001" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Notes:</label>
-                            <input type="text" id="restock-notes" placeholder="Supplier...">
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">✅ Add Stock</button>
-                </form>
-            </div>
-        </div>
+<div class="inventory-dashboard">
+    <h2>Inventory Dashboard</h2>
+    <div class="inventory-stats">
+        <h3>Inventory Stats</h3>
+        <p>Total Items: <span id="total-items">0</span></p>
+        <p>Low Stock Alerts: <span id="low-stock-alerts">0</span></p>
     </div>
-
-    <script src="scripts/inventory-manager.js"></script>
-    <script>
-        function showTab(tab) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById('inventoryTab').classList.toggle('hidden', tab !== 'inventory');
-            if (tab === 'inventory') renderInventoryTab();
-        }
-
-        function renderInventoryTab() {
-            if (!inventoryManager) return;
-            const status = inventoryManager.getInventoryStatus();
-            const colors = inventoryManager.getAllColors();
-            
-            document.getElementById('total-value').textContent = '$' + status.totalValue;
-            document.getElementById('low-stock-count').textContent = status.lowStockCount;
-            document.getElementById('total-grams').textContent = status.totalGrams.toFixed(0) + 'g';
-            
-            document.getElementById('inventoryTableBody').innerHTML = colors.map(color => {
-                const used = color.startingAmount - color.currentAmount;
-                const value = (color.currentAmount * color.costPerGram).toFixed(2);
-                let [statusClass, statusText] = color.currentAmount <= 0 ? ['critical', '❌ OUT'] :
-                    color.currentAmount < 200 ? ['low', '⚠️ LOW'] : ['ok', '✅ OK'];
-                return `<tr><td><strong>${color.name}</strong></td><td>${color.currentAmount.toFixed(1)}</td><td>${used.toFixed(1)}</td><td>$${color.costPerGram.toFixed(3)}</td><td>$${value}</td><td><span class="stock-status ${statusClass}">${statusText}</span></td></tr>`;
-            }).join('');
-            
-            const colorSelect = document.getElementById('restock-color');
-            if (colorSelect.options.length === 0) {
-                colors.forEach(color => {
-                    const option = document.createElement('option');
-                    option.value = color.name;
-                    option.textContent = color.name;
-                    colorSelect.appendChild(option);
-                });
-            }
-        }
-
-        document.getElementById('restock-form').addEventListener('submit', e => {
-            e.preventDefault();
-            const result = inventoryManager.addFilament(
-                document.getElementById('restock-color').value,
-                parseFloat(document.getElementById('restock-amount').value),
-                parseFloat(document.getElementById('restock-cost').value),
-                document.getElementById('restock-notes').value
-            );
-            alert(result.success ? `✅ Added stock!` : `❌ Error: ${result.error}`);
-            if (result.success) {
-                document.getElementById('restock-form').reset();
-                renderInventoryTab();
-            }
-        });
-
-        document.addEventListener('DOMContentLoaded', renderInventoryTab);
-    </script>
-</body>
-</html>
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Restock</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Inventory items will be populated here -->
+        </tbody>
+    </table>
+    <form id="restock-form">
+        <h3>Restock Item</h3>
+        <label for="item-name">Item Name:</label>
+        <input type="text" id="item-name" name="item-name" required>
+        <label for="item-quantity">Quantity:</label>
+        <input type="number" id="item-quantity" name="item-quantity" required>
+        <button type="submit">Restock</button>
+    </form>
+</div>
+<style>
+    .inventory-dashboard { margin: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+    .inventory-stats { margin-bottom: 20px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+    form { margin-top: 20px; }
+</style>
