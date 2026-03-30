@@ -506,10 +506,10 @@
 
             const csvText = await response.text();
             console.log('CSV received, length:', csvText.length);
-            console.log('First 200 chars:', csvText.substring(0, 200));
+            console.log('First 500 chars:', csvText.substring(0, 500));
 
             const sheetOrders = parseGoogleFormCSV(csvText);
-            console.log('Parsed orders:', sheetOrders.length);
+            console.log('Total parsed orders:', sheetOrders.length);
 
             const localOrders = orders.filter(o => o.source === 'local');
             orders = [...sheetOrders, ...localOrders];
@@ -518,38 +518,73 @@
             updateStats();
         }
 
-        // Parse Google Form CSV format
+        // Parse Google Form CSV with proper multi-line handling
         function parseGoogleFormCSV(csvText) {
             const parsedOrders = [];
 
-            // Split into lines
-            const lines = csvText.split('\n');
-            console.log('Total lines:', lines.length);
+            // First, we need to handle multi-line fields properly
+            // Split by newlines but respect quoted fields
+            const rows = [];
+            let currentRow = '';
+            let inQuotes = false;
 
-            // Skip header row and find data rows
+            for (let i = 0; i < csvText.length; i++) {
+                const char = csvText[i];
+                const nextChar = csvText[i + 1];
+
+                if (char === '"') {
+                    // Check for escaped quotes ("")
+                    if (inQuotes && nextChar === '"') {
+                        currentRow += '"';
+                        i++; // Skip next quote
+                    } else {
+                        inQuotes = !inQuotes;
+                        currentRow += char;
+                    }
+                } else if ((char === '\n' || char === '\r') && !inQuotes) {
+                    // End of row (only if not inside quotes)
+                    if (currentRow.trim()) {
+                        rows.push(currentRow.trim());
+                    }
+                    currentRow = '';
+                    // Skip \r\n combination
+                    if (char === '\r' && nextChar === '\n') {
+                        i++;
+                    }
+                } else {
+                    currentRow += char;
+                }
+            }
+
+            // Don't forget the last row
+            if (currentRow.trim()) {
+                rows.push(currentRow.trim());
+            }
+
+            console.log('Parsed rows:', rows.length);
+            console.log('First few rows:', rows.slice(0, 3));
+
+            // Now parse each row
             let headerFound = false;
 
-            for (let i = 0; i < lines.length; i++) {
-                const line = lines[i].trim();
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
 
-                // Skip empty lines
-                if (!line) continue;
-
-                // Detect header row
-                if (line.includes('Timestamp') && line.includes('Name')) {
+                // Detect header
+                if (row.includes('Timestamp') && row.includes('Name') && row.includes('Order Details')) {
                     headerFound = true;
+                    console.log('Header found at row', i);
                     continue;
                 }
 
-                // Skip if we haven't found header yet
                 if (!headerFound) continue;
 
-                // Parse data row
-                // Format: Timestamp,Name,Email,Phone,ContactMethod,"Order Details",Total
-                const columns = parseCSVLine(line);
+                // Parse the row
+                const columns = parseCSVRow(row);
+                console.log(`Row ${i}: ${columns.length} columns`, columns[1] || 'no name');
 
                 if (columns.length < 7) {
-                    console.log('Skipping row ' + i + ', not enough columns:', columns.length);
+                    console.log('Skipping - not enough columns');
                     continue;
                 }
 
@@ -558,29 +593,36 @@
                 const email = columns[2];
                 const phone = columns[3];
                 const contactMethod = columns[4];
-                const orderDetails = columns[5]; // This contains newlines for multiple items
+                const orderDetails = columns[5];
                 const orderTotal = columns[6];
 
-                // Skip if no name
                 if (!customerName || customerName.trim() === '') {
-                    console.log('Skipping row ' + i + ', no customer name');
+                    console.log('Skipping - no customer name');
                     continue;
                 }
 
-                console.log('Processing order for:', customerName);
+                console.log('Processing customer:', customerName);
+                console.log('Order details:', orderDetails.substring(0, 100));
 
-                // Parse order details - split by newline to get individual items
-                const items = orderDetails.split('\n').filter(item => item.trim() !== '');
+                // Parse individual items from Order Details
+                // Items are separated by newlines within the cell
+                const items = orderDetails.split(/\r?\n/).filter(item => item.trim() !== '');
+                console.log('Found', items.length, 'items');
 
                 for (const item of items) {
-                    // Parse: "Pikachu (x1) - $8.00" or "Pikachu (x2) - $16.00"
-                    const match = item.match(/(.+?)\s*\(x(\d+)\)\s*-\s*\$(.+)/);
+                    const trimmed = item.trim();
+                    if (!trimmed) continue;
+
+                    // Parse: "Pikachu (x1) - $8.00" or "Gyarados (x2) - $16.00"
+                    const match = trimmed.match(/^(.+?)\s*\(x(\d+)\)\s*-\s*\$([0-9.]+)$/);
 
                     if (match) {
                         const designName = match[1].trim();
                         const quantity = parseInt(match[2]) || 1;
                         const itemTotal = parseFloat(match[3]) || 0;
                         const unitPrice = itemTotal / quantity;
+
+                        console.log('  Item:', designName, 'x' + quantity, '@ $' + unitPrice);
 
                         // Find recipe
                         const recipe = RECIPES.find(r => 
@@ -597,7 +639,7 @@
                         // Create order for each quantity
                         for (let q = 0; q < quantity; q++) {
                             parsedOrders.push({
-                                id: 'sheets_' + timestamp + '_' + Math.random().toString(36).substr(2, 9),
+                                id: 'sheets_' + timestamp.replace(/[^a-zA-Z0-9]/g, '') + '_' + Math.random().toString(36).substr(2, 5),
                                 customer: customerName.trim(),
                                 design: recipe,
                                 price: unitPrice,
@@ -610,28 +652,29 @@
                             });
                         }
                     } else {
-                        console.log('Could not parse item:', item);
+                        console.log('  Could not parse item format:', trimmed);
                     }
                 }
             }
 
+            console.log('Total orders created:', parsedOrders.length);
             return parsedOrders;
         }
 
-        // Parse CSV line handling quoted fields
-        function parseCSVLine(line) {
+        // Parse a single CSV row respecting quoted fields
+        function parseCSVRow(row) {
             const result = [];
             let current = '';
             let inQuotes = false;
 
-            for (let i = 0; i < line.length; i++) {
-                const char = line[i];
-                const nextChar = line[i + 1];
+            for (let i = 0; i < row.length; i++) {
+                const char = row[i];
+                const nextChar = row[i + 1];
 
                 if (char === '"') {
                     if (inQuotes && nextChar === '"') {
                         current += '"';
-                        i++; // Skip next quote
+                        i++;
                     } else {
                         inQuotes = !inQuotes;
                     }
@@ -902,7 +945,7 @@
         }
 
         function updatePayment(orderId, payment) {
-            const order = order = orders.find(o => o.id === orderId);
+            const order = orders.find(o => o.id === orderId);
             if (order) {
                 order.payment = payment;
                 renderOrders();
