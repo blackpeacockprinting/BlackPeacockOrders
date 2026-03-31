@@ -445,7 +445,8 @@
                 const n3dData = getN3DData(name);
                 let filamentColors = [];
                 if (n3dData && n3dData.colors) {
-                    filamentColors = n3dData.colors.map(c => ({ color: c.color, grams: c.weight || 50 }));
+                    // FIXED: Changed c.weight to c.grams
+                    filamentColors = n3dData.colors.map(c => ({ color: c.color, grams: c.grams || 50 }));
                 } else {
                     filamentColors = [{ color: 'Ivory White', grams: 50 }];
                 }
@@ -644,7 +645,8 @@
                 if (name) {
                     const n3dData = getN3DData(name);
                     let filamentColors = [];
-                    if (n3dData && n3dData.colors) filamentColors = n3dData.colors.map(c => ({ color: c.color, grams: c.weight || 50 }));
+                    // FIXED: Changed c.weight to c.grams
+                    if (n3dData && n3dData.colors) filamentColors = n3dData.colors.map(c => ({ color: c.color, grams: c.grams || 50 }));
                     else filamentColors = [{ color: 'Ivory White', grams: 50 }];
                     items.push({ id: Date.now() + Math.random(), name, price, qty, shiny, mystery, status: 'Pending', filamentColors, pokeball: shiny ? 'shiny' : 'normal' });
                 }
