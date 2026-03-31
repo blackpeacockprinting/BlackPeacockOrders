@@ -322,6 +322,41 @@
         
         function saveFilaments() { localStorage.setItem('pokeprint_filaments', JSON.stringify(filaments)); updateStats(); updateFilamentDropdowns(); }
         
+        // ========== ⭐ N3D FIX - Improved Name Matching ==========
+        function getN3DData(itemName) {
+            if (!itemName || !n3dDesigns.length) return null;
+            
+            // Normalize function
+            const normalize = (name) => name.toString().toLowerCase()
+                .replace(/[^a-z0-9]/g, '')
+                .replace(/shiny|mystery|mega|variant|x|y/g, '');
+            
+            const searchKey = normalize(itemName);
+            
+            // Try exact match first
+            let design = n3dDesigns.find(d => d.name && normalize(d.name) === searchKey);
+            if (design) return design;
+            
+            // Try partial match (one contains the other)
+            design = n3dDesigns.find(d => {
+                if (!d.name) return false;
+                const designKey = normalize(d.name);
+                return designKey.includes(searchKey) || searchKey.includes(designKey);
+            });
+            if (design) return design;
+            
+            // Try word-by-word match
+            design = n3dDesigns.find(d => {
+                if (!d.name) return false;
+                const designWords = normalize(d.name).match(/[a-z]+/g) || [];
+                const searchWords = searchKey.match(/[a-z]+/g) || [];
+                const matches = designWords.filter(w => searchWords.includes(w));
+                return matches.length >= Math.min(designWords.length, searchWords.length) * 0.5;
+            });
+            
+            return design || null;
+        }
+        
         async function syncN3DFilaments() {
             showSyncStatus('Fetching N3D data...', 'info');
             try {
@@ -329,30 +364,23 @@
                 if (!response.ok) throw new Error('Failed to fetch N3D designs');
                 const rawData = await response.json();
                 
-                // Handle both old format (flat array) and new format (with metadata)
                 if (Array.isArray(rawData)) {
-                    n3dDesigns = rawData; // Old format
+                    n3dDesigns = rawData;
                 } else if (rawData.designs && Array.isArray(rawData.designs)) {
-                    n3dDesigns = rawData.designs; // New format with metadata
+                    n3dDesigns = rawData.designs;
                 } else {
-                    console.error('Unknown N3D data format:', rawData);
                     n3dDesigns = [];
                 }
                 
                 console.log(`Loaded ${n3dDesigns.length} N3D designs`);
-                n3dDataMap = {};
-                n3dDesigns.forEach(design => {
-                    if (design.name) {
-                        const key = design.name.toLowerCase().replace(/[^a-z0-9]/g, '');
-                        n3dDataMap[key] = design;
-                    }
-                });
+                
                 const uniqueColors = new Set();
                 n3dDesigns.forEach(design => {
                     if (design.colors && Array.isArray(design.colors)) {
                         design.colors.forEach(c => { if (c.color) uniqueColors.add(c.color); });
                     }
                 });
+                
                 const colorList = Array.from(uniqueColors).sort();
                 let addedCount = 0;
                 colorList.forEach(colorName => {
@@ -361,6 +389,7 @@
                         addedCount++;
                     }
                 });
+                
                 saveFilaments();
                 if (addedCount > 0) showSyncStatus(`✅ Added ${addedCount} N3D colors! Total: ${colorList.length}`, 'success');
                 else showSyncStatus(`✅ All ${colorList.length} N3D colors loaded`, 'success');
@@ -388,11 +417,6 @@
                 colors.forEach(color => { const option = document.createElement('option'); option.value = color; option.textContent = color; dropdown.appendChild(option); });
                 if (currentValue) dropdown.value = currentValue;
             });
-        }
-        
-        function getN3DData(itemName) {
-            const key = itemName.toLowerCase().replace(/[^a-z0-9]/g, '');
-            return n3dDataMap[key] || null;
         }
         
         function parseCSV(csvText) {
@@ -427,41 +451,63 @@
             }
             return orders;
         }
+        
+        // ========== ⭐ N3D FIX - Improved parseOrderDetails ==========
         function parseOrderDetails(detailsText) {
             if (!detailsText) return [];
             const items = [];
             const lines = detailsText.split(/[;\n]/);
+            
             lines.forEach(line => {
-                line = line.trim(); if (!line) return;
+                line = line.trim();
+                if (!line) return;
+                
                 const shiny = line.toLowerCase().includes('shiny') || line.includes('✨');
                 const mystery = line.toLowerCase().includes('mystery') || line.includes('❓');
                 let cleanLine = line.replace(/shiny|mystery|✨|❓/gi, '').trim();
+                
                 let name = cleanLine, price = 0, qty = 1;
+                
                 const priceMatch = cleanLine.match(/\$(\d+\.?\d*)/);
-                if (priceMatch) { price = parseFloat(priceMatch[1]); cleanLine = cleanLine.replace(priceMatch[0], '').trim(); }
+                if (priceMatch) {
+                    price = parseFloat(priceMatch[1]);
+                    cleanLine = cleanLine.replace(priceMatch[0], '').trim();
+                }
+                
                 const qtyMatch = cleanLine.match(/\(x(\d+)\)/i) || cleanLine.match(/x(\d+)/i);
-                if (qtyMatch) { qty = parseInt(qtyMatch[1]); cleanLine = cleanLine.replace(qtyMatch[0], '').trim(); }
+                if (qtyMatch) {
+                    qty = parseInt(qtyMatch[1]);
+                    cleanLine = cleanLine.replace(qtyMatch[0], '').trim();
+                }
+                
                 name = cleanLine.replace(/[-\s]*$/, '').trim();
+                
+                // Get N3D data with improved matching
                 const n3dData = getN3DData(name);
                 let filamentColors = [];
-                if (n3dData && n3dData.colors) {
-                    // FIXED: Changed c.weight to c.grams
-                    filamentColors = n3dData.colors.map(c => ({ color: c.color, grams: c.grams || 50 }));
+                
+                if (n3dData && n3dData.colors && n3dData.colors.length > 0) {
+                    filamentColors = n3dData.colors.map(c => ({
+                        color: c.color,
+                        grams: c.grams || 50
+                    }));
                 } else {
                     filamentColors = [{ color: 'Ivory White', grams: 50 }];
                 }
-                items.push({ 
-                    id: Date.now() + Math.random(), 
-                    name: name, 
-                    price: price, 
-                    qty: qty, 
-                    shiny: shiny, 
-                    mystery: mystery, 
-                    status: 'Pending', 
-                    filamentColors: filamentColors, 
-                    pokeball: shiny ? 'shiny' : 'normal' 
+                
+                items.push({
+                    id: Date.now() + Math.random(),
+                    name: name,
+                    price: price,
+                    qty: qty,
+                    shiny: shiny,
+                    mystery: mystery,
+                    status: 'Pending',
+                    filamentColors: filamentColors,
+                    pokeball: shiny ? 'shiny' : 'normal'
                 });
             });
+            
             return items;
         }
         
@@ -574,6 +620,7 @@
             saveOrders(); renderOrders();
             showSyncStatus(`✅ Split into ${newItems.length} individual items`, 'success');
         }
+        
         function updateItemStatus(orderId, idx, status) {
             const order = orders.find(o => o.id === orderId);
             if (!order || !order.items[idx]) return;
@@ -631,29 +678,63 @@
             container.appendChild(div);
         }
         
+        // ========== ⭐ N3D FIX - Improved form submit handler ==========
         document.getElementById('newOrderForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const customer = document.getElementById('customerName').value;
             const orderId = document.getElementById('orderId').value || `ORD-${Date.now()}`;
             const items = [];
+            
             document.querySelectorAll('.item-entry').forEach(entry => {
                 const name = entry.querySelector('.item-name').value;
                 const price = parseFloat(entry.querySelector('.item-price').value) || 0;
                 const qty = parseInt(entry.querySelector('.item-qty').value) || 1;
                 const shiny = entry.querySelector('.item-shiny').checked;
                 const mystery = entry.querySelector('.item-mystery').checked;
+                
                 if (name) {
                     const n3dData = getN3DData(name);
                     let filamentColors = [];
-                    // FIXED: Changed c.weight to c.grams
-                    if (n3dData && n3dData.colors) filamentColors = n3dData.colors.map(c => ({ color: c.color, grams: c.grams || 50 }));
-                    else filamentColors = [{ color: 'Ivory White', grams: 50 }];
-                    items.push({ id: Date.now() + Math.random(), name, price, qty, shiny, mystery, status: 'Pending', filamentColors, pokeball: shiny ? 'shiny' : 'normal' });
+                    
+                    if (n3dData && n3dData.colors && n3dData.colors.length > 0) {
+                        filamentColors = n3dData.colors.map(c => ({
+                            color: c.color,
+                            grams: c.grams || 50
+                        }));
+                    } else {
+                        filamentColors = [{ color: 'Ivory White', grams: 50 }];
+                    }
+                    
+                    items.push({
+                        id: Date.now() + Math.random(),
+                        name,
+                        price,
+                        qty,
+                        shiny,
+                        mystery,
+                        status: 'Pending',
+                        filamentColors,
+                        pokeball: shiny ? 'shiny' : 'normal'
+                    });
                 }
             });
-            const newOrder = { id: orderId, customer, status: 'Pending', items, date: new Date().toISOString().split('T')[0] };
-            orders.push(newOrder); await pushToGoogleSheets(newOrder); saveOrders(); groupOrdersByCustomer(); renderOrders(); updateStats();
-            closeModal('newOrderModal'); document.getElementById('newOrderForm').reset();
+            
+            const newOrder = {
+                id: orderId,
+                customer,
+                status: 'Pending',
+                items,
+                date: new Date().toISOString().split('T')[0]
+            };
+            
+            orders.push(newOrder);
+            await pushToGoogleSheets(newOrder);
+            saveOrders();
+            groupOrdersByCustomer();
+            renderOrders();
+            updateStats();
+            closeModal('newOrderModal');
+            document.getElementById('newOrderForm').reset();
             showSyncStatus('✅ Order created!', 'success');
         });
         
