@@ -305,7 +305,6 @@
             <ul id="shoppingList" class="shopping-list"></ul>
         </div>
     </div>
-
     <script>
         const PUBLISHED_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSk8BdvDMwzoPI2A5X863_8OAXKaSWs5a-aijyX7qMJRWFDoquKJs3gM20wcS-ggas_UuGjU8mCmz1V/pub?gid=1413466324&single=true&output=csv';
         const N3D_DESIGNS_URL = 'https://raw.githubusercontent.com/blackpeacockprinting/BlackPeacockOrders/main/data/n3d-designs.json';
@@ -328,7 +327,19 @@
             try {
                 const response = await fetch(N3D_DESIGNS_URL);
                 if (!response.ok) throw new Error('Failed to fetch N3D designs');
-                n3dDesigns = await response.json();
+                const rawData = await response.json();
+                
+                // Handle both old format (flat array) and new format (with metadata)
+                if (Array.isArray(rawData)) {
+                    n3dDesigns = rawData; // Old format
+                } else if (rawData.designs && Array.isArray(rawData.designs)) {
+                    n3dDesigns = rawData.designs; // New format with metadata
+                } else {
+                    console.error('Unknown N3D data format:', rawData);
+                    n3dDesigns = [];
+                }
+                
+                console.log(`Loaded ${n3dDesigns.length} N3D designs`);
                 n3dDataMap = {};
                 n3dDesigns.forEach(design => {
                     if (design.name) {
@@ -416,7 +427,6 @@
             }
             return orders;
         }
-        
         function parseOrderDetails(detailsText) {
             if (!detailsText) return [];
             const items = [];
@@ -544,7 +554,6 @@
             const item = order.items[idx];
             if (item.qty <= 1) return;
             
-            // Create individual items for each quantity
             const newItems = [];
             for (let i = 0; i < item.qty; i++) {
                 newItems.push({
@@ -560,12 +569,10 @@
                 });
             }
             
-            // Replace the original item with the split items
             order.items.splice(idx, 1, ...newItems);
             saveOrders(); renderOrders();
             showSyncStatus(`✅ Split into ${newItems.length} individual items`, 'success');
         }
-        
         function updateItemStatus(orderId, idx, status) {
             const order = orders.find(o => o.id === orderId);
             if (!order || !order.items[idx]) return;
