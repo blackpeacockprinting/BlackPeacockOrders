@@ -310,6 +310,38 @@
         const N3D_DESIGNS_URL = 'https://raw.githubusercontent.com/blackpeacockprinting/BlackPeacockOrders/main/data/n3d-designs.json';
         const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxYb6EcK1jZHkrgYw-Ha3rUcDzV6v6O2DxtqD0eC5zE0i7NhXhO8pD6V9q0W1v2x3y4z5/exec';
         const FILAMENT_COST_PER_GRAM = 0.012;
+
+// ========== ⭐ N3D FIX - Fallback Database for Missing Pokemon ==========
+const FALLBACK_DESIGNS = {
+    'vaporeon': {
+        name: 'vaporeon',
+        colors: [
+            { color: 'Marine Blue', grams: 75 },
+            { color: 'Ivory White', grams: 15 },
+            { color: 'Charcoal Black', grams: 12 },
+            { color: 'Sky Blue', grams: 8 }
+        ],
+        totalGrams: 110
+    },
+    'jolteon': {
+        name: 'jolteon',
+        colors: [
+            { color: 'Lemon Yellow', grams: 65 },
+            { color: 'Ivory White', grams: 20 },
+            { color: 'Charcoal Black', grams: 15 }
+        ],
+        totalGrams: 100
+    },
+    'mew': {
+        name: 'mew',
+        colors: [
+            { color: 'Sakura Pink', grams: 55 },
+            { color: 'Ivory White', grams: 35 },
+            { color: 'Charcoal Black', grams: 10 }
+        ],
+        totalGrams: 100
+    }
+};
         let orders = [], filaments = {}, customers = {}, n3dDesigns = [], n3dDataMap = {};
         
         document.addEventListener('DOMContentLoaded', () => { loadFilaments(); syncOrders(); });
@@ -322,80 +354,104 @@
         
         function saveFilaments() { localStorage.setItem('pokeprint_filaments', JSON.stringify(filaments)); updateStats(); updateFilamentDropdowns(); }
         
-        // ========== ⭐ N3D FIX - Improved Name Matching ==========
-        function getN3DData(itemName) {
-            if (!itemName || !n3dDesigns.length) return null;
-            
-            // Normalize function
-            const normalize = (name) => name.toString().toLowerCase()
-                .replace(/[^a-z0-9]/g, '')
-                .replace(/shiny|mystery|mega|variant|x|y/g, '');
-            
-            const searchKey = normalize(itemName);
-            
-            // Try exact match first
-            let design = n3dDesigns.find(d => d.name && normalize(d.name) === searchKey);
-            if (design) return design;
-            
-            // Try partial match (one contains the other)
-            design = n3dDesigns.find(d => {
-                if (!d.name) return false;
-                const designKey = normalize(d.name);
-                return designKey.includes(searchKey) || searchKey.includes(designKey);
-            });
-            if (design) return design;
-            
-            // Try word-by-word match
-            design = n3dDesigns.find(d => {
-                if (!d.name) return false;
-                const designWords = normalize(d.name).match(/[a-z]+/g) || [];
-                const searchWords = searchKey.match(/[a-z]+/g) || [];
-                const matches = designWords.filter(w => searchWords.includes(w));
-                return matches.length >= Math.min(designWords.length, searchWords.length) * 0.5;
-            });
-            
-            return design || null;
-        }
+        // ========== ⭐ N3D FIX - Improved Name Matching with Fallback ==========
+function getN3DData(itemName) {
+    if (!itemName) return null;
+
+    const normalize = (name) => name.toString().toLowerCase()
+        .replace(/[^a-z0-9]/g, '')
+        .replace(/shiny|mystery|mega|variant|x|y/g, '');
+
+    const searchKey = normalize(itemName);
+
+    // Try N3D data first
+    if (n3dDesigns && n3dDesigns.length > 0) {
+        let design = n3dDesigns.find(d => d.name && normalize(d.name) === searchKey);
+        if (design) return design;
+
+        design = n3dDesigns.find(d => {
+            if (!d.name) return false;
+            const designKey = normalize(d.name);
+            return designKey.includes(searchKey) || searchKey.includes(designKey);
+        });
+        if (design) return design;
+
+        design = n3dDesigns.find(d => {
+            if (!d.name) return false;
+            const designWords = normalize(d.name).match(/[a-z]+/g) || [];
+            const searchWords = searchKey.match(/[a-z]+/g) || [];
+            const matches = designWords.filter(w => searchWords.includes(w));
+            return matches.length >= Math.min(designWords.length, searchWords.length) * 0.5;
+        });
+        if (design) return design;
+    }
+
+    // Fallback to local database
+    if (FALLBACK_DESIGNS[searchKey]) {
+        console.log(`Using fallback data for: ${itemName}`);
+        return FALLBACK_DESIGNS[searchKey];
+    }
+
+    return null;
+}
         
         async function syncN3DFilaments() {
-            showSyncStatus('Fetching N3D data...', 'info');
-            try {
-                const response = await fetch(N3D_DESIGNS_URL);
-                if (!response.ok) throw new Error('Failed to fetch N3D designs');
-                const rawData = await response.json();
-                
-                if (Array.isArray(rawData)) {
-                    n3dDesigns = rawData;
-                } else if (rawData.designs && Array.isArray(rawData.designs)) {
-                    n3dDesigns = rawData.designs;
-                } else {
-                    n3dDesigns = [];
-                }
-                
-                console.log(`Loaded ${n3dDesigns.length} N3D designs`);
-                
-                const uniqueColors = new Set();
-                n3dDesigns.forEach(design => {
-                    if (design.colors && Array.isArray(design.colors)) {
-                        design.colors.forEach(c => { if (c.color) uniqueColors.add(c.color); });
-                    }
-                });
-                
-                const colorList = Array.from(uniqueColors).sort();
-                let addedCount = 0;
-                colorList.forEach(colorName => {
-                    if (!filaments[colorName]) {
-                        filaments[colorName] = { amount: 1000, color: generateColorHex(colorName) };
-                        addedCount++;
-                    }
-                });
-                
-                saveFilaments();
-                if (addedCount > 0) showSyncStatus(`✅ Added ${addedCount} N3D colors! Total: ${colorList.length}`, 'success');
-                else showSyncStatus(`✅ All ${colorList.length} N3D colors loaded`, 'success');
-                if (document.getElementById('filamentModal').classList.contains('active')) renderFilaments();
-            } catch (error) { showSyncStatus('❌ Failed: ' + error.message, 'error'); }
+    showSyncStatus('Fetching N3D data...', 'info');
+    try {
+        const response = await fetch(N3D_DESIGNS_URL);
+        if (!response.ok) throw new Error('Failed to fetch N3D designs');
+        const rawData = await response.json();
+
+        if (Array.isArray(rawData)) {
+            n3dDesigns = rawData;
+        } else if (rawData.designs && Array.isArray(rawData.designs)) {
+            n3dDesigns = rawData.designs;
+        } else {
+            n3dDesigns = [];
         }
+
+        console.log(`Loaded ${n3dDesigns.length} N3D designs`);
+        console.log(`Fallback database has ${Object.keys(FALLBACK_DESIGNS).length} designs`);
+
+        const uniqueColors = new Set();
+
+        // From N3D
+        n3dDesigns.forEach(design => {
+            if (design.colors && Array.isArray(design.colors)) {
+                design.colors.forEach(c => { if (c.color) uniqueColors.add(c.color); });
+            }
+        });
+
+        // From fallback
+        Object.values(FALLBACK_DESIGNS).forEach(design => {
+            if (design.colors && Array.isArray(design.colors)) {
+                design.colors.forEach(c => { if (c.color) uniqueColors.add(c.color); });
+            }
+        });
+
+        const colorList = Array.from(uniqueColors).sort();
+        let addedCount = 0;
+        colorList.forEach(colorName => {
+            if (!filaments[colorName]) {
+                filaments[colorName] = { amount: 1000, color: generateColorHex(colorName) };
+                addedCount++;
+            }
+        });
+
+        saveFilaments();
+        if (addedCount > 0) {
+            showSyncStatus(`✅ Added ${addedCount} colors! Total: ${colorList.length} (N3D + Fallback)`, 'success');
+        } else {
+            showSyncStatus(`✅ All ${colorList.length} colors loaded (N3D + Fallback)`, 'success');
+        }
+
+        if (document.getElementById('filamentModal').classList.contains('active')) {
+            renderFilaments();
+        }
+    } catch (error) {
+        showSyncStatus('❌ Failed: ' + error.message, 'error');
+    }
+}
         
         function generateColorHex(colorName) {
             const colorMap = { 'Ivory White': '#FFFFF0', 'Charcoal Black': '#36454F', 'Scarlet Red': '#FF2400', 'Marine Blue': '#0077BE', 'Lilac Purple': '#C8A2C8', 'Sakura Pink': '#FFB7C5', 'Turquoise': '#40E0D0', 'Mandarin Orange': '#F37A48', 'Sunflower Yellow': '#FFC512', 'Grass Green': '#7CFC00', 'Ice Blue': '#B0E0E6', 'Sky Blue': '#87CEEB', 'Ash Gray': '#B2BEB5', 'Dark Gray': '#A9A9A9', 'Light Gray': '#D3D3D3', 'Nardo Gray': '#686A6C', 'Desert Tan': '#C2B280', 'Caramel': '#FFD59A', 'Latte Brown': '#C5A582', 'Dark Brown': '#654321', 'Bone White': '#E3DAC9', 'Beige': '#F5F5DC', 'Hot Pink': '#FF69B4', 'Purple': '#800080', 'Indigo Purple': '#4B0082', 'Gold': '#FFD700', 'Silver': '#C0C0C0', 'Bambu Green': '#8FBC8F', 'Apple Green': '#8DB600', 'Lemon Yellow': '#FFF44F', 'Mistletoe Green': '#3B7A57', 'Dark Green': '#006400', 'Dark Blue': '#00008B', 'Cobalt Blue': '#0047AB', 'Blue Grey': '#6699CC', 'Blue': '#0000FF', 'Red': '#FF0000', 'Yellow': '#FFFF00', 'Orange': '#FFA500', 'Pink': '#FFC0CB', 'Green': '#008000', 'Cyan': '#00FFFF', 'Magenta': '#FF00FF', 'Black': '#000000', 'White': '#FFFFFF', 'Gray': '#808080' };
@@ -451,7 +507,6 @@
             }
             return orders;
         }
-        
         // ========== ⭐ N3D FIX - Improved parseOrderDetails ==========
         function parseOrderDetails(detailsText) {
             if (!detailsText) return [];
@@ -666,7 +721,6 @@
         }
         
         function openNewOrderModal() { updateFilamentDropdowns(); document.getElementById('newOrderModal').classList.add('active'); }
-        
         function addItemField() {
             const container = document.getElementById('itemsContainer');
             const itemNum = container.children.length + 1;
