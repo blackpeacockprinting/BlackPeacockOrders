@@ -7,6 +7,7 @@ on:
     paths:
       - 'functions/**'
       - '.github/workflows/deploy-functions.yml'
+      - 'firebase.json'
   workflow_dispatch:
 
 jobs:
@@ -23,6 +24,11 @@ jobs:
 
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
+
+      - name: Install dependencies
+        run: |
+          cd functions
+          npm install
 
       - name: Create service account key
         run: |
