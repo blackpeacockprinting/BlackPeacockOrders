@@ -4,176 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PokePrint Order Tracker</title>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, sans-serif; background: #0f0f23; color: #fff; min-height: 100vh; padding: 16px; }
-        .container { max-width: 1000px; margin: 0 auto; }
-        header { text-align: center; padding: 20px 0; border-bottom: 2px solid #e91e63; margin-bottom: 20px; }
-        h1 { font-size: 1.5rem; color: #e91e63; }
-        .subtitle { color: #888; font-size: 0.9rem; margin-top: 8px; }
-        
-        .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
-        .stat-pill { background: #1a1a2e; padding: 16px; border-radius: 12px; text-align: center; border: 1px solid #333; }
-        .stat-value { font-size: 1.8rem; font-weight: bold; color: #e91e63; }
-        .stat-label { color: #888; font-size: 0.75rem; margin-top: 4px; }
-        
-        .card { background: #1a1a2e; border-radius: 12px; padding: 16px; margin-bottom: 16px; border: 1px solid #333; }
-        .card h2 { color: #e91e63; margin-bottom: 12px; font-size: 1.1rem; }
-        
-        .btn { background: linear-gradient(45deg, #e91e63, #9c27b0); color: white; border: none; padding: 14px 24px; border-radius: 10px; font-size: 1rem; cursor: pointer; }
-        .btn:disabled { opacity: 0.5; }
-        .btn-small { padding: 8px 16px; font-size: 0.85rem; }
-        .btn-success { background: linear-gradient(45deg, #4caf50, #8bc34a); }
-        
-        .form-group { margin-bottom: 12px; }
-        .form-group label { color: #888; font-size: 0.85rem; display: block; margin-bottom: 4px; }
-        .form-group input, .form-group select { background: #0f0f23; border: 1px solid #333; padding: 12px; border-radius: 8px; color: white; width: 100%; font-size: 1rem; }
-        
-        .order-item { background: #0f0f23; padding: 12px; border-radius: 8px; margin-bottom: 8px; border: 1px solid #333; }
-        .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .order-customer { font-weight: 600; font-size: 1.1rem; }
-        .order-status { padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; text-transform: uppercase; font-weight: 600; }
-        .status-pending { background: #ff9800; color: #000; }
-        .status-printing { background: #2196f3; color: #fff; }
-        .status-completed { background: #4caf50; color: #fff; }
-        
-        .pokeball-item { display: flex; align-items: center; gap: 12px; padding: 8px; background: #1a1a2e; border-radius: 8px; margin-bottom: 6px; }
-        .pokeball-icon { font-size: 1.5rem; }
-        .pokeball-icon.shiny { filter: drop-shadow(0 0 8px gold); }
-        .pokeball-info { flex: 1; }
-        .pokeball-name { font-weight: 500; }
-        .pokeball-details { color: #888; font-size: 0.8rem; }
-        .pokeball-price { font-weight: 600; color: #4caf50; }
-        
-        .item-actions { display: flex; gap: 8px; }
-        .btn-icon { background: #333; border: none; color: white; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
-        .btn-icon.active { background: #e91e63; }
-        .btn-icon.shiny-active { background: linear-gradient(45deg, #ffd700, #ffed4e); color: #000; }
-        
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 100; justify-content: center; align-items: center; }
-        .modal.active { display: flex; }
-        .modal-content { background: #1a1a2e; padding: 24px; border-radius: 16px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-        .modal-title { font-size: 1.3rem; color: #e91e63; }
-        .modal-close { background: none; border: none; color: #888; font-size: 1.5rem; cursor: pointer; }
-        
-        .design-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; max-height: 300px; overflow-y: auto; margin-bottom: 16px; }
-        .design-option { background: #0f0f23; padding: 12px; border-radius: 8px; border: 1px solid #333; cursor: pointer; text-align: center; }
-        .design-option:hover { border-color: #e91e63; }
-        .design-option.selected { background: #e91e63; border-color: #e91e63; }
-        
-        .quantity-control { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
-        .qty-btn { background: #333; border: none; color: white; width: 36px; height: 36px; border-radius: 8px; font-size: 1.2rem; cursor: pointer; }
-        .qty-display { font-size: 1.2rem; font-weight: 600; min-width: 40px; text-align: center; }
-        
-        .toggle-row { display: flex; gap: 12px; margin-top: 12px; }
-        .toggle-btn { flex: 1; background: #0f0f23; border: 1px solid #333; color: #888; padding: 10px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; }
-        .toggle-btn.active { background: linear-gradient(45deg, #e91e63, #9c27b0); color: white; border-color: transparent; }
-        .toggle-btn.shiny-active { background: linear-gradient(45deg, #ffd700, #ffed4e); color: #000; border-color: transparent; }
-        
-        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #0f0f23; border-radius: 8px; margin-bottom: 8px; }
-        .cart-item-shiny { color: #ffd700; }
-        
-        .payment-status { display: inline-flex; gap: 8px; margin-top: 8px; }
-        .payment-badge { padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; cursor: pointer; }
-        .payment-badge.unpaid { background: #b71c1c; }
-        .payment-badge.paid { background: #1b5e20; }
-        .payment-badge.partial { background: #ff9800; color: #000; }
-        
-        .split-badge { background: #2196f3; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; margin-left: 8px; }
+        * { font-family: 'Inter', sans-serif; }
+        .pokeball { width: 24px; height: 24px; border-radius: 50%; position: relative; overflow: hidden; }
+        .pokeball::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 50%; background: #ef4444; }
+        .pokeball::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 50%; background: white; }
+        .pokeball-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 8px; height: 8px; background: white; border: 2px solid #333; border-radius: 50%; z-index: 10; }
+        .pokeball-gold::before { background: #fbbf24; }
+        .pokeball-gold .pokeball-center { border-color: #d97706; }
+        .shiny-badge { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); }
+        .mystery-badge { background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%); }
     </style>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1>🎱 PokePrint Order Tracker</h1>
-            <p class="subtitle">BlackPeacockPrinting Admin</p>
-        </header>
+<body class="bg-gray-900 text-white min-h-screen">
+    <div class="max-w-4xl mx-auto p-4">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-bold">PokePrint Order Tracker</h1>
+                <p class="text-gray-400 text-sm">Firebase Edition</p>
+            </div>
+            <button onclick="openNewOrderModal()" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg font-semibold flex items-center gap-2">
+                <span>+</span> New Order
+            </button>
+        </div>
 
-        <div class="stats-bar">
-            <div class="stat-pill">
-                <div class="stat-value" id="stat-pending">0</div>
-                <div class="stat-label">Pending</div>
+        <!-- Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6" id="stats">
+            <div class="bg-gray-800 p-3 rounded-lg text-center">
+                <div class="text-2xl font-bold text-yellow-400" id="stat-pending">0</div>
+                <div class="text-xs text-gray-400">Pending</div>
             </div>
-            <div class="stat-pill">
-                <div class="stat-value" id="stat-printing">0</div>
-                <div class="stat-label">Printing</div>
+            <div class="bg-gray-800 p-3 rounded-lg text-center">
+                <div class="text-2xl font-bold text-blue-400" id="stat-printing">0</div>
+                <div class="text-xs text-gray-400">Printing</div>
             </div>
-            <div class="stat-pill">
-                <div class="stat-value" id="stat-completed">0</div>
-                <div class="stat-label">Completed</div>
+            <div class="bg-gray-800 p-3 rounded-lg text-center">
+                <div class="text-2xl font-bold text-green-400" id="stat-completed">0</div>
+                <div class="text-xs text-gray-400">Completed</div>
             </div>
-            <div class="stat-pill">
-                <div class="stat-value" id="stat-revenue">$0</div>
-                <div class="stat-label">Revenue</div>
+            <div class="bg-gray-800 p-3 rounded-lg text-center">
+                <div class="text-2xl font-bold text-purple-400" id="stat-total">$0</div>
+                <div class="text-xs text-gray-400">Total Value</div>
             </div>
         </div>
 
-        <div class="card">
-            <button class="btn" onclick="openNewOrderModal()" style="width: 100%;">➕ New Order</button>
-        </div>
-
-        <div class="card">
-            <h2>📋 Orders</h2>
-            <div id="orders-list"></div>
-        </div>
+        <!-- Orders List -->
+        <div id="orders-list" class="space-y-3"></div>
     </div>
 
     <!-- New Order Modal -->
-    <div class="modal" id="new-order-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">New Order</div>
-                <button class="modal-close" onclick="closeModal()">&times;</button>
-            </div>
+    <div id="new-order-modal" class="fixed inset-0 bg-black/80 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-gray-800 rounded-xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
+            <h2 class="text-xl font-bold mb-4">New Order</h2>
+            <input type="text" id="customer-name" placeholder="Customer Name" class="w-full bg-gray-700 rounded-lg px-4 py-3 mb-3 text-white">
+            <input type="email" id="customer-email" placeholder="Email (optional)" class="w-full bg-gray-700 rounded-lg px-4 py-3 mb-3 text-white">
+            <input type="text" id="customer-phone" placeholder="Phone (optional)" class="w-full bg-gray-700 rounded-lg px-4 py-3 mb-4 text-white">
             
-            <div class="form-group">
-                <label>Customer Name</label>
-                <input type="text" id="customer-name" placeholder="e.g., John Smith">
-            </div>
+            <div id="order-items" class="space-y-2 mb-4"></div>
             
-            <div class="form-group">
-                <label>Customer Email</label>
-                <input type="email" id="customer-email" placeholder="john@email.com">
-            </div>
-
-            <h3 style="color: #e91e63; margin: 16px 0 12px;">Select Pokémon</h3>
-            <input type="text" id="design-search" placeholder="Search designs..." oninput="filterDesigns(this.value)" style="width: 100%; padding: 12px; background: #0f0f23; border: 1px solid #333; border-radius: 8px; color: white; margin-bottom: 12px;">
+            <button onclick="addItemField()" class="w-full bg-gray-700 hover:bg-gray-600 py-2 rounded-lg mb-4">+ Add Item</button>
             
-            <div class="design-grid" id="designs-grid"></div>
-
-            <div id="selected-design-info" style="display: none;">
-                <h3 style="color: #e91e63; margin: 16px 0 12px;">Configure</h3>
-                <div id="selected-design-name" style="font-weight: 600; margin-bottom: 8px;"></div>
-                
-                <div class="quantity-control">
-                    <button class="qty-btn" onclick="changeQty(-1)">-</button>
-                    <div class="qty-display" id="qty-display">1</div>
-                    <button class="qty-btn" onclick="changeQty(1)">+</button>
-                </div>
-                
-                <div class="toggle-row">
-                    <button class="toggle-btn" id="shiny-toggle" onclick="toggleShiny()">✨ Shiny</button>
-                    <button class="toggle-btn" id="mystery-toggle" onclick="toggleMystery()">❓ Mystery</button>
-                </div>
-                
-                <button class="btn" onclick="addToCart()" style="width: 100%; margin-top: 16px;">Add to Order</button>
-            </div>
-
-            <div id="cart-section" style="display: none; margin-top: 16px;">
-                <h3 style="color: #e91e63; margin-bottom: 12px;">Order Items</h3>
-                <div id="cart-items"></div>
-                <div style="text-align: right; margin-top: 12px; font-size: 1.2rem; font-weight: 600;">
-                    Total: <span id="cart-total" style="color: #4caf50;">$0</span>
-                </div>
-                <button class="btn btn-success" onclick="saveOrder()" style="width: 100%; margin-top: 16px;">💾 Save Order</button>
+            <div class="flex gap-2">
+                <button onclick="closeNewOrderModal()" class="flex-1 bg-gray-700 hover:bg-gray-600 py-3 rounded-lg">Cancel</button>
+                <button onclick="saveOrder()" class="flex-1 bg-red-600 hover:bg-red-700 py-3 rounded-lg font-semibold">Save Order</button>
             </div>
         </div>
     </div>
 
     <script>
+        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyBTp9aLB3VaKIKpztrR029mG3mVEw5MNOQ",
             authDomain: "blackpeacockprinting-fbb65.firebaseapp.com",
@@ -185,370 +89,211 @@
         
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        let orders = [];
+        let designs = [];
+        let itemCount = 0;
         
-        let allDesigns = [];
-        let selectedDesign = null;
-        let cart = [];
-        let currentQty = 1;
-        let isShiny = false;
-        let isMystery = false;
-
-        document.addEventListener('DOMContentLoaded', () => {
-            loadDesigns();
-            loadOrders();
-            loadStats();
+        // Load data
+        db.collection('orders').onSnapshot(snapshot => {
+            orders = [];
+            snapshot.forEach(doc => orders.push({ id: doc.id, ...doc.data() }));
+            renderOrders();
+            updateStats();
         });
-
-        async function loadDesigns() {
-            const snap = await db.collection('n3dDesigns').orderBy('name').get();
-            allDesigns = [];
-            snap.forEach(doc => allDesigns.push({ id: doc.id, ...doc.data() }));
-            renderDesignGrid(allDesigns);
-        }
-
-        function renderDesignGrid(designs) {
-            const grid = document.getElementById('designs-grid');
-            grid.innerHTML = designs.map(d => `
-                <div class="design-option" onclick="selectDesign('${d.id}')">
-                    <div style="font-size: 0.85rem;">${d.name}</div>
-                    <div style="color: #888; font-size: 0.75rem;">${d.totalGrams}g</div>
+        
+        db.collection('designs').onSnapshot(snapshot => {
+            designs = [];
+            snapshot.forEach(doc => designs.push({ id: doc.id, ...doc.data() }));
+        });
+        
+        function renderOrders() {
+            const container = document.getElementById('orders-list');
+            if (orders.length === 0) {
+                container.innerHTML = '<div class="text-center text-gray-500 py-8">No orders yet</div>';
+                return;
+            }
+            
+            container.innerHTML = orders.map(order => `
+                <div class="bg-gray-800 rounded-xl p-4">
+                    <div class="flex justify-between items-start mb-3">
+                        <div>
+                            <h3 class="font-bold text-lg">${order.customerName}</h3>
+                            <p class="text-gray-400 text-sm">${order.items?.length || 0} items</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="text-green-400 font-bold">$${order.total?.toFixed(2) || '0.00'}</span>
+                            <button onclick="deleteOrder('${order.id}')" class="text-red-400 hover:text-red-300 ml-2" title="Delete Order">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        ${(order.items || []).map((item, idx) => `
+                            <div class="flex items-center justify-between bg-gray-700/50 rounded-lg p-2">
+                                <div class="flex items-center gap-2">
+                                    <div class="pokeball ${item.shiny ? 'pokeball-gold' : ''}">
+                                        <div class="pokeball-center"></div>
+                                    </div>
+                                    <span class="${item.shiny ? 'text-yellow-400' : ''}">${item.name}</span>
+                                    ${item.shiny ? '<span class="shiny-badge text-xs px-2 py-0.5 rounded">✨</span>' : ''}
+                                    ${item.mystery ? '<span class="mystery-badge text-xs px-2 py-0.5 rounded">?</span>' : ''}
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-gray-400">$${item.price?.toFixed(2) || '0.00'}</span>
+                                    <button onclick="toggleShiny('${order.id}', ${idx})" class="text-xs bg-gray-600 hover:bg-gray-500 px-2 py-1 rounded">
+                                        ${item.shiny ? 'Unshiny' : '✨ Shiny'}
+                                    </button>
+                                    ${item.qty > 1 ? `<button onclick="splitItem('${order.id}', ${idx})" class="text-xs bg-blue-600 hover:bg-blue-500 px-2 py-1 rounded">Split</button>` : ''}
+                                    <select onchange="updateItemStatus('${order.id}', ${idx}, this.value)" class="bg-gray-600 rounded text-xs px-2 py-1">
+                                        <option value="pending" ${item.status === 'pending' ? 'selected' : ''}>Pending</option>
+                                        <option value="printing" ${item.status === 'printing' ? 'selected' : ''}>Printing</option>
+                                        <option value="completed" ${item.status === 'completed' ? 'selected' : ''}>Complete</option>
+                                    </select>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
                 </div>
             `).join('');
         }
-
-        function filterDesigns(search) {
-            const filtered = allDesigns.filter(d => d.name.toLowerCase().includes(search.toLowerCase()));
-            renderDesignGrid(filtered);
-        }
-
-        function selectDesign(designId) {
-            selectedDesign = allDesigns.find(d => d.id === designId);
-            if (!selectedDesign) return;
-            
-            document.querySelectorAll('.design-option').forEach(el => el.classList.remove('selected'));
-            event.target.closest('.design-option').classList.add('selected');
-            
-            document.getElementById('selected-design-info').style.display = 'block';
-            document.getElementById('selected-design-name').textContent = `${selectedDesign.name} (${selectedDesign.totalGrams}g)`;
-            
-            currentQty = 1;
-            isShiny = false;
-            isMystery = false;
-            updateConfigDisplay();
-        }
-
-        function changeQty(delta) {
-            currentQty = Math.max(1, Math.min(10, currentQty + delta));
-            updateConfigDisplay();
-        }
-
-        function toggleShiny() {
-            isShiny = !isShiny;
-            document.getElementById('shiny-toggle').classList.toggle('shiny-active', isShiny);
-        }
-
-        function toggleMystery() {
-            isMystery = !isMystery;
-            document.getElementById('mystery-toggle').classList.toggle('active', isMystery);
-        }
-
-        function updateConfigDisplay() {
-            document.getElementById('qty-display').textContent = currentQty;
-        }
-
-        function calculatePrice(grams) {
-            if (grams <= 150) return 8;
-            if (grams <= 250) return 10;
-            return 12;
-        }
-
-        function addToCart() {
-            if (!selectedDesign) return;
-            
-            const basePrice = calculatePrice(selectedDesign.totalGrams);
-            const price = isShiny ? basePrice * 1.5 : basePrice;
-            
-            cart.push({
-                designId: selectedDesign.id,
-                name: selectedDesign.name,
-                grams: selectedDesign.totalGrams,
-                filamentBreakdown: selectedDesign.filamentBreakdown,
-                quantity: currentQty,
-                shiny: isShiny,
-                mystery: isMystery,
-                pricePerUnit: price,
-                totalPrice: price * currentQty
-            });
-            
-            renderCart();
-            document.getElementById('cart-section').style.display = 'block';
-            
-            // Reset
-            selectedDesign = null;
-            currentQty = 1;
-            isShiny = false;
-            isMystery = false;
-            document.getElementById('selected-design-info').style.display = 'none';
-            document.querySelectorAll('.design-option').forEach(el => el.classList.remove('selected'));
-        }
-
-        function renderCart() {
-            const container = document.getElementById('cart-items');
-            let total = 0;
-            
-            container.innerHTML = cart.map((item, index) => {
-                total += item.totalPrice;
-                return `
-                    <div class="cart-item">
-                        <div>
-                            <span class="${item.shiny ? 'cart-item-shiny' : ''}">${item.name}</span>
-                            ${item.quantity > 1 ? `<span style="color: #888;"> x${item.quantity}</span>` : ''}
-                            ${item.shiny ? ' ✨' : ''}
-                            ${item.mystery ? ' ❓' : ''}
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <span style="color: #4caf50; font-weight: 600;">$${item.totalPrice.toFixed(2)}</span>
-                            <button class="btn-icon" onclick="removeFromCart(${index})">✕</button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-            
-            document.getElementById('cart-total').textContent = '$' + total.toFixed(2);
-        }
-
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            renderCart();
-            if (cart.length === 0) {
-                document.getElementById('cart-section').style.display = 'none';
-            }
-        }
-
-        async function saveOrder() {
-            const customerName = document.getElementById('customer-name').value.trim();
-            const customerEmail = document.getElementById('customer-email').value.trim();
-            
-            if (!customerName) {
-                alert('Please enter customer name');
-                return;
-            }
-            if (cart.length === 0) {
-                alert('Please add items to the order');
-                return;
-            }
-            
-            // Split quantities into individual trackable items
-            const orderItems = [];
-            cart.forEach(cartItem => {
-                for (let i = 0; i < cartItem.quantity; i++) {
-                    orderItems.push({
-                        id: Date.now() + '_' + Math.random().toString(36).substr(2, 9),
-                        designId: cartItem.designId,
-                        name: cartItem.name,
-                        grams: cartItem.grams,
-                        filamentBreakdown: cartItem.filamentBreakdown,
-                        shiny: cartItem.shiny,
-                        mystery: cartItem.mystery,
-                        price: cartItem.pricePerUnit,
-                        status: 'pending',
-                        splitFrom: cartItem.quantity > 1 ? cartItem.name : null
-                    });
-                }
-            });
-            
-            const totalPrice = cart.reduce((sum, item) => sum + item.totalPrice, 0);
-            
-            const order = {
-                customerName,
-                customerEmail,
-                orderDate: firebase.firestore.FieldValue.serverTimestamp(),
-                status: 'pending',
-                paymentStatus: 'unpaid',
-                totalPrice,
-                amountPaid: 0,
-                items: orderItems,
-                notes: '',
-                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            };
-            
-            try {
-                await db.collection('orders').add(order);
-                closeModal();
-                loadOrders();
-                loadStats();
-                alert('✅ Order saved!');
-            } catch (e) {
-                alert('❌ Error: ' + e.message);
-            }
-        }
-
-        async function loadOrders() {
-            const snap = await db.collection('orders').orderBy('orderDate', 'desc').get();
-            const container = document.getElementById('orders-list');
-            
-            if (snap.empty) {
-                container.innerHTML = '<p style="color: #888; text-align: center;">No orders yet</p>';
-                return;
-            }
-            
-            container.innerHTML = snap.docs.map(doc => {
-                const order = doc.data();
-                const pendingCount = order.items.filter(i => i.status === 'pending').length;
-                const printingCount = order.items.filter(i => i.status === 'printing').length;
-                const completedCount = order.items.filter(i => i.status === 'completed').length;
-                
-                return `
-                    <div class="order-item">
-                        <div class="order-header">
-                            <div>
-                                <div class="order-customer">${order.customerName}</div>
-                                <div style="color: #888; font-size: 0.8rem;">
-                                    ${pendingCount} pending · ${printingCount} printing · ${completedCount} completed
-                                </div>
-                            </div>
-                            <div style="text-align: right;">
-                                <span class="order-status status-${order.status}">${order.status}</span>
-                                <div style="font-size: 0.85rem; margin-top: 4px;">$${order.totalPrice?.toFixed(2) || '0.00'}</div>
-                            </div>
-                        </div>
-                        <div class="payment-status">
-                            <span class="payment-badge ${order.paymentStatus}" onclick="updatePayment('${doc.id}', '${order.paymentStatus}')">${order.paymentStatus}</span>
-                        </div>
-                        <div style="margin-top: 12px;">
-                            ${order.items.map(item => `
-                                <div class="pokeball-item">
-                                    <div class="pokeball-icon ${item.shiny ? 'shiny' : ''}">⚪</div>
-                                    <div class="pokeball-info">
-                                        <div class="pokeball-name">
-                                            ${item.name}
-                                            ${item.shiny ? '✨' : ''}
-                                            ${item.mystery ? '❓' : ''}
-                                            ${item.splitFrom ? '<span class="split-badge">SPLIT</span>' : ''}
-                                        </div>
-                                        <div class="pokeball-details">${item.grams}g · $${item.price?.toFixed(2) || '0.00'}</div>
-                                    </div>
-                                    <div class="item-actions">
-                                        <button class="btn-icon ${item.shiny ? 'shiny-active' : ''}" onclick="toggleItemShiny('${doc.id}', '${item.id}')">✨</button>
-                                        <button class="btn-icon" onclick="splitItem('${doc.id}', '${item.id}')">SPLIT</button>
-                                        <select class="btn-icon" onchange="updateItemStatus('${doc.id}', '${item.id}', this.value)" style="width: 90px;">
-                                            <option value="pending" ${item.status === 'pending' ? 'selected' : ''}>Pending</option>
-                                            <option value="printing" ${item.status === 'printing' ? 'selected' : ''}>Printing</option>
-                                            <option value="completed" ${item.status === 'completed' ? 'selected' : ''}>Done</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        async function loadStats() {
-            const snap = await db.collection('orders').get();
-            let pending = 0, printing = 0, completed = 0, revenue = 0;
-            
-            snap.forEach(doc => {
-                const order = doc.data();
-                order.items.forEach(item => {
+        
+        function updateStats() {
+            let pending = 0, printing = 0, completed = 0, total = 0;
+            orders.forEach(order => {
+                (order.items || []).forEach(item => {
                     if (item.status === 'pending') pending++;
-                    if (item.status === 'printing') printing++;
-                    if (item.status === 'completed') {
-                        completed++;
-                        revenue += item.price || 0;
-                    }
+                    else if (item.status === 'printing') printing++;
+                    else if (item.status === 'completed') completed++;
                 });
+                total += order.total || 0;
             });
-            
             document.getElementById('stat-pending').textContent = pending;
             document.getElementById('stat-printing').textContent = printing;
             document.getElementById('stat-completed').textContent = completed;
-            document.getElementById('stat-revenue').textContent = '$' + revenue.toFixed(0);
+            document.getElementById('stat-total').textContent = '$' + total.toFixed(0);
         }
-
-        async function toggleItemShiny(orderId, itemId) {
-            const orderRef = db.collection('orders').doc(orderId);
-            const order = await orderRef.get();
-            const items = order.data().items;
-            
-            const item = items.find(i => i.id === itemId);
-            if (item) {
-                item.shiny = !item.shiny;
-                item.price = item.shiny ? item.price * 1.5 : item.price / 1.5;
-                await orderRef.update({ items, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
-                loadOrders();
+        
+        // Delete Order
+        function deleteOrder(orderId) {
+            if (confirm('Delete this order? This cannot be undone.')) {
+                db.collection('orders').doc(orderId).delete();
             }
         }
-
-        async function splitItem(orderId, itemId) {
-            const orderRef = db.collection('orders').doc(orderId);
-            const order = await orderRef.get();
-            const items = order.data().items;
+        
+        // Toggle Shiny (price stays same)
+        function toggleShiny(orderId, itemIdx) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
             
-            const itemIndex = items.findIndex(i => i.id === itemId);
-            if (itemIndex === -1) return;
+            const items = [...order.items];
+            items[itemIdx].shiny = !items[itemIdx].shiny;
             
-            const item = items[itemIndex];
-            const newItem = { ...item, id: Date.now() + '_' + Math.random().toString(36).substr(2, 9), splitFrom: item.name };
-            
-            items.push(newItem);
-            await orderRef.update({ items, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
-            loadOrders();
+            // Price stays the same - no recalculation needed
+            db.collection('orders').doc(orderId).update({ items });
         }
-
-        async function updateItemStatus(orderId, itemId, newStatus) {
-            const orderRef = db.collection('orders').doc(orderId);
-            const order = await orderRef.get();
-            const items = order.data().items;
+        
+        // Split Item
+        function splitItem(orderId, itemIdx) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order || order.items[itemIdx].qty <= 1) return;
             
-            const item = items.find(i => i.id === itemId);
-            if (item) {
-                item.status = newStatus;
-                
-                const allCompleted = items.every(i => i.status === 'completed');
-                const anyPrinting = items.some(i => i.status === 'printing');
-                let orderStatus = 'pending';
-                if (allCompleted) orderStatus = 'completed';
-                else if (anyPrinting) orderStatus = 'printing';
-                
-                await orderRef.update({ items, status: orderStatus, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
-                loadOrders();
-                loadStats();
-            }
+            const items = [...order.items];
+            const item = items[itemIdx];
+            
+            item.qty--;
+            items.splice(itemIdx + 1, 0, {
+                ...item,
+                qty: 1,
+                shiny: false,
+                status: 'pending'
+            });
+            
+            db.collection('orders').doc(orderId).update({ items });
         }
-
-        async function updatePayment(orderId, currentStatus) {
-            const statuses = ['unpaid', 'partial', 'paid'];
-            const nextStatus = statuses[(statuses.indexOf(currentStatus) + 1) % statuses.length];
-            await db.collection('orders').doc(orderId).update({ paymentStatus: nextStatus, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
-            loadOrders();
+        
+        // Update Item Status
+        function updateItemStatus(orderId, itemIdx, status) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+            
+            const items = [...order.items];
+            items[itemIdx].status = status;
+            
+            const allComplete = items.every(i => i.status === 'completed');
+            
+            db.collection('orders').doc(orderId).update({ 
+                items, 
+                status: allComplete ? 'completed' : 'active'
+            });
         }
-
+        // New Order Modal
         function openNewOrderModal() {
-            cart = [];
-            selectedDesign = null;
-            currentQty = 1;
-            isShiny = false;
-            isMystery = false;
-            document.getElementById('customer-name').value = '';
-            document.getElementById('customer-email').value = '';
-            document.getElementById('cart-items').innerHTML = '';
-            document.getElementById('cart-section').style.display = 'none';
-            document.getElementById('selected-design-info').style.display = 'none';
-            document.getElementById('new-order-modal').classList.add('active');
+            document.getElementById('new-order-modal').classList.remove('hidden');
+            itemCount = 0;
+            document.getElementById('order-items').innerHTML = '';
+            addItemField();
         }
-
-        function closeModal() {
-            document.getElementById('new-order-modal').classList.remove('active');
+        
+        function closeNewOrderModal() {
+            document.getElementById('new-order-modal').classList.add('hidden');
         }
-
-        // Real-time updates
-        db.collection('orders').onSnapshot(() => {
-            loadOrders();
-            loadStats();
-        });
+        
+        function addItemField() {
+            itemCount++;
+            const div = document.createElement('div');
+            div.className = 'flex gap-2';
+            div.innerHTML = `
+                <select id="item-${itemCount}" class="flex-1 bg-gray-700 rounded-lg px-3 py-2 text-white">
+                    <option value="">Select Pokemon...</option>
+                    ${designs.map(d => `<option value="${d.id}" data-price="${d.price || 5}">${d.name} - $${d.price || 5}</option>`).join('')}
+                </select>
+                <input type="number" id="qty-${itemCount}" value="1" min="1" class="w-16 bg-gray-700 rounded-lg px-3 py-2 text-white text-center">
+            `;
+            document.getElementById('order-items').appendChild(div);
+        }
+        
+        function saveOrder() {
+            const customerName = document.getElementById('customer-name').value.trim();
+            if (!customerName) return alert('Enter customer name');
+            
+            const items = [];
+            let total = 0;
+            
+            for (let i = 1; i <= itemCount; i++) {
+                const select = document.getElementById(`item-${i}`);
+                const qtyInput = document.getElementById(`qty-${i}`);
+                
+                if (!select || !select.value) continue;
+                
+                const design = designs.find(d => d.id === select.value);
+                const qty = parseInt(qtyInput?.value) || 1;
+                const price = design?.price || 5;
+                
+                items.push({
+                    name: design?.name || 'Unknown',
+                    designId: select.value,
+                    qty: qty,
+                    price: price,
+                    shiny: false,
+                    mystery: false,
+                    status: 'pending'
+                });
+                
+                total += price * qty;
+            }
+            
+            if (items.length === 0) return alert('Add at least one item');
+            
+            db.collection('orders').add({
+                customerName,
+                customerEmail: document.getElementById('customer-email').value,
+                customerPhone: document.getElementById('customer-phone').value,
+                items,
+                total,
+                status: 'active',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            
+            closeNewOrderModal();
+        }
     </script>
 </body>
 </html>
