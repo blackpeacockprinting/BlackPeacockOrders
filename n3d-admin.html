@@ -46,6 +46,7 @@
             <h2>🧪 Tests</h2>
             <button class="btn" onclick="testFirebase()">Test Firebase</button>
             <button class="btn btn-secondary" onclick="testN3D()">Test N3D API</button>
+            <button class="btn btn-secondary" onclick="syncDesigns()">Sync 10 Designs</button>
             <div id="result" class="status info">Click a button</div>
             <pre id="debug">Debug output here...</pre>
         </div>
@@ -111,16 +112,87 @@
             result.textContent = 'Testing N3D...';
             
             try {
-                const res = await fetch('https://www.n3dmelbourne.com/api/v1/designs', {
+                const res = await fetch('https://www.n3dmelbourne.com/api/v1/designs?limit=5', {
                     headers: { 'Authorization': 'Bearer n3d_sk_N49oAN4-H4bniv08z3-Y7D5UZl_W0DcR' }
                 });
+                
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                
                 const data = await res.json();
+                const designs = data.data || [];
+                
                 result.className = 'status success';
-                result.textContent = '✅ N3D works! Designs: ' + (data.data || []).length;
-                debug.textContent = JSON.stringify(data.data[0], null, 2);
+                result.textContent = '✅ N3D works! Found ' + designs.length + ' designs';
+                
+                // Show first design structure
+                if (designs.length > 0) {
+                    debug.textContent = 'First design:\\n' + JSON.stringify(designs[0], null, 2);
+                }
             } catch (e) {
                 result.className = 'status error';
                 result.textContent = '❌ Error: ' + e.message;
+                debug.textContent = e.stack;
+            }
+        }
+
+        async function syncDesigns() {
+            const result = document.getElementById('result');
+            const debug = document.getElementById('debug');
+            result.className = 'status loading';
+            result.textContent = 'Syncing...';
+            
+            try {
+                // Fetch from N3D with include=details to get filament breakdown
+                const res = await fetch('https://www.n3dmelbourne.com/api/v1/designs?limit=10&include=details', {
+                    headers: { 'Authorization': 'Bearer n3d_sk_N49oAN4-H4bniv08z3-Y7D5UZl_W0DcR' }
+                });
+                
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                
+                const data = await res.json();
+                const designs = data.data || [];
+                
+                result.textContent = 'Saving ' + designs.length + ' designs to Firebase...';
+                
+                // Save each design
+                let saved = 0;
+                for (const design of designs) {
+                    // Extract filament breakdown from the filaments array
+                    const filamentBreakdown = [];
+                    if (design.filaments && Array.isArray(design.filaments)) {
+                        design.filaments.forEach(f => {
+                            filamentBreakdown.push({
+                                color: f.color || 'Unknown',
+                                grams: f.weight_grams || 0
+                            });
+                        });
+                    }
+                    
+                    // Use total_weight_grams from API
+                    const totalGrams = design.total_weight_grams || 
+                                      filamentBreakdown.reduce((s, p) => s + p.grams, 0) || 
+                                      50;
+                    
+                    await db.collection('n3dDesigns').doc(design.title || design.slug).set({
+                        name: design.title || design.slug,
+                        slug: design.slug,
+                        totalGrams: totalGrams,
+                        filamentBreakdown: filamentBreakdown,
+                        category: design.category,
+                        imageUrl: design.image_url,
+                        source: 'n3d_api',
+                        lastSynced: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    saved++;
+                }
+                
+                result.className = 'status success';
+                result.textContent = '✅ Synced ' + saved + ' designs!';
+                debug.textContent = 'Saved:\\n' + designs.map(d => '- ' + (d.title || d.slug)).join('\\n');
+                
+            } catch (e) {
+                result.className = 'status error';
+                result.textContent = '❌ Sync failed: ' + e.message;
                 debug.textContent = e.stack;
             }
         }
