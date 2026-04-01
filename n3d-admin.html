@@ -9,7 +9,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #0f0f23; color: #fff; min-height: 100vh; padding: 16px; }
+        body { font-family: -apple-system, sans-serif; background: #0f0f23; color: #fff; min-height: 100vh; padding: 16px; }
         .container { max-width: 800px; margin: 0 auto; }
         header { text-align: center; padding: 20px 0; border-bottom: 2px solid #e91e63; margin-bottom: 20px; }
         h1 { font-size: 1.5rem; color: #e91e63; }
@@ -44,7 +44,6 @@
         .hidden { display: none !important; }
         #login-section { text-align: center; padding: 40px 20px; }
         .designs-list { max-height: 300px; overflow-y: auto; margin-top: 12px; }
-        input[type="text"], input[type="number"] { -webkit-appearance: none; }
     </style>
 </head>
 <body>
@@ -58,6 +57,7 @@
             <h2>Admin Login</h2>
             <p style="color: #888; margin: 12px 0; font-size: 0.9rem;">Sign in with Google to manage designs</p>
             <button class="btn" onclick="signIn()">Sign in with Google</button>
+            <p id="login-error" style="color: #ff5252; margin-top: 12px; font-size: 0.85rem;"></p>
         </div>
 
         <div id="dashboard" class="hidden">
@@ -111,6 +111,8 @@
                 <input type="text" id="search" placeholder="Search..." oninput="filter(this.value)" style="width: 100%; padding: 12px; background: #0f0f23; border: 1px solid #333; border-radius: 8px; color: white; margin-bottom: 12px;">
                 <div class="designs-list" id="designs-list"></div>
             </div>
+            
+            <button class="btn btn-secondary" onclick="logout()" style="margin-top: 20px;">Logout</button>
         </div>
     </div>
 
@@ -129,16 +131,35 @@
         const auth = firebase.auth();
         let allDesigns = [];
 
+        // Handle redirect result (for mobile login)
+        auth.getRedirectResult().then(result => {
+            if (result.user) {
+                console.log('Logged in via redirect:', result.user.email);
+            }
+        }).catch(error => {
+            console.error('Redirect login error:', error);
+            document.getElementById('login-error').textContent = 'Login error: ' + error.message;
+        });
+
         auth.onAuthStateChanged(user => {
             if (user) {
                 document.getElementById('login-section').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
                 loadStats();
+            } else {
+                document.getElementById('login-section').classList.remove('hidden');
+                document.getElementById('dashboard').classList.add('hidden');
             }
         });
 
         function signIn() {
-            auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+            const provider = new firebase.auth.GoogleAuthProvider();
+            // Use redirect for mobile (more reliable than popup)
+            auth.signInWithRedirect(provider);
+        }
+        
+        function logout() {
+            auth.signOut();
         }
 
         async function loadStats() {
@@ -146,7 +167,10 @@
             const stats = { total: 0, n3d: 0, fallback: 0, custom: 0 };
             snap.forEach(doc => {
                 stats.total++;
-                stats[doc.data().source === 'n3d_api' ? 'n3d' : doc.data().source === 'fallback' ? 'fallback' : 'custom']++;
+                const src = doc.data().source;
+                if (src === 'n3d_api') stats.n3d++;
+                else if (src === 'fallback') stats.fallback++;
+                else if (src === 'custom') stats.custom++;
             });
             document.getElementById('stat-total').textContent = stats.total;
             document.getElementById('stat-n3d').textContent = stats.n3d;
