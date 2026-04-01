@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>N3D Sync - CORS Proxy</title>
+    <title>N3D Sync - All Designs</title>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <style>
@@ -22,88 +22,54 @@
         .stat-label { color: #888; font-size: 0.8rem; margin-top: 4px; }
         .btn { background: linear-gradient(45deg, #e91e63, #9c27b0); color: white; border: none; padding: 14px 24px; border-radius: 10px; font-size: 1rem; cursor: pointer; width: 100%; margin-bottom: 8px; }
         .btn:disabled { opacity: 0.5; }
-        .btn-secondary { background: #333; }
         .status { padding: 12px; border-radius: 8px; margin-top: 12px; display: none; font-size: 0.9rem; }
         .status.success { background: #1b5e20; display: block; }
         .status.error { background: #b71c1c; display: block; }
         .status.loading { background: #0d47a1; display: block; }
-        .last-sync { color: #888; margin-top: 8px; font-size: 0.85rem; }
-        .design-item { background: #0f0f23; padding: 12px; border-radius: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #333; }
-        .design-name { font-weight: 500; font-size: 0.95rem; }
-        .design-grams { color: #888; font-size: 0.8rem; }
-        .design-source { padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; text-transform: uppercase; }
-        .source-n3d { background: #4caf50; }
-        .source-fallback { background: #ff9800; }
-        .source-custom { background: #e91e63; }
-        .form-group { margin-bottom: 12px; }
-        .form-group label { color: #888; font-size: 0.85rem; display: block; margin-bottom: 4px; }
-        .form-group input { background: #0f0f23; border: 1px solid #333; padding: 12px; border-radius: 8px; color: white; width: 100%; font-size: 1rem; }
-        .color-row { display: flex; gap: 8px; margin-bottom: 8px; }
-        .color-row input { flex: 1; }
-        .color-row input[type="number"] { flex: 0.4; }
-        .designs-list { max-height: 300px; overflow-y: auto; margin-top: 12px; }
+        .progress { margin-top: 12px; }
+        .progress-bar { background: #333; height: 20px; border-radius: 10px; overflow: hidden; }
+        .progress-fill { background: linear-gradient(45deg, #e91e63, #9c27b0); height: 100%; width: 0%; transition: width 0.3s; }
+        .progress-text { text-align: center; margin-top: 8px; color: #888; font-size: 0.85rem; }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🎱 N3D Sync Admin</h1>
-            <p class="subtitle">BlackPeacockPrinting (CORS Proxy Mode)</p>
+            <h1>🎱 N3D Sync - Full Sync</h1>
+            <p class="subtitle">BlackPeacockPrinting (Fetch ALL Designs)</p>
         </header>
 
         <div class="warning">
-            ⚠️ Using CORS proxy. Migrate to Cloud Function when you have computer access.
+            ⚠️ This will fetch ALL designs from N3D (may take 1-2 minutes)
         </div>
 
         <div class="card">
-            <h2>📊 Database Status</h2>
+            <h2>📊 Current Database Status</h2>
             <div class="stats-grid">
                 <div class="stat-box">
                     <div class="stat-number" id="stat-total">-</div>
-                    <div class="stat-label">Total</div>
+                    <div class="stat-label">Total Designs</div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-number" id="stat-n3d">-</div>
-                    <div class="stat-label">N3D API</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number" id="stat-fallback">-</div>
-                    <div class="stat-label">Fallback</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number" id="stat-custom">-</div>
-                    <div class="stat-label">Custom</div>
+                    <div class="stat-label">From N3D API</div>
                 </div>
             </div>
-            <div class="last-sync" id="last-sync">Checking...</div>
-            <button class="btn" id="sync-btn" onclick="syncN3D()">🔄 Sync with N3D (50 designs)</button>
-            <button class="btn btn-secondary" onclick="loadDesigns()">📝 View Designs</button>
+            <div style="color: #888; margin-top: 8px;" id="last-sync">Checking...</div>
+        </div>
+
+        <div class="card">
+            <h2>🔄 Full N3D Sync</h2>
+            <button class="btn" id="sync-btn" onclick="syncAllN3D()">
+                🔄 Sync ALL Designs from N3D
+            </button>
             <div id="sync-status" class="status"></div>
-        </div>
-
-        <div class="card">
-            <h2>➕ Add Custom Design</h2>
-            <div class="form-group">
-                <label>Pokémon Name</label>
-                <input type="text" id="custom-name" placeholder="e.g., Shadow Mewtwo">
-            </div>
-            <div class="form-group">
-                <label>Colors & Grams</label>
-                <div id="color-inputs">
-                    <div class="color-row">
-                        <input type="text" placeholder="Color" class="color-name">
-                        <input type="number" placeholder="g" class="color-grams">
-                    </div>
+            <div class="progress" id="progress-section" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
                 </div>
-                <button class="btn btn-secondary" onclick="addColor()" style="margin-top: 8px;">+ Add Color</button>
+                <div class="progress-text" id="progress-text">Fetching page 1...</div>
             </div>
-            <button class="btn" onclick="saveCustom()">💾 Save Design</button>
-        </div>
-
-        <div class="card">
-            <h2>📋 All Designs</h2>
-            <input type="text" id="search" placeholder="Search..." oninput="filter(this.value)" style="width: 100%; padding: 12px; background: #0f0f23; border: 1px solid #333; border-radius: 8px; color: white; margin-bottom: 12px;">
-            <div class="designs-list" id="designs-list"></div>
         </div>
     </div>
 
@@ -119,11 +85,8 @@
         
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        
         const N3D_API_KEY = 'n3d_sk_N49oAN4-H4bniv08z3-Y7D5UZl_W0DcR';
-        let allDesigns = [];
-
-        // CORS Proxy URLs (try these in order)
+        
         const PROXY_URLS = [
             'https://api.allorigins.win/raw?url=',
             'https://corsproxy.io/?',
@@ -133,25 +96,15 @@
         document.addEventListener('DOMContentLoaded', loadStats);
 
         async function fetchWithProxy(url, options = {}) {
-            // Try each proxy until one works
             for (const proxy of PROXY_URLS) {
                 try {
                     const proxyUrl = proxy + encodeURIComponent(url);
                     const response = await fetch(proxyUrl, {
                         ...options,
-                        headers: {
-                            ...options.headers,
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
+                        headers: { ...options.headers, 'X-Requested-With': 'XMLHttpRequest' }
                     });
-                    
-                    if (response.ok) {
-                        return response;
-                    }
-                } catch (e) {
-                    console.log(`Proxy ${proxy} failed, trying next...`);
-                    continue;
-                }
+                    if (response.ok) return response;
+                } catch (e) { continue; }
             }
             throw new Error('All CORS proxies failed');
         }
@@ -159,148 +112,114 @@
         async function loadStats() {
             try {
                 const snap = await db.collection('n3dDesigns').get();
-                const stats = { total: 0, n3d: 0, fallback: 0, custom: 0 };
+                const stats = { total: 0, n3d: 0 };
                 snap.forEach(doc => {
                     stats.total++;
-                    const src = doc.data().source;
-                    if (src === 'n3d_api') stats.n3d++;
-                    else if (src === 'fallback') stats.fallback++;
-                    else if (src === 'custom') stats.custom++;
+                    if (doc.data().source === 'n3d_api') stats.n3d++;
                 });
                 document.getElementById('stat-total').textContent = stats.total;
                 document.getElementById('stat-n3d').textContent = stats.n3d;
-                document.getElementById('stat-fallback').textContent = stats.fallback;
-                document.getElementById('stat-custom').textContent = stats.custom;
                 
                 const meta = await db.collection('syncMetadata').doc('n3d').get();
-                document.getElementById('last-sync').textContent = meta.exists ? 'Last: ' + meta.data().lastSync?.toDate().toLocaleDateString() : 'Never synced';
+                document.getElementById('last-sync').textContent = meta.exists 
+                    ? 'Last: ' + meta.data().lastSync?.toDate().toLocaleString() 
+                    : 'Never synced';
             } catch (e) {
-                document.getElementById('last-sync').textContent = 'Error: ' + e.message;
+                document.getElementById('last-sync').textContent = 'Error';
             }
         }
 
-        async function syncN3D() {
+        async function syncAllN3D() {
             const btn = document.getElementById('sync-btn');
             const status = document.getElementById('sync-status');
+            const progressSection = document.getElementById('progress-section');
+            const progressFill = document.getElementById('progress-fill');
+            const progressText = document.getElementById('progress-text');
+            
             btn.disabled = true;
             status.className = 'status loading';
-            status.textContent = 'Fetching from N3D via proxy...';
+            status.textContent = 'Starting full sync...';
+            status.style.display = 'block';
+            progressSection.style.display = 'block';
             
             try {
-                // Use CORS proxy to fetch N3D API
-                const apiUrl = `https://www.n3dmelbourne.com/api/v1/designs?limit=50&include=details`;
-                const response = await fetchWithProxy(apiUrl, {
-                    headers: { 'Authorization': 'Bearer ' + N3D_API_KEY }
-                });
+                const allDesigns = [];
+                let page = 1;
+                let hasMore = true;
                 
-                const data = await response.json();
-                const designs = data.data || [];
-                
-                status.textContent = 'Saving ' + designs.length + ' designs...';
-                
-                // Save to Firestore
-                const batch = db.batch();
-                for (const design of designs) {
-                    const filamentBreakdown = [];
-                    if (design.filaments) {
-                        design.filaments.forEach(f => {
-                            filamentBreakdown.push({
-                                color: f.color || 'Unknown',
-                                grams: f.weight_grams || 0
-                            });
-                        });
-                    }
+                while (hasMore && page <= 20) {
+                    progressText.textContent = `Fetching page ${page}... (${allDesigns.length} designs)`;
+                    progressFill.style.width = `${Math.min((page / 10) * 100, 90)}%`;
                     
-                    batch.set(db.collection('n3dDesigns').doc(design.title || design.slug), {
-                        name: design.title || design.slug,
-                        slug: design.slug,
-                        totalGrams: design.total_weight_grams || 50,
-                        filamentBreakdown: filamentBreakdown,
-                        category: design.category,
-                        imageUrl: design.image_url,
-                        source: 'n3d_api',
-                        lastSynced: firebase.firestore.FieldValue.serverTimestamp()
-                    }, { merge: true });
+                    try {
+                        const apiUrl = `https://www.n3dmelbourne.com/api/v1/designs?page=${page}&limit=100&include=details`;
+                        const response = await fetchWithProxy(apiUrl, {
+                            headers: { 'Authorization': 'Bearer ' + N3D_API_KEY }
+                        });
+                        
+                        const data = await response.json();
+                        const designs = data.data || [];
+                        
+                        if (designs.length === 0) {
+                            hasMore = false;
+                        } else {
+                            allDesigns.push(...designs);
+                            page++;
+                            await new Promise(r => setTimeout(r, 500)); // Be nice to API
+                        }
+                    } catch (e) {
+                        console.error(`Page ${page} failed:`, e);
+                        hasMore = false;
+                    }
                 }
                 
-                await batch.commit();
+                progressText.textContent = `Saving ${allDesigns.length} designs...`;
+                
+                // Save in batches
+                const batchSize = 500;
+                for (let i = 0; i < allDesigns.length; i += batchSize) {
+                    const batch = db.batch();
+                    const chunk = allDesigns.slice(i, i + batchSize);
+                    
+                    for (const design of chunk) {
+                        const filamentBreakdown = [];
+                        if (design.filaments) {
+                            design.filaments.forEach(f => {
+                                filamentBreakdown.push({ color: f.color || 'Unknown', grams: f.weight_grams || 0 });
+                            });
+                        }
+                        
+                        batch.set(db.collection('n3dDesigns').doc(design.title || design.slug), {
+                            name: design.title || design.slug,
+                            slug: design.slug,
+                            totalGrams: design.total_weight_grams || 50,
+                            filamentBreakdown: filamentBreakdown,
+                            category: design.category,
+                            imageUrl: design.image_url,
+                            source: 'n3d_api',
+                            lastSynced: firebase.firestore.FieldValue.serverTimestamp()
+                        }, { merge: true });
+                    }
+                    
+                    await batch.commit();
+                    progressText.textContent = `Saved ${Math.min(i + batchSize, allDesigns.length)}/${allDesigns.length}...`;
+                }
                 
                 await db.collection('syncMetadata').doc('n3d').set({
                     lastSync: firebase.firestore.FieldValue.serverTimestamp(),
-                    designsCount: designs.length
+                    designsCount: allDesigns.length
                 });
                 
+                progressFill.style.width = '100%';
                 status.className = 'status success';
-                status.textContent = '✅ Synced ' + designs.length + ' designs!';
+                status.textContent = `✅ Synced ${allDesigns.length} designs!`;
                 loadStats();
                 
             } catch (e) {
                 status.className = 'status error';
                 status.textContent = '❌ Error: ' + e.message;
-                console.error(e);
             }
             btn.disabled = false;
-        }
-
-        async function loadDesigns() {
-            const list = document.getElementById('designs-list');
-            list.innerHTML = 'Loading...';
-            const snap = await db.collection('n3dDesigns').orderBy('name').get();
-            allDesigns = [];
-            snap.forEach(doc => allDesigns.push({ id: doc.id, ...doc.data() }));
-            render(allDesigns);
-        }
-
-        function render(designs) {
-            const list = document.getElementById('designs-list');
-            list.innerHTML = designs.map(d => `
-                <div class="design-item">
-                    <div>
-                        <div class="design-name">${d.name}</div>
-                        <div class="design-grams">${d.totalGrams}g · ${d.filamentBreakdown?.length || 0} colors</div>
-                    </div>
-                    <span class="design-source source-${d.source}">${d.source}</span>
-                </div>
-            `).join('');
-        }
-
-        function filter(term) {
-            render(allDesigns.filter(d => d.name.toLowerCase().includes(term.toLowerCase())));
-        }
-
-        function addColor() {
-            const div = document.createElement('div');
-            div.className = 'color-row';
-            div.innerHTML = '<input type="text" placeholder="Color" class="color-name"><input type="number" placeholder="g" class="color-grams"><button onclick="this.parentElement.remove()" style="background:#b71c1c;color:white;border:none;padding:8px 12px;border-radius:6px;">✕</button>';
-            document.getElementById('color-inputs').appendChild(div);
-        }
-
-        async function saveCustom() {
-            const name = document.getElementById('custom-name').value.trim();
-            if (!name) return alert('Enter name');
-            
-            const breakdown = [];
-            document.querySelectorAll('.color-row').forEach(row => {
-                const c = row.querySelector('.color-name').value.trim();
-                const g = parseInt(row.querySelector('.color-grams').value);
-                if (c && g) breakdown.push({ color: c, grams: g });
-            });
-            
-            if (breakdown.length === 0) return alert('Add colors');
-            
-            await db.collection('n3dDesigns').doc(name).set({
-                name: name,
-                totalGrams: breakdown.reduce((s, p) => s + p.grams, 0),
-                filamentBreakdown: breakdown,
-                source: 'custom',
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            
-            alert('✅ Saved!');
-            document.getElementById('custom-name').value = '';
-            document.getElementById('color-inputs').innerHTML = '<div class="color-row"><input type="text" placeholder="Color" class="color-name"><input type="number" placeholder="g" class="color-grams"></div>';
-            loadStats();
-            loadDesigns();
         }
     </script>
 </body>
