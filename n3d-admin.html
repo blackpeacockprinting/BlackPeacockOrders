@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>N3D Sync - All Designs</title>
+    <title>N3D Sync - Full & Updates</title>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <style>
@@ -22,29 +22,30 @@
         .stat-label { color: #888; font-size: 0.8rem; margin-top: 4px; }
         .btn { background: linear-gradient(45deg, #e91e63, #9c27b0); color: white; border: none; padding: 14px 24px; border-radius: 10px; font-size: 1rem; cursor: pointer; width: 100%; margin-bottom: 8px; }
         .btn:disabled { opacity: 0.5; }
+        .btn-secondary { background: #333; }
+        .btn-success { background: linear-gradient(45deg, #4caf50, #8bc34a); }
         .status { padding: 12px; border-radius: 8px; margin-top: 12px; display: none; font-size: 0.9rem; }
         .status.success { background: #1b5e20; display: block; }
         .status.error { background: #b71c1c; display: block; }
         .status.loading { background: #0d47a1; display: block; }
+        .status.info { background: #333; display: block; }
         .progress { margin-top: 12px; }
         .progress-bar { background: #333; height: 20px; border-radius: 10px; overflow: hidden; }
         .progress-fill { background: linear-gradient(45deg, #e91e63, #9c27b0); height: 100%; width: 0%; transition: width 0.3s; }
         .progress-text { text-align: center; margin-top: 8px; color: #888; font-size: 0.85rem; }
+        .new-designs-list { margin-top: 12px; max-height: 200px; overflow-y: auto; }
+        .new-design-item { background: #1b5e20; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; font-size: 0.9rem; }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🎱 N3D Sync - Full Sync</h1>
-            <p class="subtitle">BlackPeacockPrinting (Fetch ALL Designs)</p>
+            <h1>🎱 N3D Sync Admin</h1>
+            <p class="subtitle">BlackPeacockPrinting</p>
         </header>
 
-        <div class="warning">
-            ⚠️ This will fetch ALL designs from N3D (may take 1-2 minutes)
-        </div>
-
         <div class="card">
-            <h2>📊 Current Database Status</h2>
+            <h2>📊 Database Status</h2>
             <div class="stats-grid">
                 <div class="stat-box">
                     <div class="stat-number" id="stat-total">-</div>
@@ -59,7 +60,22 @@
         </div>
 
         <div class="card">
-            <h2>🔄 Full N3D Sync</h2>
+            <h2>🔄 Check for New Designs</h2>
+            <p style="color: #888; margin-bottom: 16px; font-size: 0.9rem;">
+                Run this when N3D releases new Pokémon. It will fetch the latest designs and add only the new ones.
+            </p>
+            <button class="btn btn-success" id="check-btn" onclick="checkForNewDesigns()">
+                🔍 Check for New Designs
+            </button>
+            <div id="check-status" class="status"></div>
+            <div class="new-designs-list" id="new-designs-list"></div>
+        </div>
+
+        <div class="card">
+            <h2>🔄 Full Re-Sync (All Designs)</h2>
+            <p style="color: #888; margin-bottom: 16px; font-size: 0.9rem;">
+                Only use this if you want to refresh all 236+ designs. Takes 1-2 minutes.
+            </p>
             <button class="btn" id="sync-btn" onclick="syncAllN3D()">
                 🔄 Sync ALL Designs from N3D
             </button>
@@ -129,6 +145,106 @@
             }
         }
 
+        async function checkForNewDesigns() {
+            const btn = document.getElementById('check-btn');
+            const status = document.getElementById('check-status');
+            const newList = document.getElementById('new-designs-list');
+            
+            btn.disabled = true;
+            newList.innerHTML = '';
+            status.className = 'status loading';
+            status.textContent = 'Fetching latest designs from N3D...';
+            status.style.display = 'block';
+            
+            try {
+                // Get existing design names from Firestore
+                const existingSnap = await db.collection('n3dDesigns').get();
+                const existingNames = new Set();
+                existingSnap.forEach(doc => {
+                    existingNames.add(doc.data().name?.toLowerCase());
+                    existingNames.add(doc.data().slug?.toLowerCase());
+                });
+                
+                status.textContent = `You have ${existingNames.size} designs. Checking N3D for new ones...`;
+                
+                // Fetch latest 100 designs from N3D
+                const apiUrl = `https://www.n3dmelbourne.com/api/v1/designs?limit=100&include=details`;
+                const response = await fetchWithProxy(apiUrl, {
+                    headers: { 'Authorization': 'Bearer ' + N3D_API_KEY }
+                });
+                
+                const data = await response.json();
+                const latestDesigns = data.data || [];
+                
+                // Find new designs
+                const newDesigns = [];
+                for (const design of latestDesigns) {
+                    const name = (design.title || design.slug)?.toLowerCase();
+                    if (name && !existingNames.has(name)) {
+                        newDesigns.push(design);
+                    }
+                }
+                
+                if (newDesigns.length === 0) {
+                    status.className = 'status info';
+                    status.textContent = '✅ No new designs found. You have the latest!';
+                    btn.disabled = false;
+                    return;
+                }
+                
+                status.textContent = `Found ${newDesigns.length} new designs! Adding them...`;
+                
+                // Add new designs to Firestore
+                const batch = db.batch();
+                for (const design of newDesigns) {
+                    const filamentBreakdown = [];
+                    if (design.filaments) {
+                        design.filaments.forEach(f => {
+                            filamentBreakdown.push({ 
+                                color: f.color || 'Unknown', 
+                                grams: f.weight_grams || 0 
+                            });
+                        });
+                    }
+                    
+                    batch.set(db.collection('n3dDesigns').doc(design.title || design.slug), {
+                        name: design.title || design.slug,
+                        slug: design.slug,
+                        totalGrams: design.total_weight_grams || 50,
+                        filamentBreakdown: filamentBreakdown,
+                        category: design.category,
+                        imageUrl: design.image_url,
+                        source: 'n3d_api',
+                        lastSynced: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+                
+                await batch.commit();
+                
+                // Show new designs
+                newList.innerHTML = '<h3 style="color: #4caf50; margin-bottom: 8px;">New Designs Added:</h3>' +
+                    newDesigns.map(d => `<div class="new-design-item">✨ ${d.title || d.slug}</div>`).join('');
+                
+                status.className = 'status success';
+                status.textContent = `✅ Successfully added ${newDesigns.length} new designs!`;
+                
+                // Update metadata
+                await db.collection('syncMetadata').doc('n3d').set({
+                    lastSync: firebase.firestore.FieldValue.serverTimestamp(),
+                    lastCheckNew: firebase.firestore.FieldValue.serverTimestamp(),
+                    newDesignsFound: newDesigns.length
+                }, { merge: true });
+                
+                loadStats();
+                
+            } catch (e) {
+                status.className = 'status error';
+                status.textContent = '❌ Error: ' + e.message;
+                console.error(e);
+            }
+            btn.disabled = false;
+        }
+
         async function syncAllN3D() {
             const btn = document.getElementById('sync-btn');
             const status = document.getElementById('sync-status');
@@ -165,7 +281,7 @@
                         } else {
                             allDesigns.push(...designs);
                             page++;
-                            await new Promise(r => setTimeout(r, 500)); // Be nice to API
+                            await new Promise(r => setTimeout(r, 500));
                         }
                     } catch (e) {
                         console.error(`Page ${page} failed:`, e);
@@ -175,7 +291,6 @@
                 
                 progressText.textContent = `Saving ${allDesigns.length} designs...`;
                 
-                // Save in batches
                 const batchSize = 500;
                 for (let i = 0; i < allDesigns.length; i += batchSize) {
                     const batch = db.batch();
@@ -185,7 +300,10 @@
                         const filamentBreakdown = [];
                         if (design.filaments) {
                             design.filaments.forEach(f => {
-                                filamentBreakdown.push({ color: f.color || 'Unknown', grams: f.weight_grams || 0 });
+                                filamentBreakdown.push({ 
+                                    color: f.color || 'Unknown', 
+                                    grams: f.weight_grams || 0 
+                                });
                             });
                         }
                         
