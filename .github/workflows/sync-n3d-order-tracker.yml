@@ -1,0 +1,135 @@
+name: Sync N3D Designs - Order Tracker
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  sync-designs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch all designs from N3D API
+        env:
+          N3D_API_KEY: ${{ secrets.N3D_API_KEY }}
+        run: |
+          echo "Starting N3D API sync..."
+          mkdir -p data
+          
+          # Initialize empty array for all designs
+          echo '[]' > /tmp/all-designs.json
+          
+          page=1
+          limit=200
+          hasMore=true
+          
+          while [ "$hasMore" = "true" ]; do
+            echo "Fetching page $page..."
+            
+            HTTP_CODE=$(curl -s -w "%{http_code}" -o /tmp/page-response.json \
+              "https://www.n3dmelbourne.com/api/v1/designs?limit=$limit&page=$page&include=details&locale=US" \
+              -H "Authorization: Bearer $N3D_API_KEY" \
+              -H "Content-Type: application/json")
+            
+            if [ "$HTTP_CODE" != "200" ]; then
+              echo "Error: API returned HTTP $HTTP_CODE on page $page"
+              cat /tmp/page-response.json
+              exit 1
+            fi
+            
+            if ! jq empty /tmp/page-response.json 2>/dev/null; then
+              echo "Error: Invalid JSON response on page $page"
+              cat /tmp/page-response.json
+              exit 1
+            fi
+            
+            # Extract designs from this page
+            jq '.data' /tmp/page-response.json > /tmp/page-designs.json
+            pageCount=$(jq length /tmp/page-designs.json)
+            
+            echo "Page $page: Found $pageCount designs"
+            
+            # Merge with all designs
+            jq -s '.[0] + .[1]' /tmp/all-designs.json /tmp/page-designs.json > /tmp/merged.json
+            mv /tmp/merged.json /tmp/all-designs.json
+            
+            # Check if there are more pages
+            if [ "$pageCount" -lt "$limit" ]; then
+              hasMore=false
+            fi
+            
+            page=$((page + 1))
+            
+            # Safety limit - max 10 pages (2000 designs)
+            if [ "$page" -gt 10 ]; then
+              echo "Reached max page limit"
+              hasMore=false
+            fi
+          done
+          
+          echo "Total designs fetched: $(jq length /tmp/all-designs.json)"
+          mv /tmp/all-designs.json /tmp/designs-array.json
+
+      - name: Transform designs
+        run: |
+          echo "Transforming designs..."
+
+          jq '
+            map({
+              name: ((.pokemon.name // .title) | sub("\\s+V[0-9]+$"; "")),
+              originalName: .title,
+              category: (
+                if (.title | ascii_downcase | contains("mega")) then "Mega"
+                elif (.title | ascii_downcase | test("(articuno|zapdos|moltres|mew|mewtwo|celebi|lugia|ho-oh|entei|raikou|suicune|kyogre|groudon|rayquaza|deoxys|jirachi|darkrai|arceus|dialga|palkia|giratina|zekrom)")) then "Event"
+                elif (.title | ascii_downcase | test("(christmas|halloween|love|galarian)")) then "Special"
+                else "Standard"
+                end
+              ),
+              price: 8.0,
+              colors: (.filaments // [] | map({color: .color, grams: .weight_grams})),
+              totalGrams: (.total_weight_grams // 0),
+              filamentCost: ((.total_weight_grams // 0) * 0.012),
+              profit: (8.0 - ((.total_weight_grams // 0) * 0.012)),
+              url: ("https://www.n3dmelbourne.com/design/" + .slug),
+              slug: .slug,
+              lastUpdated: now | todateiso8601
+            })
+          ' /tmp/designs-array.json > data/n3d-designs.json
+
+          echo "Saved $(jq length data/n3d-designs.json) designs"
+          jq '.[0] | {name, category, totalGrams}' data/n3d-designs.json
+          
+          # List all design names for debugging
+          echo "All design names:"
+          jq -r '.[].name' data/n3d-designs.json | sort
+
+      - name: Check for new designs
+        run: |
+          if [ -f data/n3d-designs-prev.json ]; then
+            echo "Checking for new designs..."
+            NEW_COUNT=$(jq -s '(.[0] | map(.slug)) - (.[1] | map(.slug)) | length' data/n3d-designs.json data/n3d-designs-prev.json)
+            echo "New designs: $NEW_COUNT"
+          else
+            echo "First run - no previous data"
+          fi
+          cp data/n3d-designs.json data/n3d-designs-prev.json
+
+      - name: Commit and push
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "Sync N3D designs: $(date -u '+%Y-%m-%d %H:%M UTC') - $(jq length data/n3d-designs.json) designs"
+            git push
+            echo "Changes pushed"
+          fi
