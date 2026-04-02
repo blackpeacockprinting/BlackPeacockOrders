@@ -1,0 +1,166 @@
+name: Daily N3D Sync
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # Run daily at 6:00 AM UTC
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  sync-n3d:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      run: npm install firebase-admin node-fetch@2
+      
+    - name: Sync N3D designs to Firestore
+      env:
+        FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+      run: |
+        cat > sync-script.js << 'EOF'
+        const admin = require('firebase-admin');
+        const fetch = require('node-fetch');
+        
+        // Initialize Firebase Admin
+        const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+        
+        admin.initializeApp({
+          credential: admin.credential.cert(serviceAccount)
+        });
+        
+        const db = admin.firestore();
+        
+        const N3D_API_URL = 'https://www.n3dmelbourne.com/api/v1/designs';
+        const N3D_API_KEY = process.env.N3D_API_KEY || 'n3d_sk_N49oAN4-H4bniv08z3-Y7D5UZl_W0DcR';
+        
+        async function syncN3D() {
+          try {
+            console.log('Fetching N3D designs...');
+            
+            // Fetch from N3D API
+            const response = await fetch(N3D_API_URL, {
+              headers: {
+                'Authorization': `Bearer ${N3D_API_KEY}`,
+                'Content-Type': 'application/json'
+              }
+            });
+            
+            if (!response.ok) {
+              throw new Error(`N3D API error: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            const designs = data.designs || data || [];
+            
+            console.log(`Fetched ${designs.length} designs from N3D`);
+            
+            // Save to Firestore
+            await db.collection('pokeprint').doc('n3dDesigns').set({
+              designs: designs,
+              lastUpdated: new Date().toISOString(),
+              source: 'n3d-api'
+            });
+            
+            // Extract unique colors for filament inventory
+            const uniqueColors = new Set();
+            designs.forEach(design => {
+              if (design.colors && Array.isArray(design.colors)) {
+                design.colors.forEach(c => {
+                  if (c.color) uniqueColors.add(c.color);
+                });
+              }
+            });
+            
+            console.log(`Found ${uniqueColors.size} unique filament colors`);
+            
+            // Get current filament inventory
+            const filamentDoc = await db.collection('pokeprint').doc('filamentInventory').get();
+            const currentFilaments = filamentDoc.exists ? (filamentDoc.data().filaments || {}) : {};
+            
+            // Add new colors with default 1000g
+            let newColors = 0;
+            uniqueColors.forEach(color => {
+              if (!currentFilaments[color]) {
+                currentFilaments[color] = {
+                  amount: 1000,
+                  color: generateColorHex(color)
+                };
+                newColors++;
+              }
+            });
+            
+            if (newColors > 0) {
+              await db.collection('pokeprint').doc('filamentInventory').set({
+                filaments: currentFilaments,
+                lastUpdated: new Date().toISOString()
+              });
+              console.log(`Added ${newColors} new filament colors`);
+            }
+            
+            console.log('✅ N3D sync completed successfully');
+            
+          } catch (error) {
+            console.error('❌ N3D sync failed:', error.message);
+            process.exit(1);
+          }
+        }
+        
+        function generateColorHex(colorName) {
+          const colorMap = {
+            'Ivory White': '#FFFFF0', 'Charcoal Black': '#36454F', 'Scarlet Red': '#FF2400',
+            'Marine Blue': '#0077BE', 'Lilac Purple': '#C8A2C8', 'Sakura Pink': '#FFB7C5',
+            'Turquoise': '#40E0D0', 'Mandarin Orange': '#F37A48', 'Sunflower Yellow': '#FFC512',
+            'Grass Green': '#7CFC00', 'Ice Blue': '#B0E0E6', 'Sky Blue': '#87CEEB',
+            'Ash Gray': '#B2BEB5', 'Dark Gray': '#A9A9A9', 'Light Gray': '#D3D3D3',
+            'Nardo Gray': '#686A6C', 'Desert Tan': '#C2B280', 'Caramel': '#FFD59A',
+            'Latte Brown': '#C5A582', 'Dark Brown': '#654321', 'Bone White': '#E3DAC9',
+            'Beige': '#F5F5DC', 'Hot Pink': '#FF69B4', 'Purple': '#800080',
+            'Indigo Purple': '#4B0082', 'Gold': '#FFD700', 'Silver': '#C0C0C0',
+            'Bambu Green': '#8FBC8F', 'Apple Green': '#8DB600', 'Lemon Yellow': '#FFF44F',
+            'Mistletoe Green': '#3B7A57', 'Dark Green': '#006400', 'Dark Blue': '#00008B',
+            'Cobalt Blue': '#0047AB', 'Blue Grey': '#6699CC', 'Blue': '#0000FF',
+            'Red': '#FF0000', 'Yellow': '#FFFF00', 'Orange': '#FFA500',
+            'Pink': '#FFC0CB', 'Green': '#008000', 'Cyan': '#00FFFF',
+            'Magenta': '#FF00FF', 'Black': '#000000', 'White': '#FFFFFF', 'Gray': '#808080'
+          };
+          
+          if (colorMap[colorName]) return colorMap[colorName];
+          
+          for (const [key, value] of Object.entries(colorMap)) {
+            if (colorName.toLowerCase().includes(key.toLowerCase()) || 
+                key.toLowerCase().includes(colorName.toLowerCase())) {
+              return value;
+            }
+          }
+          
+          let hash = 0;
+          for (let i = 0; i < colorName.length; i++) {
+            hash = colorName.charCodeAt(i) + ((hash << 5) - hash);
+          }
+          const c = (hash & 0x00FFFFFF).toString(16).toUpperCase();
+          return '#' + '00000'.substring(0, 6 - c.length) + c;
+        }
+        
+        syncN3D();
+        EOF
+        
+        node sync-script.js
+        
+    - name: Update sync timestamp
+      run: |
+        echo "Last sync: $(date -u +"%Y-%m-%d %H:%M:%S UTC")" > data/.last-n3d-sync
+        
+    - name: Commit and push if changed
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add data/.last-n3d-sync
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Update N3D sync timestamp [skip ci]" && git push)
